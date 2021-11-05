@@ -1,7 +1,7 @@
-<div id="orfw_popup">
+<div id="orfw_popup" class="popup-one">
     <div class="orfw_popup_inner">
         <div class="orfw_popup_header">
-
+            
             <div class="orfw_popup_order_info">
                 <h3>Your Last Order</h3>
                 <h1>#ORDERID</h1>
@@ -47,6 +47,7 @@
 
         <div class="orfw_popup_footer">
             <h2>Rate the order</h2>
+
             <div class="orfw_popup_rating">
                 
                 <div class="feedback">
@@ -73,14 +74,17 @@
                         </div>
                     </div>
                 </div>
+
                 <textarea name="rating_comment " id="orfw_popup_comment" cols="20" rows="5" placeholder="Write Feedback"></textarea>
 
             </div>
 
             <button>Submit</button>
-            <h4>Please provide your honest feedback! Lorem Ipsum is simply dummy text of the printing and typesetting industry.</h4>
+            
+            <h4 class="disclaimer">Please provide your honest feedback! Lorem Ipsum is simply dummy text of the printing and typesetting industry.</h4>
 
             <a id="orfw_popup_skip" href="">Skip</a>
         </div>
+
     </div>
 </div>

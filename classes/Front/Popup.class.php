@@ -6,10 +6,10 @@ class Popup
     public static $instance;
 
     /**
-     * Singleton Pattern
-     *
-     * @return object
-     */
+    * Singleton Pattern
+    *
+    * @return object
+    */
     public static function getInstance()
     {
         if ( !self::$instance instanceof self )
@@ -19,10 +19,10 @@ class Popup
     }
 
     /**
-     * Constructor
-     *
-     * @return void
-     */
+    * Constructor
+    *
+    * @return void
+    */
     private function __construct()
     {
       add_action( 'wp_footer', array($this, 'view') );

@@ -5,6 +5,7 @@
 :root {
 	--pcolor: #f4b248;
 	--bcolor: #442a00;
+	--wcolor: #ecf0f1;
 }
 
 /*glide style*/
@@ -95,7 +96,7 @@ direction: rtl; }
 	margin: 10px 0 0;
 	font-size: 35px;
 	font-weight: normal;
-	color: #ecf0f1;
+	color: var(--wcolor);
 }
 #orfw_popup .orfw_popup_order_info p {
 	font-size: 15px;
@@ -130,7 +131,7 @@ direction: rtl; }
 	line-height: 21px;
 }
 
-#orfw_popup .orfw_popup_footer h4 {
+#orfw_popup h4.disclaimer {
 	font-size: 14px;
 	font-weight: normal;
 	color: var(--bcolor);
@@ -138,7 +139,7 @@ direction: rtl; }
 	line-height: 20px;
 }
 
-#orfw_popup .orfw_popup_footer a#orfw_popup_skip {
+#orfw_popup a#orfw_popup_skip {
 	color: var(--pcolor);
 	text-decoration: none;
 }
@@ -270,3 +271,11 @@ Rating Star
 	transform: translateY(-349px);
 }
 
+/* 
+Popup Two
+*/
+
+#orfw_popup.popup-two a#orfw_popup_skip {
+	color: var(--bcolor);
+	text-decoration: none;
+}
