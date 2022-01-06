@@ -4,6 +4,7 @@ namespace ORFW\Front;
 class Popup
 {
     public static $instance;
+    public $orderData;
 
     /**
     * Singleton Pattern
@@ -29,17 +30,17 @@ class Popup
     }
 
     public function hasOrdered()
-    {   
+    {
         //https://stackoverflow.com/questions/53050736/check-if-customer-wrote-a-review-for-a-product-in-woocommerce
         //https://stackoverflow.com/questions/38874189/checking-if-customer-has-already-bought-something-in-woocommerce
         //https://developer.wordpress.org/reference/functions/get_posts/
         $previousOrder = get_posts( array(
-            'numberposts' => -1,
+            'numberposts' => 1,
             'meta_key'    => '_customer_user',
             'meta_value'  => get_current_user_id(),
             'post_type'   => 'shop_order',
             'post_status' => 'wc-completed',
-            'fields'      => array('all', 'ids'),
+            'fields'      => array('ids'), // 'all', 
             'meta_query' => array(
                 array(
                     'key'   => 'orfw_order',
@@ -51,18 +52,18 @@ class Popup
         if ( count( $previousOrder ) > 0 )
         {   
             //check order with orfw_order meta
-            return $previousOrder;
+            return $previousOrder[0];
         }
         else
         {
             //check for last 72hrs orders
             $previousOrder = get_posts( array(
-                'numberposts' => -1,
+                'numberposts' => 1,
                 'meta_key'    => '_customer_user',
                 'meta_value'  => get_current_user_id(),
                 'post_type'   => 'shop_order',
                 'post_status' => 'wc-completed',
-                'fields'      => array('all', 'ids'),
+                'fields'      => array('ids'), // 'all', 
                 'date_query' => [
                     [
                         'after'     => '72 hour ago',  
@@ -71,7 +72,7 @@ class Popup
                 ],
             ) );
             
-            return $previousOrder;
+            return $previousOrder[0];
 
         }
     
@@ -88,15 +89,16 @@ class Popup
             array_push($getIds, $order->ID);
         }
 
-        return $getIds;
+        return $orders;
+        //return $getIds;
     }
 
 
 
     public function view()
     {   
-        var_dump($this->checkOrder());
-        //include_once ORFW_RENDER_FRONT . '/markup/popup-design-1.php';
+        $this->orderData = $this->checkOrder();
+        include_once ORFW_RENDER_FRONT . '/markup/popup-design-1.php';
     }
 
 
