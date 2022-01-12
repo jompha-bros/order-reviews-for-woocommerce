@@ -3,42 +3,35 @@
         <div class="orfw_popup_header">
             
             <div class="orfw_popup_order_info">
-                <h3>Your Last Order</h3>
-                <h1>#ORDERID</h1>
-                <p>10:00 PM 29/10/2021</p>
+                <h3><?php echo esc_html( 'Your Last Order', 'order-reviews-for-woocommerce' ); ?></h3>
+                <h1><?php echo esc_html( $this->orderData->ID ); ?></h1>
+                <p><?php echo esc_html( $this->orderData->post_date ); ?></p>
             </div>
-
+            
             <div class="orfw_popup_order_products glide">
                 <div data-glide-el="track" class="glide__track">
                     <ul class="glide__slides">
-                        <li class="glide__slide">
-                            <img src="https://dummyimage.com/60x80/e74d3c/fff.png" alt="">
-                        </li>
-                        
-                        <li class="glide__slide">
-                            <img src="https://dummyimage.com/60x80/e74d3c/fff.png" alt="">
-                        </li>
+                        <?php
+                        $getOrder = wc_get_order( $this->orderData->ID );
+                        foreach ( $getOrder->get_items() as $item_id => $item )
+                        {
+                            $product = apply_filters( 'woocommerce_order_item_product', $getOrder->get_product_from_item( $item ), $item );
+                        ?>
 
                         <li class="glide__slide">
-                            <img src="https://dummyimage.com/60x80/e74d3c/fff.png" alt="">
+                            <?php echo 
+                            wp_kses( 
+                                $product->get_image('thumbnail'), 
+                                array('img' => array(
+                                    'src'   => array()
+                                )) 
+                            ); 
+                            ?>
                         </li>
 
-                        <li class="glide__slide">
-                            <img src="https://dummyimage.com/60x80/e74d3c/fff.png" alt="">
-                        </li>
-
-                        <li class="glide__slide">
-                            <img src="https://dummyimage.com/60x80/e74d3c/fff.png" alt="">
-                        </li>
-
-                        <li class="glide__slide">
-                            <img src="https://dummyimage.com/60x80/e74d3c/fff.png" alt="">
-                        </li>
-
-                        <li class="glide__slide">
-                            <img src="https://dummyimage.com/60x80/e74d3c/fff.png" alt="">
-                        </li>
-
+                        <?php 
+                        } 
+                        ?>
                     </ul>
                 </div>
             </div>
@@ -46,7 +39,7 @@
         </div>
 
         <div class="orfw_popup_footer">
-            <h2>Rate the order</h2>
+            <h2><?php echo esc_html( 'Rate the order', 'order-reviews-for-woocommerce' ); ?></h2>
 
             <div class="orfw_popup_rating">
                 
@@ -79,11 +72,11 @@
 
             </div>
 
-            <button>Submit</button>
+            <button><?php echo esc_html( 'Submit', 'order-reviews-for-woocommerce' ); ?></button>
             
-            <h4 class="disclaimer">Please provide your honest feedback! Lorem Ipsum is simply dummy text of the printing and typesetting industry.</h4>
+            <h4 class="disclaimer"><?php echo esc_html( 'Please provide your honest feedback! Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'order-reviews-for-woocommerce' ); ?></h4>
 
-            <a id="orfw_popup_skip" href="">Skip</a>
+            <a id="orfw_popup_skip" href=""><?php echo esc_html( 'Skip', 'order-reviews-for-woocommerce' ); ?></a>
         </div>
 
     </div>
