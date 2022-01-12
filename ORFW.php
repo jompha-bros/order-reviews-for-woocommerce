@@ -71,7 +71,8 @@ final class ORFW
         define( 'ORFW_URL',           plugins_url( '', ORFW_FILE ) );
         define( 'ORFW_RESOURCES',     ORFW_URL . '/resources' );
         define( 'ORFW_RENDER',        ORFW_PATH . '/render' );
-        define( 'ORFW_RENDER_FRONT',        ORFW_RENDER . '/Front' );
+        define( 'ORFW_RENDER_FRONT',  ORFW_RENDER . '/Front' );
+        define( 'ORFW_POST_TYPE',     'orfw_post_type' );
     }
 
     /**
@@ -101,6 +102,8 @@ final class ORFW
         
         add_action( 'init', array( $this, 'init_classes' ) );
         add_action( 'init', array( $this, 'localization_setup' ) );
+        add_action( 'init', array( $this, 'register_new_post_types' ) );
+
     }
 
     /**
@@ -148,7 +151,68 @@ final class ORFW
      */
     public function localization_setup()
     {
-        load_plugin_textdomain('jompha-starter-plugin', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+        load_plugin_textdomain('order-review-for-woocommerce', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+    }
+
+    /**
+     * Create a non-editable custom post type after plugin activated.
+     *
+     * @uses load_plugin_textdomain()
+     */
+    public function register_new_post_types(){
+
+        $labels = [
+            'name'               => _x('Order Reviews', 'Plural Name of Order Review', 'order-review-for-woocommerce'),
+            'singular_name'      => _x('Order Review', 'Singular Name of Order Review', 'order-review-for-woocommerce'),
+            'menu_name'          => __('Order Reviews', 'orfw'),
+            'name_admin_bar'     => __('Order Review', 'order-review-for-woocommerce'),
+            'parent_item_colon'  => __('Parent Order Review:', 'order-review-for-woocommerce'),
+            'all_items'          => __('All Reviews', 'order-review-for-woocommerce'),
+            'add_new_item'       => __('Add New review', 'order-review-for-woocommerce'),
+            'add_new'            => __('Add New review', 'order-review-for-woocommerce'),
+            'new_item'           => __('New review', 'order-review-for-woocommerce'),
+            'edit_item'          => __('Edit review', 'order-review-for-woocommerce'),
+            'update_item'        => __('Update review', 'order-review-for-woocommerce'),
+            'view_item'          => __('View review', 'order-review-for-woocommerce'),
+            'search_items'       => __('Search review', 'order-review-for-woocommerce'),
+            'not_found'          => __('No Reviews found', 'order-review-for-woocommerce'),
+            'not_found_in_trash' => __('Not Reviews found in Trash', 'order-review-for-woocommerce'),
+        ];
+
+        $args = [
+            'label'               => __('Order Review', 'order-review-for-woocommerce'),
+            'description'         => __('Order Reviews', 'order-review-for-woocommerce'),
+            'labels'              => $labels,
+            'supports'            => ['title', 'editor', 'author'],
+            'show_in_rest'        => true,
+            'hierarchical'        => false,
+            'public'              => true,
+            'show_ui'             => false, // Restricted Option
+            'show_in_menu'        => true,
+            'menu_position'       => 20,
+            'menu_icon'           => ORFW_RESOURCES . 'images/icon.png',
+            'show_in_admin_bar'   => true,
+            'show_in_nav_menus'   => true,
+            'can_export'          => true,
+            'has_archive'         => false,
+            'exclude_from_search' => false,
+            'publicly_queryable'  => true,
+            'capability_type'     => ORFW_POST_TYPE,
+            'map_meta_cap'        => true
+        ];
+
+        register_post_type(ORFW_POST_TYPE, $args);
+
+        // Create post object
+        // $my_post = array(
+        //     'post_title'    => 'test',
+        //     'post_content'  => 'test',
+        //     'post_status'   => 'publish',
+        //     'post_type' => ORFW_POST_TYPE
+        // );
+        
+        // Insert the post into the database
+        // wp_insert_post( $my_post );
     }
 
     /**
