@@ -54,6 +54,11 @@ class Resources
 
             wp_register_script( $handle, $script['src'], $deps, $version, $in_footer );
         }
+
+        wp_localize_script( 'orfw-front', 'orfw_front_data', array( 
+            'ajaxurl'       => admin_url( 'admin-ajax.php' ),
+            'object_name'   => 'orfw_front_data',
+        ));
     }
 
     /**

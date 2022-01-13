@@ -4,7 +4,7 @@
             
             <div class="orfw_popup_order_info">
                 <h3><?php echo esc_html( 'Your Last Order', 'order-reviews-for-woocommerce' ); ?></h3>
-                <h1><?php echo esc_html( $this->orderData->ID ); ?></h1>
+                <h1 data-order-id="<?php echo esc_html( $this->orderData->ID ); ?>" id="order-id"><?php echo esc_html( $this->orderData->ID ); ?></h1>
                 <p><?php echo esc_html( $this->orderData->post_date ); ?></p>
             </div>
             
@@ -13,18 +13,21 @@
                     <ul class="glide__slides">
                         <?php
                         $getOrder = wc_get_order( $this->orderData->ID );
+                        
                         foreach ( $getOrder->get_items() as $item_id => $item )
                         {
                             $product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
+                            // needs to be optimized
                         ?>
 
-                        <li class="glide__slide">
-                            <?php echo wp_kses( $product->get_image('thumbnail'), 
+                        <li class="glide__slide" data-product-id="<?php echo $item_id; ?>">
+                            <?php echo wp_kses( 
+                                $product->get_image('thumbnail'), 
                                 array(
                                     'img' => array(
                                         'src' => array()
-                                    ),
-                                )
+                                    )
+                                ) 
                             );
                             ?>
                         </li>
@@ -72,7 +75,7 @@
 
             </div>
 
-            <button><?php echo esc_html( 'Submit', 'order-reviews-for-woocommerce' ); ?></button>
+            <button type="submit" id="onPopupSubmit"><?php echo esc_html( 'Submit', 'order-reviews-for-woocommerce' ); ?></button>
             
             <h4 class="disclaimer"><?php echo esc_html( 'Please provide your honest feedback! Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'order-reviews-for-woocommerce' ); ?></h4>
 

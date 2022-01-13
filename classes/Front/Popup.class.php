@@ -26,7 +26,18 @@ class Popup
     */
     private function __construct()
     {
-      add_action( 'wp_footer', array($this, 'view') );
+        add_action( 'wp_footer',                      array( $this, 'view') );
+        add_action( 'wp_ajax_orfwPopupSubmit',        array( $this, 'orfwPopupSubmit' ));
+        add_action( 'wp_ajax_nopriv_orfwPopupSubmit', array( $this, 'orfwPopupSubmit' ));
+    }
+
+    public function orfwPopupSubmit()
+    {
+        echo wp_json_encode( array( 
+            'orderId'    => $_POST['order_id'],
+            'productId'  => $_POST['product_id']
+        ));
+        wp_die();
     }
 
     public function hasOrdered()
