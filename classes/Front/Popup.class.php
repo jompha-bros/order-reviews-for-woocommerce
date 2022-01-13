@@ -33,10 +33,30 @@ class Popup
 
     public function orfwPopupSubmit()
     {
-        echo wp_json_encode( array( 
-            'orderId'    => $_POST['order_id'],
-            'productId'  => $_POST['product_id']
-        ));
+        $orderId    = intval( $_POST['order_id'] );
+        $productIds = $_POST['product_ids']; // Need to be sanitized the ids.
+
+        if( empty( $orderId ) && empty( $productIds ) ) return;
+
+        $postID = wp_insert_post(
+            array(
+                'post_name'      => $orderId,
+                'post_status'    => 'publish',
+                'post_type'      => 'orfw_post_type',
+            )
+        );
+
+       if( !$postID ) return;
+
+       update_post_meta( $postID, 'orfw_order_id', $orderId );
+       update_post_meta( $postID, 'orfw_products', $productIds );
+
+        // echo wp_json_encode( array( 
+        //     'orderId'    => $_POST['order_id'],
+        //     'productId'  => $_POST['product_ids'],
+        //     'cptID'      => $postID
+        // ));
+
         wp_die();
     }
 
