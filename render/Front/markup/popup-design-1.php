@@ -13,6 +13,7 @@
                     <ul class="glide__slides">
                         <?php
                         $getOrder = wc_get_order( $this->orderData->ID );
+                        
                         foreach ( $getOrder->get_items() as $item_id => $item )
                         {
                             $product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );

@@ -33,7 +33,10 @@ class Popup
 
     public function orfwPopupSubmit()
     {
-        echo wp_json_encode( array('responsed') );
+        echo wp_json_encode( array( 
+            'orderId'    => $_POST['order_id'],
+            'productId'  => $_POST['product_id']
+        ));
         wp_die();
     }
 
