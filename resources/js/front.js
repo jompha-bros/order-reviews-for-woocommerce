@@ -1,4 +1,5 @@
-jQuery(document).ready(function() {
+jQuery(document).ready(function() 
+{
     'use strict';
 
     const orfwGlide = new Glide('.orfw_popup_order_products', {
@@ -15,14 +16,18 @@ jQuery(document).ready(function() {
     var ratingStars = jQuery('#orfw_popup .feedback input'),
         ratingComment = jQuery('#orfw_popup #orfw_popup_comment');
 
-    ratingStars.on('click', function() {
+    ratingStars.on('click', function() 
+    {
         ratingComment.fadeIn();
     });
 
-    jQuery('#onPopupSubmit').on('click', function() {
+    jQuery('#onPopupSubmit').on('click', function() 
+    {
         var order_id = jQuery('#order-id').data('order-id');
         var product_ids = [];
-        jQuery('.orfw_popup_order_products').find('ul').find('li').each(function(){
+
+        jQuery('.orfw_popup_order_products').find('ul').find('li').each(function()
+        {
             product_ids.push(jQuery(this).data('product-id'));
         });
 
@@ -35,12 +40,11 @@ jQuery(document).ready(function() {
                 product_ids: product_ids
             },
             beforeSend() {
-                console.log(order_id);
-                console.log(product_ids);
+                jQuery("#onPopupSubmit").text("Submitting..")
             },
             dataType: 'json',
             success: function(response) {
-                jQuery('#orfw_popup').remove();
+                //jQuery('#orfw_popup').remove();
             },
         });
     });
