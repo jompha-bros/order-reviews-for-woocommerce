@@ -41,7 +41,7 @@ class Popup
             'post_type'   => 'shop_order',
             'post_status' => 'wc-completed',
             'fields'      => array('ids'), // 'all', 
-            'meta_query' => array(
+            'meta_query'  => array(
                 array(
                     'key'   => 'orfw_order',
                     'value' => '1',
@@ -93,13 +93,9 @@ class Popup
         //return $getIds;
     }
 
-
-
     public function view()
     {   
         $this->orderData = $this->checkOrder();
-        include_once ORFW_RENDER_FRONT . '/markup/popup-design-1.php';
+        //include_once ORFW_RENDER_FRONT . '/markup/popup-design-1.php';
     }
-
-
 }

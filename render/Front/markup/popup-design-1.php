@@ -15,17 +15,17 @@
                         $getOrder = wc_get_order( $this->orderData->ID );
                         foreach ( $getOrder->get_items() as $item_id => $item )
                         {
-                            $product = apply_filters( 'woocommerce_order_item_product', $getOrder->get_product_from_item( $item ), $item );
+                            $product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
                         ?>
 
                         <li class="glide__slide">
-                            <?php echo 
-                            wp_kses( 
-                                $product->get_image('thumbnail'), 
-                                array('img' => array(
-                                    'src'   => array()
-                                )) 
-                            ); 
+                            <?php echo wp_kses( $product->get_image('thumbnail'), 
+                                array(
+                                    'img' => array(
+                                        'src' => array()
+                                    ),
+                                )
+                            );
                             ?>
                         </li>
 
