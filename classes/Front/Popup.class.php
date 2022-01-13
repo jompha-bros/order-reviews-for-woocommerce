@@ -26,7 +26,15 @@ class Popup
     */
     private function __construct()
     {
-      add_action( 'wp_footer', array($this, 'view') );
+        add_action( 'wp_footer',                      array( $this, 'view') );
+        add_action( 'wp_ajax_orfwPopupSubmit',        array( $this, 'orfwPopupSubmit' ));
+        add_action( 'wp_ajax_nopriv_orfwPopupSubmit', array( $this, 'orfwPopupSubmit' ));
+    }
+
+    public function orfwPopupSubmit()
+    {
+        echo wp_json_encode( array('responsed') );
+        wp_die();
     }
 
     public function hasOrdered()
@@ -93,13 +101,9 @@ class Popup
         //return $getIds;
     }
 
-
-
     public function view()
     {   
         $this->orderData = $this->checkOrder();
         include_once ORFW_RENDER_FRONT . '/markup/popup-design-1.php';
     }
-
-
 }
