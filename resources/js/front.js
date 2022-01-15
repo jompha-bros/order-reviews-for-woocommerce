@@ -6,7 +6,7 @@ jQuery(document).ready(function() {
         autoplay: 1,
         animationDuration: 3000,
         animationTimingFunc: "linear",
-        perView: 4.5,
+        perView: 3.5,
         focusAt: 0,
     });
 
@@ -20,8 +20,12 @@ jQuery(document).ready(function() {
     });
 
     jQuery("#onPopupSubmit").on("click", function() {
-        var order_id = jQuery("#order-id").data("order-id");
-        var product_ids = jQuery("#product-ids").data("product-ids");
+        var order_id      = jQuery("#order-id").data("order-id"),
+            product_ids = [24, 33, 16, 17],
+            reviewComment    = 'This is test review',
+            ratingStars      = 4;
+
+
 
         jQuery.ajax({
             type: "post",
@@ -29,15 +33,17 @@ jQuery(document).ready(function() {
             data: {
                 action: "orfwPopupSubmit",
                 order_id: order_id,
-                prdouct_ids: product_ids,
+                product_ids: product_ids,
+                review: reviewComment,
+                rating: ratingStars,
             },
             beforeSend() {
-                console.log(order_id);
-                console.log(prdouct_ids);
+                console.log('Submited review for: ' + order_id);
             },
             dataType: "json",
-            success: function(response) {
-                jQuery("#orfw_popup").remove();
+            success: function (response) {
+                console.log(response);
+                //jQuery("#orfw_popup").remove();
             },
         });
     });
