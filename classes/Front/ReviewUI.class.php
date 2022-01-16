@@ -51,6 +51,8 @@ class ReviewUI
                 'url'  => $oProduct->get_permalink(),
             );
 
+            shuffle($xs);
+
             // 'This user bought %s, %s, %s and %s other items.'
         }
     ?>

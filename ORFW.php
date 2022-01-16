@@ -72,7 +72,7 @@ final class ORFW
         define( 'ORFW_RESOURCES',     ORFW_URL . '/resources' );
         define( 'ORFW_RENDER',        ORFW_PATH . '/render' );
         define( 'ORFW_RENDER_FRONT',  ORFW_RENDER . '/Front' );
-        define( 'ORFW_POST_TYPE',     'orfw_post_type' );
+        define( 'ORFW_POST_TYPE',     'orfw_review' );
     }
 
     /**
