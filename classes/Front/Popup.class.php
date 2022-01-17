@@ -32,12 +32,65 @@ class Popup
     }
 
     public function orfwPopupSubmit()
-    {
-        echo wp_json_encode( array( 
-            'orderId'    => $_POST['order_id'],
-            'productId'  => $_POST['product_id']
-        ));
+    {   
+        $orderID = intval( $_POST['order_id'] );
+        $productIDs = $_POST['product_ids']; // Need to be sanitized the ids.
+
+        if( empty( $orderID ) && empty( $productIDs ) )
+            return;
+
+        $postID = wp_insert_post(
+            array(
+                'post_name'      => $orderID,
+                'post_status'    => 'publish',
+                'post_type'      => 'orfw_post_type',
+            )
+        );
+
+       if( !$postID ) return;
+
+       update_post_meta( $postID, 'orfw_order_id', $orderID );
+       update_post_meta( $postID, 'orfw_products', $productIDs );
+
+        $review = $_POST['review'];
+        $rating = $_POST['rating'];
+        $customer = wp_get_current_user();
+        $reviewIds = array();
+
+        foreach($productIDs as $productId)
+        {
+            if ( comments_open( $productId ) ) 
+            {
+                $reviewData = array(
+                    'comment_post_ID'      => $productId,
+                    'comment_type'         => 'review',
+                    'comment_content'      => $review,
+                    'comment_parent'       => 0,
+                    'comment_date'         => date('Y-m-d H:i:s'),
+                    'user_id'              => $customer->ID,
+                    'comment_author'       => $customer->user_login,
+                    'comment_author_email' => $customer->user_email,
+                    'comment_author_url'   => $customer->user_url,
+                    'comment_meta'         => array(
+                        'rating'            => $rating,
+                    ),
+                    'comment_approved'     => 1,
+                );
+                
+                $review_id = wp_insert_comment( $reviewData );
+
+                if ( ! is_wp_error( $review_id ) ) 
+                {   
+                    $reviewIds[] = $review_id;
+                }
+
+            }
+
+            echo wp_json_encode( $reviewIds ); // just for test
+        }
+
         wp_die();
+
     }
 
     public function hasOrdered()
@@ -87,7 +140,7 @@ class Popup
 
         }
     
-       //return $previousOrder;
+       return $previousOrder[0];
     }
 
     public function checkOrder ()
@@ -107,6 +160,6 @@ class Popup
     public function view()
     {   
         $this->orderData = $this->checkOrder();
-        //include_once ORFW_RENDER_FRONT . '/markup/popup-design-1.php';
+        include_once ORFW_RENDER_FRONT . '/markup/popup-design-1.php';
     }
 }
