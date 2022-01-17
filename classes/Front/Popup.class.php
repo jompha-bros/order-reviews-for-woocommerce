@@ -33,8 +33,25 @@ class Popup
 
     public function orfwPopupSubmit()
     {   
-        $orderID = $_POST['order_id'];
-        $productIDs = $_POST['product_ids'];
+        $orderID = intval( $_POST['order_id'] );
+        $productIDs = $_POST['product_ids']; // Need to be sanitized the ids.
+
+        if( empty( $orderID ) && empty( $productIDs ) )
+            return;
+
+        $postID = wp_insert_post(
+            array(
+                'post_name'      => $orderID,
+                'post_status'    => 'publish',
+                'post_type'      => 'orfw_post_type',
+            )
+        );
+
+       if( !$postID ) return;
+
+       update_post_meta( $postID, 'orfw_order_id', $orderID );
+       update_post_meta( $postID, 'orfw_products', $productIDs );
+
         $review = $_POST['review'];
         $rating = $_POST['rating'];
         $customer = wp_get_current_user();
@@ -88,7 +105,7 @@ class Popup
             'post_type'   => 'shop_order',
             'post_status' => 'wc-completed',
             'fields'      => array('ids'), // 'all', 
-            'meta_query' => array(
+            'meta_query'  => array(
                 array(
                     'key'   => 'orfw_order',
                     'value' => '1',
@@ -143,7 +160,6 @@ class Popup
     public function view()
     {   
         $this->orderData = $this->checkOrder();
-
         include_once ORFW_RENDER_FRONT . '/markup/popup-design-1.php';
     }
 }

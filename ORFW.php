@@ -118,6 +118,7 @@ final class ORFW
 
         include_once ORFW_FRONT_CLASSES . '/Initialize.class.php';
         include_once ORFW_FRONT_CLASSES . '/Popup.class.php';
+        include_once ORFW_FRONT_CLASSES . '/ReviewUI.class.php';
 
         include_once ORFW_CLASSES       . '/Resources.class.php';
     }
@@ -139,6 +140,7 @@ final class ORFW
         {
             \ORFW\Front\Initialize::getInstance();
             \ORFW\Front\Popup::getInstance();
+            \ORFW\Front\ReviewUI::getInstance();
         }
 
         \ORFW\Resources::getInstance();
@@ -159,8 +161,8 @@ final class ORFW
      *
      * @uses load_plugin_textdomain()
      */
-    public function register_new_post_types(){
-
+    public function register_new_post_types()
+    {
         $labels = [
             'name'               => _x('Order Reviews', 'Plural Name of Order Review', 'order-review-for-woocommerce'),
             'singular_name'      => _x('Order Review', 'Singular Name of Order Review', 'order-review-for-woocommerce'),
