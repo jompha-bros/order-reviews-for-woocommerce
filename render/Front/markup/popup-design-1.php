@@ -12,16 +12,16 @@
                 <div data-glide-el="track" class="glide__track">
                     <ul class="glide__slides">
                         <?php
-                        $getOrder = wc_get_order( $this->orderData->ID );
+                        $order = wc_get_order( $this->orderData->ID );
                         
-                        foreach ( $getOrder->get_items() as $item_id => $item )
+                        foreach ( $order->get_items() as $item )
                         {
-                            $product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
-                            // needs to be optimized
+                            $product = $item->get_product();
                         ?>
 
-                        <li class="glide__slide" data-product-id="<?php echo $item_id; ?>">
-                            <?php echo wp_kses( 
+                        <li class="glide__slide product" data-product-id="<?php echo esc_attr( $product->id ); ?>">
+                            <?php 
+                            echo wp_kses( 
                                 $product->get_image('thumbnail'), 
                                 array(
                                     'img' => array(

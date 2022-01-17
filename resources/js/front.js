@@ -6,8 +6,8 @@ jQuery(document).ready(function()
         type: 'carousel',
         autoplay: 1,
         animationDuration: 3000,
-        animationTimingFunc: 'linear',
-        perView: 4.5,
+        animationTimingFunc: "linear",
+        perView: 3.5,
         focusAt: 0,
     });
 
@@ -23,8 +23,10 @@ jQuery(document).ready(function()
 
     jQuery('#onPopupSubmit').on('click', function() 
     {
-        var order_id = jQuery('#order-id').data('order-id');
-        var product_ids = [];
+        var order_id      = jQuery('#order-id').data('order-id'),
+            product_ids   = [];
+            reviewComment = 'This is test review',
+            ratingStars   = 4;
 
         jQuery('.orfw_popup_order_products').find('ul').find('li').each(function()
         {
@@ -37,14 +39,20 @@ jQuery(document).ready(function()
             data: {
                 action: 'orfwPopupSubmit',
                 order_id: order_id,
-                product_ids: product_ids
+                product_ids: product_ids,
+                review: reviewComment,
+                rating: ratingStars,
             },
-            beforeSend() {
-                jQuery("#onPopupSubmit").text("Submitting..")
+            beforeSend()
+            {
+                console.log('Submited review for: ' + order_id);
+                jQuery('#onPopupSubmit').text('Submitting..')
             },
             dataType: 'json',
-            success: function(response) {
-                //jQuery('#orfw_popup').remove();
+            success: function (response)
+            {
+                console.log(response);
+                //jQuery("#orfw_popup").remove();
             },
         });
     });
