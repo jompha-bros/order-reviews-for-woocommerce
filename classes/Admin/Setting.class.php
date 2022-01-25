@@ -22,11 +22,18 @@ class Setting
 		$this->tabs = array(
 			'general' => array(
 				'name' 		  => esc_html__( 'General', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'General Settings', 'order-reviews-for-woocommerce' ),
+				'title' 	  => esc_html__( 'General Settings', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'General settings description', 'order-reviews-for-woocommerce' ),
 			),
-			'others'  => array(
-				'name' 		  => esc_html__( 'Others', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'Other Settings', 'order-reviews-for-woocommerce' ),
+			'styles'  => array(
+				'name' 		  => esc_html__( 'Styles', 'order-reviews-for-woocommerce' ),
+				'title' 	  => esc_html__( 'Style Settings', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Style settings description', 'order-reviews-for-woocommerce' ),
+			),
+			'content'  => array(
+				'name' 		  => esc_html__( 'Content', 'order-reviews-for-woocommerce' ),
+				'title' 	  => esc_html__( 'Content Settings', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Content settings description', 'order-reviews-for-woocommerce' ),
 			),
 		);
 		$this->tab  = (isset($_GET['tab'])) ? $_GET['tab'] : 'general';
@@ -97,7 +104,7 @@ class Setting
 			array(
 				'id'      	  => 'is_admin',
 				'type'    	  => 'toggle',
-				'section' 	  => 'others',
+				'section' 	  => 'general',
 				'label'   	  => esc_html__( 'Is Admin?', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Is admin?', 'order-reviews-for-woocommerce' ),
 			),
@@ -105,7 +112,7 @@ class Setting
 			array(
 				'id'      => 'has_access',
 				'type'    => 'checkbox',
-				'section' => 'others',
+				'section' => 'general',
 				'label'   => esc_html__( 'Has access?', 'order-reviews-for-woocommerce' ),
 				'options' => array(
 					'front' => esc_html__( 'Front-end', 'order-reviews-for-woocommerce' ),
@@ -117,9 +124,17 @@ class Setting
 			array(
 				'id'      	  => 'badge',
 				'type'    	  => 'icons',
-				'section' 	  => 'others',
+				'section' 	  => 'general',
 				'label'   	  => esc_html__( 'Badge', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Select icon.', 'order-reviews-for-woocommerce' ),
+			),
+
+			array(
+				'id'      	  => 'badge',
+				'type'    	  => 'color',
+				'section' 	  => 'general',
+				'label'   	  => esc_html__( 'Color', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Select color.', 'order-reviews-for-woocommerce' ),
 			),
 		);
 	}
@@ -162,7 +177,10 @@ class Setting
 
 	public function addSections()
 	{
-		add_settings_section( self::$optPrefix . $this->tab, $this->tabs[ $this->tab ]['description'], array(), self::$pageSlug );
+		if (! isset($this->tabs[ $this->tab ]))
+			return;
+		
+		add_settings_section( self::$optPrefix . $this->tab, $this->tabs[ $this->tab ]['title'], function() { echo $this->tabs[ $this->tab ]['description']; }, self::$pageSlug );
 	}
 
 	public function addFields()
