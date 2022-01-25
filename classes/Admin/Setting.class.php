@@ -162,17 +162,11 @@ class Setting
 
 	public function addSections()
 	{
-		if (! $this->okay())
-			return;
-		
 		add_settings_section( self::$optPrefix . $this->tab, $this->tabs[ $this->tab ]['description'], array(), self::$pageSlug );
 	}
 
 	public function addFields()
 	{
-		if (! $this->okay())
-			return;
-		
 		foreach ( $this->fields() as $field )
 		{
 			$uniqueID = self::$optPrefix . $field['id'];
@@ -311,10 +305,5 @@ class Setting
 
 		if ( isset( $field['description'] ) )
 			echo sprintf( '<p class="description">%s</p>', esc_html( $field['description'] ) );
-	}
-
-	private function okay()
-	{
-		return (isset($_GET['page']) && $_GET['page'] == self::$pageSlug) ? true : false;
 	}
 }
