@@ -2,23 +2,18 @@
 {
     'use strict';
     
-    jQuery('.jomps-icons').each(function()
-    {
-        var thisEl = jQuery(this);
-        if ( thisEl.find('input').val() !== '' )
-            thisEl.find('.jomps-icons-selector').find('li').find( '.' + thisEl.find('input').val() ).parent('li').addClass('active');
-    });
+    if ( jQuery('.jmph-icons input').val() !== '' )
+        jQuery('.jmph-icons li .' + jQuery('.jmph-icons').find('input').val() ).parent('li').addClass('active');
     
-    jQuery('.jomps-icons-selector').find('li').on('click', function()
+    jQuery('.jmph-icons-selector').find('li').on('click', function()
     {
-        var thisLi   = jQuery(this),
-            liMain   = thisLi.parents('.jomps-icons'),
-            liParent = liMain.find('.jomps-icons-selector'),
-            icon     = thisLi.find('span').attr('class');
+        var icon   = jQuery(this),
+            icons  = icon.parents('.jmph-icons'),
+            iconId = icon.find('span').attr('class');
 
-        liParent.find('li').removeClass('active');
-        thisLi.addClass('active');
+        icons.find('li').removeClass('active');
+        icon.addClass('active');
 
-        liMain.find('input').val( icon );
+        icons.find('input').val( iconId );
     });
 });

@@ -29,7 +29,7 @@ class Initialize
     {
         wp_enqueue_style( 'orfw' );
 
-        if( 'woocommerce_page_orfw-options' === $currentScreen )
+        if( 'woocommerce_page_orfw-settings' === $currentScreen )
         {
             wp_enqueue_style( 'jompha-admin-core' );
             wp_enqueue_style( 'jompha-icons' );
@@ -39,7 +39,7 @@ class Initialize
 
     private function scripts($currentScreen)
     {   
-        if( 'woocommerce_page_orfw-options' === $currentScreen )
+        if( 'woocommerce_page_orfw-settings' === $currentScreen )
         {
             wp_enqueue_script( 'orfw-admin' );
         }
