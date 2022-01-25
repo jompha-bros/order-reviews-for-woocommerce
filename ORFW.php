@@ -153,7 +153,7 @@ final class ORFW
      */
     public function localization_setup()
     {
-        load_plugin_textdomain('order-review-for-woocommerce', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+        load_plugin_textdomain('order-reviews-for-woocommerce', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
     }
 
     /**
@@ -164,26 +164,26 @@ final class ORFW
     public function register_new_post_types()
     {
         $labels = [
-            'name'               => _x('Order Reviews', 'Plural Name of Order Review', 'order-review-for-woocommerce'),
-            'singular_name'      => _x('Order Review', 'Singular Name of Order Review', 'order-review-for-woocommerce'),
+            'name'               => _x('Order Reviews', 'Plural Name of Order Review', 'order-reviews-for-woocommerce'),
+            'singular_name'      => _x('Order Review', 'Singular Name of Order Review', 'order-reviews-for-woocommerce'),
             'menu_name'          => __('Order Reviews', 'orfw'),
-            'name_admin_bar'     => __('Order Review', 'order-review-for-woocommerce'),
-            'parent_item_colon'  => __('Parent Order Review:', 'order-review-for-woocommerce'),
-            'all_items'          => __('All Reviews', 'order-review-for-woocommerce'),
-            'add_new_item'       => __('Add New review', 'order-review-for-woocommerce'),
-            'add_new'            => __('Add New review', 'order-review-for-woocommerce'),
-            'new_item'           => __('New review', 'order-review-for-woocommerce'),
-            'edit_item'          => __('Edit review', 'order-review-for-woocommerce'),
-            'update_item'        => __('Update review', 'order-review-for-woocommerce'),
-            'view_item'          => __('View review', 'order-review-for-woocommerce'),
-            'search_items'       => __('Search review', 'order-review-for-woocommerce'),
-            'not_found'          => __('No Reviews found', 'order-review-for-woocommerce'),
-            'not_found_in_trash' => __('Not Reviews found in Trash', 'order-review-for-woocommerce'),
+            'name_admin_bar'     => __('Order Review', 'order-reviews-for-woocommerce'),
+            'parent_item_colon'  => __('Parent Order Review:', 'order-reviews-for-woocommerce'),
+            'all_items'          => __('All Reviews', 'order-reviews-for-woocommerce'),
+            'add_new_item'       => __('Add New review', 'order-reviews-for-woocommerce'),
+            'add_new'            => __('Add New review', 'order-reviews-for-woocommerce'),
+            'new_item'           => __('New review', 'order-reviews-for-woocommerce'),
+            'edit_item'          => __('Edit review', 'order-reviews-for-woocommerce'),
+            'update_item'        => __('Update review', 'order-reviews-for-woocommerce'),
+            'view_item'          => __('View review', 'order-reviews-for-woocommerce'),
+            'search_items'       => __('Search review', 'order-reviews-for-woocommerce'),
+            'not_found'          => __('No Reviews found', 'order-reviews-for-woocommerce'),
+            'not_found_in_trash' => __('Not Reviews found in Trash', 'order-reviews-for-woocommerce'),
         ];
 
         $args = [
-            'label'               => __('Order Review', 'order-review-for-woocommerce'),
-            'description'         => __('Order Reviews', 'order-review-for-woocommerce'),
+            'label'               => __('Order Review', 'order-reviews-for-woocommerce'),
+            'description'         => __('Order Reviews', 'order-reviews-for-woocommerce'),
             'labels'              => $labels,
             'supports'            => ['title', 'editor', 'author'],
             'show_in_rest'        => true,

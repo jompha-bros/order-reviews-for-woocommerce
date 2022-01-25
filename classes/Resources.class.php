@@ -117,6 +117,14 @@ class Resources
     public function styles()
     {
         $styles = array(
+            'jompha-admin-core' => array(
+                'src'     => ORFW_RESOURCES . '/css/admin-core.css',
+                'version' => filemtime( ORFW_PATH . '/resources/css/admin-core.css' ),
+            ),
+            'jompha-icons' => array(
+                'src'     => ORFW_RESOURCES . '/css/icons.css',
+                'version' => filemtime( ORFW_PATH . '/resources/css/icons.css' ),
+            ),
             'orfw-admin' => array(
                 'src'     => ORFW_RESOURCES . '/css/admin.css',
                 'version' => filemtime( ORFW_PATH . '/resources/css/admin.css' ),
@@ -124,10 +132,6 @@ class Resources
             'orfw-front' => array(
                 'src'     => ORFW_RESOURCES . '/css/front.css',
                 'version' => filemtime( ORFW_PATH . '/resources/css/front.css' ),
-            ),
-            'orfw-icons' => array(
-                'src'     => ORFW_RESOURCES . '/css/icons.css',
-                'version' => filemtime( ORFW_PATH . '/resources/css/icons.css' ),
             ),
         );
 

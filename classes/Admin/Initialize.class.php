@@ -31,8 +31,9 @@ class Initialize
 
         if( 'woocommerce_page_orfw-options' === $currentScreen )
         {
+            wp_enqueue_style( 'jompha-admin-core' );
+            wp_enqueue_style( 'jompha-icons' );
             wp_enqueue_style( 'orfw-admin' );
-            wp_enqueue_style( 'orfw-icons' );
         }
     }
 

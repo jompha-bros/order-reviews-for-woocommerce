@@ -4,6 +4,10 @@ namespace ORFW\Admin;
 class Setting
 {
     public static $instance;
+	public static $pageSlug  = 'orfw-settings';
+	public static $optPrefix = 'orfw_';
+	public $tabs;
+	public $tab;
 
     public static function getInstance()
     {
@@ -15,232 +19,254 @@ class Setting
 
     private function __construct()
     {
-		add_action( 'admin_menu', array( $this, 'orfwOptionsMenu' ) );
-		add_action( 'admin_init', array( $this, 'orfwOptionsSections' ) );
-		add_action( 'admin_init', array( $this, 'orfwOptionFields' ) );
+		$this->tabs = array(
+			'general' => array(
+				'name' 		  => esc_html__( 'General', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'General Settings', 'order-reviews-for-woocommerce' ),
+			),
+			'others'  => array(
+				'name' 		  => esc_html__( 'Others', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Other Settings', 'order-reviews-for-woocommerce' ),
+			),
+		);
+		$this->tab  = (isset($_GET['tab'])) ? $_GET['tab'] : 'general';
+
+		add_action( 'admin_menu', array( $this, 'menu' ) );
+		add_action( 'admin_init', array( $this, 'addSections' ) );
+		add_action( 'admin_init', array( $this, 'addFields' ) );
     }
 
-	public function orfwOptionsMenu() 
+	public function menu() 
 	{
-		$parent_slug = 'woocommerce';
-		$page_title = __( 'Jompha Starter Plugin Settings','jompha-starter-plugin' );
-		$menu_title = __( 'ORFW PLUGIN','jompha-starter-plugin' );
-		$capability = 'manage_woocommerce';
-		$slug       = 'orfw-options';
-		$callback   = array( $this, 'orfwOptionsRender' );
-		//add_submenu_page( $page_title, $menu_title, $capability, $slug, $callback );
-
-		add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $slug, $callback, 0 );
+		add_submenu_page(
+			'woocommerce',
+			esc_html__( 'ORFW Starter Plugin Settings', 'order-reviews-for-woocommerce' ),
+			esc_html__( 'ORFW PLUGIN', 'order-reviews-for-woocommerce' ),
+			'manage_woocommerce',
+			self::$pageSlug,
+			array( $this, 'renderPage' ),
+			0
+		);
 	}
 
-	public function orfwOptionsRender() { ?>
-        <div class="wrap joms-settings">
-            <div class="joms-fields">
-				<h1><?php echo __( 'Jompha Starter Plugin','jompha-starter-plugin' ); ?></h1>
-				<p><?php echo  __( 'Subtitle here','jompha-starter-plugin' ); ?></p>
+	private function fields()
+	{
+		return array(
+			array(
+				'id'          => 'name',
+				'type'        => 'text',
+				'section'     => 'general',
+				'label'       => esc_html__( 'Name', 'order-reviews-for-woocommerce' ),
+				'placeholder' => esc_html__( 'Name', 'order-reviews-for-woocommerce' ),
+			),
+			
+			array(
+				'id'      => 'gender',
+				'type'    => 'radio',
+				'section' => 'general',
+				'label'   => esc_html__( 'Gender', 'order-reviews-for-woocommerce' ),
+				'options' => array(
+					'male'   => esc_html__( 'Male', 'order-reviews-for-woocommerce' ),
+					'female' => esc_html__( 'Female', 'order-reviews-for-woocommerce' ),
+					'other'  => esc_html__( 'Other', 'order-reviews-for-woocommerce' ),
+				),
+			),
+
+			array(
+				'id'      => 'city',
+				'type'    => 'select',
+				'section' => 'general',
+				'label'   => esc_html__( 'Select City', 'order-reviews-for-woocommerce' ),
+				'options' => array(
+					'' 		 	 => esc_html__( 'Select', 'order-reviews-for-woocommerce' ),
+					'dhaka'      => esc_html__( 'Dhaka', 'order-reviews-for-woocommerce' ),
+					'chittagong' => esc_html__( 'Chittagong', 'order-reviews-for-woocommerce' ),
+					'mymensingh' => esc_html__( 'Mymensingh', 'order-reviews-for-woocommerce' ),
+					'barisal'    => esc_html__( 'Barisal', 'order-reviews-for-woocommerce' ),
+				),
+			),
+
+			array(
+				'id'      	  => 'about_me',
+				'type'    	  => 'textarea',
+				'section' 	  => 'general',
+				'label'   	  => esc_html__( 'About Me', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Write about me.', 'order-reviews-for-woocommerce' ),
+			),
+
+			array(
+				'id'      	  => 'is_admin',
+				'type'    	  => 'toggle',
+				'section' 	  => 'others',
+				'label'   	  => esc_html__( 'Is Admin?', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Is admin?', 'order-reviews-for-woocommerce' ),
+			),
+
+			array(
+				'id'      => 'has_access',
+				'type'    => 'checkbox',
+				'section' => 'others',
+				'label'   => esc_html__( 'Has access?', 'order-reviews-for-woocommerce' ),
+				'options' => array(
+					'front' => esc_html__( 'Front-end', 'order-reviews-for-woocommerce' ),
+					'admin' => esc_html__( 'Admin', 'order-reviews-for-woocommerce' ),
+					'vip'   => esc_html__( 'VIP', 'order-reviews-for-woocommerce' ),
+				),
+			),
+
+			array(
+				'id'      	  => 'badge',
+				'type'    	  => 'icons',
+				'section' 	  => 'others',
+				'label'   	  => esc_html__( 'Badge', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Select icon.', 'order-reviews-for-woocommerce' ),
+			),
+		);
+	}
+
+	public function renderPage()
+	{
+	?>
+        <div class="wrap jmph-settings-container">
+            <div class="jmph-sets">
+				<h1><?php echo esc_html__( 'ORFW Starter Plugin', 'order-reviews-for-woocommerce' ); ?></h1>
+				<p><?php echo esc_html__( 'Subtitle here', 'order-reviews-for-woocommerce' ); ?></p>
+
+				<?php settings_errors(); ?>
+
+				<nav class="nav-tab-wrapper">
+					<?php foreach ( $this->tabs as $tabID => $tab ) { ?>
+					<a href="?page=<?php echo $this->pageSlug; ?>&tab=<?php echo $tabID; ?>" class="nav-tab <?php if ($tabID == $this->tab) echo 'nav-tab-active'; ?>"><?php echo $tab['name']; ?></a>
+					<?php } ?>
+				</nav>
+
 				<form method="POST" action="options.php">
 					<?php 
 					wp_nonce_field('update-options');
 					
-					settings_fields( 'orfw-options' ); //option group , should match with register_setting('orfw-options') 
-					do_settings_sections( 'orfw-options' ); // setting page slug 'orfw-options'
+					settings_fields( self::$optPrefix . $this->tab );
+					do_settings_sections( self::$pageSlug );
 					submit_button();
 					?>
 				</form>
 			</div>
-			<div class="joms-recommendations">
+			<?php /* <div class="jmph-endorse">
 				<h2>Recommended Plugins</h2>
 				<a href="https://wordpress.org/plugins/ultimate-coupon-for-woocommerce" target="_blank">
-					<img src="<?php echo ORFW_RESOURCES; ?>/images/orfw-banner.png" alt="">
+					<img src="<?php echo JSP_RESOURCES; ?>/images/jsp-banner.png" alt="">
 				</a>
-			</div>
-        </div> <?php
+			</div> */ ?>
+        </div>
+	<?php
 	}
 
-	public function orfwOptionsSections() {
-		add_settings_section( 'orfwOptions_section', 'Section 1', array(), 'orfw-options' ); //'orfw-options' is page slug
-		add_settings_section( 'orfwOptions_section2', 'Section 2', array(), 'orfw-options' ); //'orfw-options' is page slug
-
+	public function addSections()
+	{
+		if (! $this->okay())
+			return;
+		
+		add_settings_section( self::$optPrefix . $this->tab, $this->tabs[ $this->tab ]['description'], array(), self::$pageSlug );
 	}
 
-	public function orfwOptionFields() {
-		$fields = array(
-			array(
-				'label'       => __( 'Name','jompha-starter-plugin' ),
-				'id'          => 'orfwOptions_name',
-				'type'        => 'text',
-				'section'     => 'orfwOptions_section',
-				'placeholder' => __( 'Name','jompha-starter-plugin' ),
-			),
-			
-			array(
-				'label'   => __( 'Color','jompha-starter-plugin' ),
-				'id'      => 'orfwOptions_expirydate',
-				'type'    => 'Color',
-				'section' => 'orfwOptions_section',
-				'description' => 'Select your color for the timeline.',
-			),
+	public function addFields()
+	{
+		if (! $this->okay())
+			return;
+		
+		foreach ( $this->fields() as $field )
+		{
+			$uniqueID = self::$optPrefix . $field['id'];
 
-			array(
-				'label'   => __( 'Order Details','jompha-starter-plugin' ),
-				'id'      => 'orfwOptions_toggle',
-				'type'    => 'toggle',
-				'section' => 'orfwOptions_section',
-				'description' => 'Enable/Disable Order Details.',
-			),
-
-			array(
-				'label'   => __( 'Select Options','jompha-starter-plugin' ),
-				'id'      => 'orfwOptions_selects',
-				'type'    => 'select',
-				'section' => 'orfwOptions_section',
-				'options' => array(
-					__( 'Select','jompha-starter-plugin' ),
-					__( 'On','jompha-starter-plugin' ),
-					__( 'Off','jompha-starter-plugin' )
-				),
-			),
-
-			array(
-				'label'   => __( 'Checkbox','jompha-starter-plugin' ),
-				'id'      => 'orfwOptions_checkbox',
-				'type'    => 'checkbox',
-				'section' => 'orfwOptions_section',
-				'options' => array(
-					__( 'Bangladesh','jompha-starter-plugin' ),
-					__( 'USA','jompha-starter-plugin' ),
-					__( 'Canada','jompha-starter-plugin' ),
-				),
-			),
-
-			array(
-				'label'   => __( 'Radio','jompha-starter-plugin' ),
-				'id'      => 'orfwOptions_radio',
-				'type'    => 'radio',
-				'section' => 'orfwOptions_section',
-				'options' => array(
-					__( 'On','jompha-starter-plugin' ),
-					__( 'Off','jompha-starter-plugin' ),
-				),
-			),
-
-			array(
-				'label'   => esc_html__( 'Icons 1', 'jompha-starter-plugin' ),
-				'id'      => 'orfwOptions_icon_1',
-				'type'    => 'icons',
-				'section' => 'orfwOptions_section',
-				'description' => esc_html__('Select icon.', 'jompha-starter-plugin' ),
-			),
-
-			array(
-				'label'   => __( 'Order Details','jompha-starter-plugin' ),
-				'id'      => 'orfwOptions_textarea',
-				'type'    => 'textarea',
-				'section' => 'orfwOptions_section2',
-				'description' => 'Enter Order Details.',
-			),
-
-			array(
-				'label'   => esc_html__( 'Icon', 'jompha-starter-plugin' ),
-				'id'      => 'orfwOptions_icon',
-				'type'    => 'icons',
-				'section' => 'orfwOptions_section2',
-				'description' => esc_html__('Select icon.', 'jompha-starter-plugin' ),
-			)
-		);
-
-		foreach ( $fields as $field ) {
 			add_settings_field(
-				$field['id'], 
-				$field['label'], 
-				array( $this, 'orfwOptionFieldsGenerator' ), 
-				'orfw-options', // page slug 
-				$field['section'], 
-				$field 
+				$uniqueID,
+				$field['label'],
+				array( $this, 'createField' ),
+				self::$pageSlug,
+				self::$optPrefix . $field['section'],
+				array_merge( $field, array( 'unique_id' => $uniqueID ) )
 			);
 
-			switch ( $field['type'] ) {
+			switch ( $field['type'] )
+			{
 				case 'toggle':
 				case 'checkbox':
 				case 'radio':
-					register_setting( 'orfw-options', $field['id']);
+					register_setting( self::$optPrefix . $field['section'], $uniqueID);
 					break;
+				
 				default:
-					register_setting( 'orfw-options', $field['id'], array( 'sanitize_callback' => 'esc_attr' ) );
+					register_setting( self::$optPrefix . $field['section'], $uniqueID, array( 'sanitize_callback' => 'esc_attr' ) );
 			}
 		}
 
 	}
 
-	public function orfwOptionFieldsGenerator( $field ) {
-		$value = get_option( $field['id'] );
+	public function createField( $field )
+	{
+		$value = get_option( $field['unique_id'] );
 
-		switch ( $field['type'] ) {
+		switch ( $field['type'] )
+		{
 			case 'textarea':
-				printf( '<textarea name="%1$s" id="%1$s" placeholder="%2$s" rows="5" cols="50">%3$s</textarea>',
-					$field['id'],
-					isset( $field['placeholder'] ) ? $field['placeholder'] : '',
-					$value
+				echo sprintf( '<textarea name="%1$s" id="%1$s" placeholder="%2$s" rows="5" cols="50">%3$s</textarea>',
+					esc_attr( $field['unique_id'] ),
+					isset( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '',
+					esc_html( $value )
 				);
 				break;
 
 			case 'select':
-				$options = $field['options'];
-
-				echo '<select id="'.$field['id'].'" name="'.$field['id'].'">';
-				foreach( $options as $option )
+				echo '<select name="' . esc_attr( $field['unique_id'] ) . '">';
+				foreach( $field['options'] as $optValue => $optText )
 				{
-					$selected = ($value === $option) ? 'selected' : '';
-					printf('<option value="%s" %s>%s</option>', $option, $selected, $option );
+					$selected = ($value === $optValue) ? 'selected' : '';
+					echo sprintf( '<option value="%1$s" %3$s>%2$s</option>', esc_attr( $optValue ), esc_html( $optText ), $selected );
 				}
-				echo "</select>";
+				echo '</select>';
 
 				break;
 
 			case 'toggle':
-					if( is_array($value) && in_array('toggled', $value) )
-					{
-						$checked = 'checked';
-					}
-					printf ('<div class="orfw_switch">
-						<input type="checkbox" name="%s[]" id="%s" value="toggled" %s>
-						<label for="%s"></label>
-					</div>', $field['id'], $field['id'], $checked, $field['id']);
-					break;
+				$checked = ( 'toggled' == $value ) ? 'checked' : '';
+				echo sprintf( '<div class="jmph-toggle">
+					<input type="checkbox" id="%1$s" name="%1$s" value="toggled" %2$s>
+					<label for="%1$s"></label>
+				</div>', esc_attr( $field['unique_id'] ), $checked );
+				break;
 
 			case 'checkbox':
 				$options = $field['options'];
 
-				foreach( $options as $option )
-				{	
-					$checked = '';
-					if( is_array($value) && in_array($option, $value) )
-					{
-						$checked = 'checked';
-					}
-
-					printf('<input type="checkbox" name="%s[]" value="%s" %s> %s <br>', $field['id'], $option, $checked, $option );
+				foreach( $options as $optValue => $optText )
+				{
+					echo sprintf( '<input type="checkbox" id="%5$s" name="%1$s[]" value="%2$s" %4$s> <label for="%5$s">%3$s</label> <br>',
+						esc_attr( $field['unique_id'] ),
+						esc_attr( $optValue ),
+						esc_html( $optText ),
+						( is_array($value) && in_array($optValue, $value) ) ? 'checked' : '',
+						$field['unique_id'] . '_' . strtolower(preg_replace('/[^A-Za-z0-9_-]/i', '', $optValue))
+					);
 				}
 				break;
 			
 			case 'radio':
 				$options = $field['options'];
 
-				foreach( $options as $option )
-				{	
-					$checked = '';
-					if( is_array($value) && in_array($option, $value) )
-					{
-						$checked = 'checked';
-					}
-
-					printf('<input type="radio" name="%s[]" value="%s" %s> %s <br>', $field['id'], $option, $checked, $option );
+				foreach( $options as $optValue => $optText )
+				{
+					echo sprintf( '<input type="radio" id="%5$s" name="%1$s[]" value="%2$s" %4$s> <label for="%5$s">%3$s</label><br>',
+						esc_attr( $field['unique_id'] ),
+						esc_attr( $optValue ),
+						esc_html( $optText ),
+						( is_array($value) && in_array($optValue, $value) ) ? 'checked' : '',
+						$field['unique_id'] . '_' . strtolower(preg_replace('/[^A-Za-z0-9_-]/i', '', $optValue))
+					);
 				}
 				break;
 
 			case 'icons':
-				printf('<div id="%s" class="jomps-icons">
-					<ul class="jomps-icons-selector">
+				echo sprintf( '<div id="%1$s" class="jmph-icons">
+					<ul class="jmph-icons-selector">
 						<li><span class="icon-checkmark"></span></li>
 						<li><span class="icon-loop"></span></li>
 						<li><span class="icon-stop"></span></li>
@@ -270,32 +296,25 @@ class Setting
 						<li><span class="icon-cloud-check"></span></li>
 						<li><span class="icon-bookmarks"></span></li>
 					</ul>
-					<input type="hidden" name="%s" value="%s">
-				</div>', esc_attr( $field['id'] ), esc_attr( $field['id'] ), esc_attr( $value ));
+					<input type="hidden" name="%1$s" value="%2$s">
+				</div>', esc_attr( $field['unique_id'] ), esc_attr( $value ) );
 				break;
 
 			default:
-				printf( '<input name="%1$s" id="%1$s" type="%2$s" placeholder="%3$s" value="%4$s" />',
-					$field['id'],
-					$field['type'],
-					isset( $field['placeholder'] ) ? $field['placeholder'] : '',
-					$value
+				echo sprintf( '<input id="%1$s" name="%1$s" type="%2$s" placeholder="%3$s" value="%4$s">',
+					esc_attr( $field['unique_id'] ),
+					esc_attr( $field['type'] ),
+					isset( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '',
+					esc_attr( $value )
 				);
 		}
 
-		if ( isset( $field['description'] ) ) {
-			if ( $desc = $field['description'] ) {
-				printf( '<p class="description">%s </p>', $desc );
-			}
-		}
+		if ( isset( $field['description'] ) )
+			echo sprintf( '<p class="description">%s</p>', esc_html( $field['description'] ) );
 	}
 
-
-    /**
-     * Process and save settings
-     *
-     * @return mixed array|boolean
-     */
-    public static function processSettings( $settings ){}
-        
+	private function okay()
+	{
+		return (isset($_GET['page']) && $_GET['page'] == self::$pageSlug) ? true : false;
+	}
 }

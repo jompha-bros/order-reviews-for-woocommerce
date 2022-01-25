@@ -32,32 +32,21 @@ class Popup
     }
 
     public function orfwPopupSubmit()
-    {   
-        $orderID = intval( $_POST['order_id'] );
+    {
+        $orderID    = intval( $_POST['order_id'] );
         $productIDs = $_POST['product_ids']; // Need to be sanitized the ids.
 
-        if( empty( $orderID ) && empty( $productIDs ) )
+        if ( empty( $orderID ) || empty( $productIDs ) )
             return;
 
-        $postID = wp_insert_post(
-            array(
-                'post_name'      => $orderID,
-                'post_status'    => 'publish',
-                'post_type'      => 'orfw_post_type',
-            )
-        );
+        update_post_meta( $orderID, 'orfw_products', $productIDs );
 
-       if( !$postID ) return;
-
-       update_post_meta( $postID, 'orfw_order_id', $orderID );
-       update_post_meta( $postID, 'orfw_products', $productIDs );
-
-        $review = $_POST['review'];
-        $rating = $_POST['rating'];
-        $customer = wp_get_current_user();
+        $review    = $_POST['review'];
+        $rating    = $_POST['rating'];
+        $customer  = wp_get_current_user();
         $reviewIds = array();
 
-        foreach($productIDs as $productId)
+        foreach ( $productIDs as $productId )
         {
             if ( comments_open( $productId ) ) 
             {
@@ -73,6 +62,7 @@ class Popup
                     'comment_author_url'   => $customer->user_url,
                     'comment_meta'         => array(
                         'rating'            => $rating,
+                        'orfw_order_id'     => $orderID,
                     ),
                     'comment_approved'     => 1,
                 );
@@ -85,12 +75,10 @@ class Popup
                 }
 
             }
-
-            echo wp_json_encode( $reviewIds ); // just for test
         }
 
+        echo wp_json_encode( $reviewIds );
         wp_die();
-
     }
 
     public function hasOrdered()
