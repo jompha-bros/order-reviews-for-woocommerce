@@ -136,7 +136,7 @@ class Setting
 
 				<nav class="nav-tab-wrapper">
 					<?php foreach ( $this->tabs as $tabID => $tab ) { ?>
-					<a href="?page=<?php echo $this->pageSlug; ?>&tab=<?php echo $tabID; ?>" class="nav-tab <?php if ($tabID == $this->tab) echo 'nav-tab-active'; ?>"><?php echo $tab['name']; ?></a>
+					<a href="?page=<?php echo self::$pageSlug; ?>&tab=<?php echo $tabID; ?>" class="nav-tab <?php if ($tabID == $this->tab) echo 'nav-tab-active'; ?>"><?php echo $tab['name']; ?></a>
 					<?php } ?>
 				</nav>
 
