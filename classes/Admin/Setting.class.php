@@ -33,7 +33,7 @@ class Setting
 			'content'  => array(
 				'name' 		  => esc_html__( 'Content', 'order-reviews-for-woocommerce' ),
 				'title' 	  => esc_html__( 'Content Settings', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'Content settings description', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Change the default texts.', 'order-reviews-for-woocommerce' ),
 			),
 		);
 		$this->tab  = (isset($_GET['tab'])) ? $_GET['tab'] : 'general';
@@ -59,6 +59,38 @@ class Setting
 	private function fields()
 	{
 		return array(
+
+			array(
+				'id'          => 'template_interval_delay',
+				'type'        => 'number',
+				'section'     => 'general',
+				'label'       => esc_html__( 'Interval Delay', 'order-reviews-for-woocommerce' ),
+				'placeholder' => '',
+				'description' => esc_html__( 'After the popup is closed, show again after X hours.', 'order-reviews-for-woocommerce' ),
+			),
+
+			array(
+				'id'          => 'template_force_feedback',
+				'type'        => 'checkbox',
+				'section'     => 'general',
+				'label'       => esc_html__( 'Force Write Feedback', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'If checked, users will have to write a feedback.', 'order-reviews-for-woocommerce' ),
+				'options' => array(
+					'yes' => esc_html__( 'Yes', 'order-reviews-for-woocommerce' ),
+				),
+			),
+			
+			array(
+				'id'          => 'template_force_bad_feedback',
+				'type'        => 'checkbox',
+				'section'     => 'general',
+				'label'       => esc_html__( 'Force Feedback for Bad Rating', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'If checked, users will have to write a feedback if the rating is equal to or less than 3.', 'order-reviews-for-woocommerce' ),
+				'options' => array(
+					'yes' => esc_html__( 'Yes', 'order-reviews-for-woocommerce' ),
+				),
+			),
+			
 			array(
 				'id'          => 'name',
 				'type'        => 'text',
@@ -135,6 +167,30 @@ class Setting
 				'section' 	  => 'general',
 				'label'   	  => esc_html__( 'Color', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Select color.', 'order-reviews-for-woocommerce' ),
+			),
+
+			array(
+				'id'          => 'text_rate_order_heading',
+				'type'        => 'text',
+				'section'     => 'content',
+				'label'       => esc_html__( 'Rate the order', 'order-reviews-for-woocommerce' ),
+				'value' 	  => esc_attr( 'Rate the order' ),
+			),
+
+			array(
+				'id'          => 'text_write_feedback',
+				'type'        => 'text',
+				'section'     => 'content',
+				'label'       => esc_html__( 'Write feedback', 'order-reviews-for-woocommerce' ),
+				'value' 	  => esc_attr( 'Write feedback' ),
+			),
+
+			array(
+				'id'          => 'text_footer',
+				'type'        => 'textarea',
+				'section'     => 'content',
+				'label'       => esc_html__( 'Footer Text', 'order-reviews-for-woocommerce' ),
+				'value' 	  => esc_attr( 'Please provide your honest feedback!' ),
 			),
 		);
 	}
@@ -223,7 +279,7 @@ class Setting
 				echo sprintf( '<textarea name="%1$s" id="%1$s" placeholder="%2$s" rows="5" cols="50">%3$s</textarea>',
 					esc_attr( $field['unique_id'] ),
 					isset( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '',
-					esc_html( $value )
+					( $value == false ) ? esc_attr( $field['value'] ) : esc_attr( $value )
 				);
 				break;
 
@@ -317,7 +373,7 @@ class Setting
 					esc_attr( $field['unique_id'] ),
 					esc_attr( $field['type'] ),
 					isset( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '',
-					esc_attr( $value )
+					( $value == false ) ? esc_attr( $field['value'] ) : esc_attr( $value )
 				);
 		}
 
