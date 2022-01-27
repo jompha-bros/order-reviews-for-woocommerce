@@ -13,13 +13,13 @@
                     <ul class="glide__slides">
                         <?php
                         $order = wc_get_order( $this->orderData->ID );
-                        
+
                         foreach ( $order->get_items() as $item )
                         {
                             $product = $item->get_product();
                         ?>
 
-                        <li class="glide__slide product" data-product-id="<?php echo esc_attr( $product->id ); ?>">
+                        <li class="glide__slide product" data-product-id="<?php echo esc_attr( $product->get_id() ); ?>">
                             <?php 
                             echo wp_kses( 
                                 $product->get_image('thumbnail'), 
@@ -77,7 +77,7 @@
 
             <button type="submit" id="onPopupSubmit"><?php echo esc_html( 'Submit', 'order-reviews-for-woocommerce' ); ?></button>
             
-            <h4 class="disclaimer"><?php echo esc_html( 'Please provide your honest feedback! Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'order-reviews-for-woocommerce' ); ?></h4>
+            <h4 class="disclaimer"><?php echo esc_html( 'Please provide your honest feedback!', 'order-reviews-for-woocommerce' ); ?></h4>
 
             <a id="orfw_popup_skip" href=""><?php echo esc_html( 'Skip', 'order-reviews-for-woocommerce' ); ?></a>
         </div>
