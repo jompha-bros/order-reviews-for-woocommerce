@@ -136,6 +136,14 @@ class Setting
 				'label'   	  => esc_html__( 'Color', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Select color.', 'order-reviews-for-woocommerce' ),
 			),
+
+			array(
+				'id'      	  => 'force_order',
+				'type'    	  => 'toggle',
+				'section' 	  => 'general',
+				'label'   	  => esc_html__( 'Force Order', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Force customer to give a review and hide the skip button', 'order-reviews-for-woocommerce' ),
+			),
 		);
 	}
 
