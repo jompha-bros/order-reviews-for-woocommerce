@@ -92,81 +92,84 @@ class Setting
 			),
 			
 			array(
-				'id'          => 'name',
-				'type'        => 'text',
+				'id'          => 'template_show_count',
+				'type'        => 'number',
 				'section'     => 'general',
-				'label'       => esc_html__( 'Name', 'order-reviews-for-woocommerce' ),
-				'placeholder' => esc_html__( 'Name', 'order-reviews-for-woocommerce' ),
-			),
-			
-			array(
-				'id'      => 'gender',
-				'type'    => 'radio',
-				'section' => 'general',
-				'label'   => esc_html__( 'Gender', 'order-reviews-for-woocommerce' ),
-				'options' => array(
-					'male'   => esc_html__( 'Male', 'order-reviews-for-woocommerce' ),
-					'female' => esc_html__( 'Female', 'order-reviews-for-woocommerce' ),
-					'other'  => esc_html__( 'Other', 'order-reviews-for-woocommerce' ),
-				),
+				'label'       => esc_html__( 'View count', 'order-reviews-for-woocommerce' ),
+				'placeholder' => esc_html__( '2', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'How many times the template will show to customer?', 'order-reviews-for-woocommerce' ),
 			),
 
 			array(
-				'id'      => 'city',
-				'type'    => 'select',
-				'section' => 'general',
-				'label'   => esc_html__( 'Select City', 'order-reviews-for-woocommerce' ),
-				'options' => array(
-					'' 		 	 => esc_html__( 'Select', 'order-reviews-for-woocommerce' ),
-					'dhaka'      => esc_html__( 'Dhaka', 'order-reviews-for-woocommerce' ),
-					'chittagong' => esc_html__( 'Chittagong', 'order-reviews-for-woocommerce' ),
-					'mymensingh' => esc_html__( 'Mymensingh', 'order-reviews-for-woocommerce' ),
-					'barisal'    => esc_html__( 'Barisal', 'order-reviews-for-woocommerce' ),
-				),
+				'id'          => 'template_show_after_hours',
+				'type'        => 'number',
+				'section'     => 'general',
+				'label'       => esc_html__( 'Show after hours', 'order-reviews-for-woocommerce' ),
+				'placeholder' => esc_html__( '24', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'After how many hours the template will show after mark the order as completed?', 'order-reviews-for-woocommerce' ),
 			),
 
 			array(
-				'id'      	  => 'about_me',
-				'type'    	  => 'textarea',
-				'section' 	  => 'general',
-				'label'   	  => esc_html__( 'About Me', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'Write about me.', 'order-reviews-for-woocommerce' ),
+				'id'          => 'template_style_background_header',
+				'type'        => 'color',
+				'section'     => 'styles',
+				'value'		  => '#f4b248',
+				'label'       => esc_html__( 'Header Background', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Set background for the template header', 'order-reviews-for-woocommerce' ),
 			),
 
 			array(
-				'id'      	  => 'is_admin',
-				'type'    	  => 'toggle',
-				'section' 	  => 'general',
-				'label'   	  => esc_html__( 'Is Admin?', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'Is admin?', 'order-reviews-for-woocommerce' ),
+				'id'          => 'template_style_background_body',
+				'type'        => 'color',
+				'section'     => 'styles',
+				'value'		  => '#ecf0f1',
+				'label'       => esc_html__( 'Body Background', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Set background for the template body', 'order-reviews-for-woocommerce' ),
 			),
 
 			array(
-				'id'      => 'has_access',
-				'type'    => 'checkbox',
-				'section' => 'general',
-				'label'   => esc_html__( 'Has access?', 'order-reviews-for-woocommerce' ),
-				'options' => array(
-					'front' => esc_html__( 'Front-end', 'order-reviews-for-woocommerce' ),
-					'admin' => esc_html__( 'Admin', 'order-reviews-for-woocommerce' ),
-					'vip'   => esc_html__( 'VIP', 'order-reviews-for-woocommerce' ),
-				),
+				'id'          => 'template_style_color_header',
+				'type'        => 'color',
+				'section'     => 'styles',
+				'value'		  => '#442a00',
+				'label'       => esc_html__( 'Header text color', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Set header text color', 'order-reviews-for-woocommerce' ),
 			),
 
 			array(
-				'id'      	  => 'badge',
-				'type'    	  => 'icons',
-				'section' 	  => 'general',
-				'label'   	  => esc_html__( 'Badge', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'Select icon.', 'order-reviews-for-woocommerce' ),
+				'id'          => 'template_style_color_body',
+				'type'        => 'color',
+				'section'     => 'styles',
+				'value'		  => '#442a00',
+				'label'       => esc_html__( 'Body text color', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Set body text color', 'order-reviews-for-woocommerce' ),
 			),
 
 			array(
-				'id'      	  => 'badge',
-				'type'    	  => 'color',
-				'section' 	  => 'general',
-				'label'   	  => esc_html__( 'Color', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'Select color.', 'order-reviews-for-woocommerce' ),
+				'id'          => 'template_style_background_button',
+				'type'        => 'color',
+				'section'     => 'styles',
+				'value'		  => '#f4b248',
+				'label'       => esc_html__( 'Button Background', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Set button background color', 'order-reviews-for-woocommerce' ),
+			),
+
+			array(
+				'id'          => 'template_style_color_button',
+				'type'        => 'color',
+				'section'     => 'styles',
+				'value'		  => '#ecf0f1',
+				'label'       => esc_html__( 'Button text color', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Set button background color', 'order-reviews-for-woocommerce' ),
+			),
+
+			array(
+				'id'          => 'template_style_color_skip',
+				'type'        => 'color',
+				'section'     => 'styles',
+				'value'		  => '#f4b248',
+				'label'       => esc_html__( 'Skip/Close color', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Set skip/close color', 'order-reviews-for-woocommerce' ),
 			),
 
 			array(
@@ -191,6 +194,15 @@ class Setting
 				'section'     => 'content',
 				'label'       => esc_html__( 'Footer Text', 'order-reviews-for-woocommerce' ),
 				'value' 	  => esc_attr( 'Please provide your honest feedback!' ),
+			),
+
+			array(
+				'id'          => 'template_style_color_star',
+				'type'        => 'color',
+				'section'     => 'styles',
+				'value'		  => '#f4b248',
+				'label'       => esc_html__( 'Stars color', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Set stars color', 'order-reviews-for-woocommerce' ),
 			),
 		);
 	}
