@@ -144,6 +144,51 @@ class Setting
 				'label'   	  => esc_html__( 'Force Order', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Force customer to give a review and hide the skip button', 'order-reviews-for-woocommerce' ),
 			),
+
+			array(
+				'id'      	  => 'spd_card',
+				'type'    	  => 'color',
+				'section' 	  => 'styles',
+				'label'   	  => esc_html__( 'Review Box', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Background color of the card', 'order-reviews-for-woocommerce' ),
+			),
+
+			array(
+				'id'      	  => 'spd_card_text',
+				'type'    	  => 'color',
+				'section' 	  => 'styles',
+				'label'   	  => esc_html__( 'Review Color', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Review color of the text ', 'order-reviews-for-woocommerce' ),
+			),
+
+			array(
+				'id'      	  => 'spd_card_link',
+				'type'    	  => 'color',
+				'section' 	  => 'styles',
+				'label'   	  => esc_html__( 'Review Link Color', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Link color (products) of the text', 'order-reviews-for-woocommerce' ),
+			),
+
+			array(
+				'id'      => 'spd_card_font_size',
+				'type'    => 'select',
+				'section' => 'styles',
+				'label'   => esc_html__( 'Review Font Size', 'order-reviews-for-woocommerce' ),
+				'options' => array(
+					'large'  => esc_html__( 'Large',  'order-reviews-for-woocommerce' ),
+					'medium' => esc_html__( 'Medium', 'order-reviews-for-woocommerce' ),
+					'small'  => esc_html__( 'Small',  'order-reviews-for-woocommerce' ),
+				)
+			),
+
+			array(
+				'id'          => 'spd_card_font_style',
+				'type'        => 'toggle',
+				'section'     => 'styles',
+				'label'   	  => esc_html__( 'Review Font Style', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Mark if you want an italic style', 'order-reviews-for-woocommerce' ),
+			),
+
 		);
 	}
 
@@ -231,7 +276,7 @@ class Setting
 				echo sprintf( '<textarea name="%1$s" id="%1$s" placeholder="%2$s" rows="5" cols="50">%3$s</textarea>',
 					esc_attr( $field['unique_id'] ),
 					isset( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '',
-					esc_html( $value )
+					( $value == false ) ? esc_attr( $field['value'] ) : esc_attr( $value )
 				);
 				break;
 
@@ -325,7 +370,7 @@ class Setting
 					esc_attr( $field['unique_id'] ),
 					esc_attr( $field['type'] ),
 					isset( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '',
-					esc_attr( $value )
+					( $value == false ) ? esc_attr( $field['value'] ) : esc_attr( $value )
 				);
 		}
 
