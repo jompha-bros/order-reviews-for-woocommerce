@@ -125,22 +125,14 @@ class Popup
             ) );
             
             return $previousOrder[0];
-
         }
     
-       return $previousOrder[0];
+        return $previousOrder[0];
     }
 
     public function checkOrder ()
     {
         $orders = $this->hasOrdered();
-        $getIds = array();
-
-        foreach($orders as $order)
-        {
-            array_push($getIds, $order->ID);
-        }
-
         return $orders;
         //return $getIds;
     }
