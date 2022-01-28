@@ -231,7 +231,7 @@ class Setting
 			),
 
 			array(
-				'id'      	  => 'spd_card',
+				'id'      	  => 'sri_card_bg',
 				'type'    	  => 'color',
 				'section' 	  => 'styles',
 				'label'   	  => esc_html__( 'Review Box', 'order-reviews-for-woocommerce' ),
@@ -240,7 +240,7 @@ class Setting
 			),
 
 			array(
-				'id'      	  => 'spd_card_text',
+				'id'      	  => 'sri_font_color',
 				'type'    	  => 'color',
 				'section' 	  => 'styles',
 				'label'   	  => esc_html__( 'Review Color', 'order-reviews-for-woocommerce' ),
@@ -249,7 +249,7 @@ class Setting
 			),
 
 			array(
-				'id'      	  => 'spd_card_link',
+				'id'      	  => 'sri_link_color',
 				'type'    	  => 'color',
 				'section' 	  => 'styles',
 				'label'   	  => esc_html__( 'Review Link Color', 'order-reviews-for-woocommerce' ),
@@ -258,7 +258,7 @@ class Setting
 			),
 
 			array(
-				'id'      => 'spd_card_font_size',
+				'id'      => 'sri_font_size',
 				'type'    => 'select',
 				'section' => 'styles',
 				'label'   => esc_html__( 'Review Font Size', 'order-reviews-for-woocommerce' ),
@@ -271,11 +271,14 @@ class Setting
 			),
 
 			array(
-				'id'          => 'spd_card_font_style',
-				'type'        => 'toggle',
-				'section'     => 'styles',
-				'label'   	  => esc_html__( 'Review Font Style', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'Mark if you want an italic style', 'order-reviews-for-woocommerce' ),
+				'id'      => 'sri_font_style',
+				'type'    => 'select',
+				'section' => 'styles',
+				'label'   => esc_html__( 'Review Font Style', 'order-reviews-for-woocommerce' ),
+				'options' => array(
+					'normal'  => esc_html__( 'Normal',  'order-reviews-for-woocommerce' ),
+					'italic' => esc_html__( 'Italic', 'order-reviews-for-woocommerce' )
+				),
 				'show_in_js'  => false,
 			),
 
@@ -360,6 +363,9 @@ class Setting
 	{
 		$value = get_option( $field['unique_id'] );
 
+		if ( !isset($field['value']) )
+			$field['value'] = '';
+
 		switch ( $field['type'] )
 		{
 			case 'textarea':
@@ -371,11 +377,18 @@ class Setting
 				break;
 
 			case 'select':
-				echo '<select name="' . esc_attr( $field['unique_id'] ) . '">';
+				$isMultiple = ( isset($field['multiple']) && $field['multiple'] == true ) ? true : false;
+				$multiple   = ( $isMultiple ) ? 'multiple' : '';
+				$brackets   = ( $isMultiple ) ? '[]' : '';
+
+				echo '<select name="' . esc_attr( $field['unique_id'] ) . $brackets . '" ' . $multiple . '>';
 				foreach( $field['options'] as $optValue => $optText )
 				{
-					$selected = ($value === $optValue) ? 'selected' : '';
-					echo sprintf( '<option value="%1$s" %3$s>%2$s</option>', esc_attr( $optValue ), esc_html( $optText ), $selected );
+					echo sprintf( '<option value="%1$s" %3$s>%2$s</option>',
+						esc_attr( $optValue ),
+						esc_html( $optText ),
+						($value === $optValue) ? 'selected' : ''
+					);
 				}
 				echo '</select>';
 
@@ -390,15 +403,17 @@ class Setting
 				break;
 
 			case 'checkbox':
-				$options = $field['options'];
+				$options 	 = $field['options'];
+				$isMultiple  = (count($options) > 1) ? true : false;
+				$brackets 	 = ($isMultiple) ? '[]' : '';
 
 				foreach( $options as $optValue => $optText )
 				{
-					echo sprintf( '<input type="checkbox" id="%5$s" name="%1$s[]" value="%2$s" %4$s> <label for="%5$s">%3$s</label> <br>',
+					echo sprintf( '<input type="checkbox" id="%5$s" name="%1$s' . $brackets . '" value="%2$s" %4$s> <label for="%5$s">%3$s</label> <br>',
 						esc_attr( $field['unique_id'] ),
 						esc_attr( $optValue ),
 						esc_html( $optText ),
-						( is_array($value) && in_array($optValue, $value) ) ? 'checked' : '',
+						($isMultiple) ? (is_array($value) && in_array($optValue, $value) ? 'checked' : '') : ($optValue == $value ? 'checked' : ''),
 						$field['unique_id'] . '_' . strtolower(preg_replace('/[^A-Za-z0-9_-]/i', '', $optValue))
 					);
 				}
@@ -409,7 +424,7 @@ class Setting
 
 				foreach( $options as $optValue => $optText )
 				{
-					echo sprintf( '<input type="radio" id="%5$s" name="%1$s[]" value="%2$s" %4$s> <label for="%5$s">%3$s</label><br>',
+					echo sprintf( '<input type="radio" id="%5$s" name="%1$s" value="%2$s" %4$s> <label for="%5$s">%3$s</label><br>',
 						esc_attr( $field['unique_id'] ),
 						esc_attr( $optValue ),
 						esc_html( $optText ),

@@ -81,10 +81,10 @@ jQuery(document).ready(function()
     
 
     //skip button
-    jQuery(document).on('click', skipButton, function ()
+    jQuery(document).on('click', '#orfw_popup_skip', function ()
     {
         var orfwPopupContainer = jQuery('#orfw_popup');
-
+        
 
     });
 });

@@ -73,11 +73,10 @@ class Resources
             if( !$field['show_in_js'] )
                 continue;
             
-            $data[ $field['id'] ] = get_option( $prefix . $field['id'], $field[ 'value' ] );
+            $data[ $field['id'] ] = get_option( $prefix . $field['id'], (isset($field['value'])) ? $field['value'] : '' );
         }
 
         wp_localize_script( 'orfw-front', 'orfw_data', $data);
-
     }
 
 
@@ -106,6 +105,12 @@ class Resources
     public function scripts()
     {
         $scripts = array(
+            'orfw' => array(
+                'src'       => ORFW_RESOURCES . '/js/orfw.js',
+                'deps'      => array( 'jquery' ),
+                'version'   => filemtime( ORFW_PATH . '/resources/js/orfw.js' ),
+                'in_footer' => true
+            ),
             'orfw-admin' => array(
                 'src'       => ORFW_RESOURCES . '/js/admin.js',
                 'deps'      => array( 'jquery' ),
