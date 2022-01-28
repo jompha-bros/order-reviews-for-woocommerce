@@ -1,14 +1,14 @@
-<div id="orfw_popup" class="orfw-use-custom-colors hide">
-    <div class="orfw_popup_inner">
-        <div class="orfw_popup_header">
+<div id="orfw-popup" class="orfw-use-custom-colors hide">
+    <div class="orfw-popup-inner">
+        <div class="orfw-popup-header">
             
-            <div class="orfw_popup_order_info">
+            <div class="orfw-popup-order-info">
                 <h3><?php echo esc_html( 'Your Last Order', 'order-reviews-for-woocommerce' ); ?></h3>
                 <h1 data-order-id="<?php echo esc_html( $this->orderID ); ?>" id="order-id">#<?php echo esc_html( $this->orderID ); ?></h1>
                 <p><?php echo esc_html( date('d-m-Y h:i A', strtotime($this->order->get_date_completed()) ) ); ?></p>
             </div>
             
-            <div class="orfw_popup_order_products">
+            <div class="orfw-popup-order-products">
                 <div class="owl-carousel owl-loaded">
                     <?php
                     $order = $this->order;
@@ -18,7 +18,7 @@
                         $product = $item->get_product();
                     ?>
 
-                    <div class="product item" data-product-id="<?php echo esc_attr( $product->get_id() ); ?>">
+                    <div class="orfw-product item" data-product-id="<?php echo esc_attr( $product->get_id() ); ?>">
                         <?php 
                         echo wp_kses( 
                             $product->get_image('thumbnail'), 
@@ -38,10 +38,10 @@
             </div>
         </div>
 
-        <div class="orfw_popup_footer">
+        <div class="orfw-popup-footer">
             <h2><?php $customText = get_option( 'orfw_text_rate_order_heading', '' ); echo (empty($customText)) ? esc_html( 'Rate the order', 'order-reviews-for-woocommerce' ) : esc_html( $customText ); ?></h2>
 
-            <div class="orfw_popup_rating">
+            <div class="orfw-popup-rating">
                 
                 <div class="feedback">
                     <div class="rating">
@@ -68,7 +68,7 @@
                     </div>
                 </div>
 
-                <textarea name="rating_comment " id="orfw_popup_comment" cols="20" rows="5" placeholder="<?php $customText = get_option( 'orfw_text_write_feedback', '' ); echo (empty($customText)) ? esc_html( 'Write Feedback', 'order-reviews-for-woocommerce' ) : esc_html( $customText ); ?>"></textarea>
+                <textarea name="rating_comment " id="orfw-popup-comment" cols="20" rows="5" placeholder="<?php $customText = get_option( 'orfw_text_write_feedback', '' ); echo (empty($customText)) ? esc_html( 'Write Feedback', 'order-reviews-for-woocommerce' ) : esc_html( $customText ); ?>"></textarea>
             </div>
 
             <p class="orfw-popup-error-wrapper">
@@ -83,7 +83,7 @@
             <h4 class="disclaimer"><?php $customText = get_option( 'orfw_text_footer', '' ); echo (empty($customText)) ? esc_html( 'Please provide your honest feedback!', 'order-reviews-for-woocommerce' ) : esc_html( $customText ); ?></h4>
             
             <?php if ( get_option( 'orfw_force_order', 'no' ) != 'yes' ) { ?>
-            <a id="orfw_popup_skip" href="#"><?php echo esc_html( 'Skip', 'order-reviews-for-woocommerce' ); ?></a>
+            <a id="orfw-popup-skip" href="#"><?php echo esc_html( 'Skip', 'order-reviews-for-woocommerce' ); ?></a>
             <?php } ?>
         </div>
 

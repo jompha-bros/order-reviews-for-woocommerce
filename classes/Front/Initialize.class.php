@@ -35,7 +35,6 @@ class Initialize
 
     private function scripts()
     {
-        wp_enqueue_script( 'glide' );
         wp_enqueue_script( 'owl-carousel' );
         wp_enqueue_script( 'orfw' );
         wp_enqueue_script( 'orfw-front' );

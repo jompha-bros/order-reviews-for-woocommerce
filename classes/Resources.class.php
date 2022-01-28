@@ -119,12 +119,6 @@ class Resources
                 'version'   => filemtime( ORFW_PATH . '/resources/js/admin.js' ),
                 'in_footer' => true
             ),
-            'glide' => array(
-                'src'       => ORFW_RESOURCES . '/js/glide.js',
-                'deps'      => array(  ),
-                'version'   => filemtime( ORFW_PATH . '/resources/js/glide.js' ),
-                'in_footer' => true
-            ),
             'owl-carousel' => array(
                 'src'       => ORFW_RESOURCES . '/js/owl.carousel.min.js',
                 'deps'      => array( 'jquery' ),

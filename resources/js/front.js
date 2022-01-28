@@ -2,7 +2,7 @@ jQuery(document).ready(function()
 {
     'use strict';
 
-    if ( !jQuery('#orfw_popup').length )
+    if ( !jQuery('#orfw-popup').length )
         return;
     
     var orfwSliderLoop = ( jQuery('.owl-carousel').children('.item').length > 3 ) ? true : false;
@@ -21,9 +21,9 @@ jQuery(document).ready(function()
     });
 
 
-    var orfwPopup = jQuery('#orfw_popup'),
-        ratingStars = jQuery('#orfw_popup .feedback input'),
-        feedback = jQuery('#orfw_popup #orfw_popup_comment'),
+    var orfwPopup = jQuery('#orfw-popup'),
+        ratingStars = jQuery('#orfw-popup .feedback input'),
+        feedback = jQuery('#orfw-popup #orfw-popup-comment'),
         submitButton = jQuery('#orfw-template-submit-button'),
         orfwFrequencyCount = ( getCookie('orfw-template-view-frequency') == null ) ? 0 : parseInt( getCookie('orfw-template-view-frequency') );
 
@@ -50,7 +50,7 @@ jQuery(document).ready(function()
     //submit button
     submitButton.on('click', function() 
     {
-        if ( !jQuery('#orfw_popup .feedback input:checked').length )
+        if ( !jQuery('#orfw-popup .feedback input:checked').length )
         {
             jQuery('.orfw-popup-error-wrapper')
                 .find('.orfw-popup-error-text')
@@ -63,7 +63,7 @@ jQuery(document).ready(function()
         var orfwOrderId          = jQuery('#order-id').data('order-id'),
             orfwProductIds       = [24, 33, 16],
             orfwFeedback         = feedback.val(),
-            orfwRating           = parseInt(jQuery('#orfw_popup .feedback input:checked').val()),
+            orfwRating           = parseInt(jQuery('#orfw-popup .feedback input:checked').val()),
             orfwForceFeedback    = (orfw_data.template_force_feedback == 'yes') ? true : false,
             orfwForceBadFeedback = (orfw_data.template_force_bad_feedback == 'yes') ? true : false;
 
@@ -77,7 +77,7 @@ jQuery(document).ready(function()
             return;
         }
 
-        if (orfwForceBadFeedback && jQuery('#orfw_popup .feedback input:checked').val() < 4 && !orfwFeedback.length)
+        if (orfwForceBadFeedback && jQuery('#orfw-popup .feedback input:checked').val() < 4 && !orfwFeedback.length)
         {
             jQuery('.orfw-popup-error-wrapper')
                 .find('.orfw-popup-error-text')
@@ -87,16 +87,19 @@ jQuery(document).ready(function()
             return;
         }
         
-        jQuery('.orfw_popup_order_products').find('ul').find('li').each(function()
+        jQuery('.orfw-popup-order-products').find('.orfw-product').each(function()
         {
-            orfwProductIds.push(jQuery(this).data('product-id'));
+            if ( orfwProductIds.includes( jQuery(this).data('product-id') ) )
+                return;
+            
+            orfwProductIds.push( jQuery(this).data('product-id') );
         });
 
         jQuery.ajax({
             type: 'post',
             url: orfw_data.ajaxurl,
             data: {
-                action: 'orfwPopupSubmit',
+                action: 'orfw_review_submit',
                 order_id: orfwOrderId,
                 product_ids: orfwProductIds,
                 review: orfwFeedback,
@@ -123,11 +126,11 @@ jQuery(document).ready(function()
         orfwPopup.removeClass('hide');
     }
 
-    jQuery(document).on('click', '#orfw_popup_skip', function (e)
+    jQuery(document).on('click', '#orfw-popup-skip', function (e)
     {   
         e.preventDefault();
 
-        var orfwPopupContainer = jQuery('#orfw_popup');
+        var orfwPopupContainer = jQuery('#orfw-popup');
         orfwPopupContainer.fadeOut();
 
         var orfwAgainPeriod = parseInt(orfw_data.template_again_period);

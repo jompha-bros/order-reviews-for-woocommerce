@@ -25,10 +25,10 @@ class Popup
         if ( !$this->hasOrdered() )
             return;
 
-        add_action( 'wp_head',                        array( $this, 'colorVariables' ), 0 );
-        add_action( 'wp_footer',                      array( $this, 'view') );
-        add_action( 'wp_ajax_orfwPopupSubmit',        array( $this, 'orfwPopupSubmit' ));
-        add_action( 'wp_ajax_nopriv_orfwPopupSubmit', array( $this, 'orfwPopupSubmit' ));
+        add_action( 'wp_head',                           array( $this, 'colorVariables' ), 0 );
+        add_action( 'wp_footer',                         array( $this, 'view') );
+        add_action( 'wp_ajax_orfw_review_submit',        array( $this, 'submitReview' ));
+        add_action( 'wp_ajax_nopriv_orfw_review_submit', array( $this, 'submitReview' ));
     }
 
     public function hasOrdered()
@@ -120,7 +120,7 @@ class Popup
     <?php
     }
 
-    public function orfwPopupSubmit()
+    public function submitReview()
     {
         $orderID    = intval( $_POST['order_id'] );
         $productIDs = $_POST['product_ids']; // Need to be sanitized the ids.
