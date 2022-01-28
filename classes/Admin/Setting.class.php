@@ -115,7 +115,7 @@ class Setting
 			),
 
 			array(
-				'id'          => 'template_style_background_header',
+				'id'          => 'template_header_background_color',
 				'type'        => 'color',
 				'section'     => 'styles',
 				'value'		  => '#f4b248',
@@ -125,7 +125,7 @@ class Setting
 			),
 
 			array(
-				'id'          => 'template_style_background_body',
+				'id'          => 'template_body_background_color',
 				'type'        => 'color',
 				'section'     => 'styles',
 				'value'		  => '#ecf0f1',
@@ -135,7 +135,7 @@ class Setting
 			),
 
 			array(
-				'id'          => 'template_style_color_header',
+				'id'          => 'template_header_text_color',
 				'type'        => 'color',
 				'section'     => 'styles',
 				'value'		  => '#442a00',
@@ -145,7 +145,17 @@ class Setting
 			),
 
 			array(
-				'id'          => 'template_style_color_body',
+				'id'          => 'template_header_highlight_text_color',
+				'type'        => 'color',
+				'section'     => 'styles',
+				'value'		  => '#442a00',
+				'label'       => esc_html__( 'Header highlighted text color', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Set header highlighted text color', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
+			),
+
+			array(
+				'id'          => 'template_body_text_color',
 				'type'        => 'color',
 				'section'     => 'styles',
 				'value'		  => '#442a00',
@@ -155,17 +165,17 @@ class Setting
 			),
 
 			array(
-				'id'          => 'template_style_background_button',
+				'id'          => 'template_submit_background_color',
 				'type'        => 'color',
 				'section'     => 'styles',
 				'value'		  => '#f4b248',
-				'label'       => esc_html__( 'Button Background', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'Set button background color', 'order-reviews-for-woocommerce' ),
+				'label'       => esc_html__( 'Submit Button Background', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Set submit button background color', 'order-reviews-for-woocommerce' ),
 				'show_in_js'  => false,
 			),
 
 			array(
-				'id'          => 'template_style_color_button',
+				'id'          => 'template_submit_text_color',
 				'type'        => 'color',
 				'section'     => 'styles',
 				'value'		  => '#ecf0f1',
@@ -175,7 +185,17 @@ class Setting
 			),
 
 			array(
-				'id'          => 'template_style_color_skip',
+				'id'          => 'template_small_text_color',
+				'type'        => 'color',
+				'section'     => 'styles',
+				'value'		  => '#888888',
+				'label'       => esc_html__( 'Small text color', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Set small text color', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
+			),
+
+			array(
+				'id'          => 'template_skip_text_color',
 				'type'        => 'color',
 				'section'     => 'styles',
 				'value'		  => '#f4b248',
@@ -208,16 +228,6 @@ class Setting
 				'section'     => 'content',
 				'label'       => esc_html__( 'Footer Text', 'order-reviews-for-woocommerce' ),
 				'value' 	  => esc_attr( 'Please provide your honest feedback!' ),
-				'show_in_js'  => false,
-			),
-
-			array(
-				'id'          => 'template_style_color_star',
-				'type'        => 'color',
-				'section'     => 'styles',
-				'value'		  => '#f4b248',
-				'label'       => esc_html__( 'Stars color', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'Set stars color', 'order-reviews-for-woocommerce' ),
 				'show_in_js'  => false,
 			),
 
@@ -360,6 +370,9 @@ class Setting
 	{
 		$value = get_option( $field['unique_id'] );
 
+		if ( !isset($field['value']) )
+			$field['value'] = '';
+
 		switch ( $field['type'] )
 		{
 			case 'textarea':
@@ -371,34 +384,43 @@ class Setting
 				break;
 
 			case 'select':
-				echo '<select name="' . esc_attr( $field['unique_id'] ) . '">';
+				$isMultiple = ( isset($field['multiple']) && $field['multiple'] == true ) ? true : false;
+				$multiple   = ( $isMultiple ) ? 'multiple' : '';
+				$brackets   = ( $isMultiple ) ? '[]' : '';
+
+				echo '<select name="' . esc_attr( $field['unique_id'] ) . $brackets . '" ' . $multiple . '>';
 				foreach( $field['options'] as $optValue => $optText )
 				{
-					$selected = ($value === $optValue) ? 'selected' : '';
-					echo sprintf( '<option value="%1$s" %3$s>%2$s</option>', esc_attr( $optValue ), esc_html( $optText ), $selected );
+					echo sprintf( '<option value="%1$s" %3$s>%2$s</option>',
+						esc_attr( $optValue ),
+						esc_html( $optText ),
+						($value === $optValue) ? 'selected' : ''
+					);
 				}
 				echo '</select>';
 
 				break;
 
 			case 'toggle':
-				$checked = ( 'toggled' == $value ) ? 'checked' : '';
+				$checked = ( 'yes' == $value ) ? 'checked' : '';
 				echo sprintf( '<div class="jmph-toggle">
-					<input type="checkbox" id="%1$s" name="%1$s" value="toggled" %2$s>
+					<input type="checkbox" id="%1$s" name="%1$s" value="yes" %2$s>
 					<label for="%1$s"></label>
 				</div>', esc_attr( $field['unique_id'] ), $checked );
 				break;
 
 			case 'checkbox':
-				$options = $field['options'];
+				$options 	 = $field['options'];
+				$isMultiple  = (count($options) > 1) ? true : false;
+				$brackets 	 = ($isMultiple) ? '[]' : '';
 
 				foreach( $options as $optValue => $optText )
 				{
-					echo sprintf( '<input type="checkbox" id="%5$s" name="%1$s[]" value="%2$s" %4$s> <label for="%5$s">%3$s</label> <br>',
+					echo sprintf( '<input type="checkbox" id="%5$s" name="%1$s' . $brackets . '" value="%2$s" %4$s> <label for="%5$s">%3$s</label> <br>',
 						esc_attr( $field['unique_id'] ),
 						esc_attr( $optValue ),
 						esc_html( $optText ),
-						( is_array($value) && in_array($optValue, $value) ) ? 'checked' : '',
+						($isMultiple) ? (is_array($value) && in_array($optValue, $value) ? 'checked' : '') : ($optValue == $value ? 'checked' : ''),
 						$field['unique_id'] . '_' . strtolower(preg_replace('/[^A-Za-z0-9_-]/i', '', $optValue))
 					);
 				}
@@ -409,7 +431,7 @@ class Setting
 
 				foreach( $options as $optValue => $optText )
 				{
-					echo sprintf( '<input type="radio" id="%5$s" name="%1$s[]" value="%2$s" %4$s> <label for="%5$s">%3$s</label><br>',
+					echo sprintf( '<input type="radio" id="%5$s" name="%1$s" value="%2$s" %4$s> <label for="%5$s">%3$s</label><br>',
 						esc_attr( $field['unique_id'] ),
 						esc_attr( $optValue ),
 						esc_html( $optText ),

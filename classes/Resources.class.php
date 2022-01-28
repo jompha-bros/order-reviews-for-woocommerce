@@ -64,7 +64,9 @@ class Resources
         $fields = \ORFW\Admin\Setting::fields();
         $prefix = \ORFW\Admin\Setting::$optPrefix;
         $data = array( 
-            'ajaxurl'       => admin_url( 'admin-ajax.php' ),
+            'ajaxurl'             => admin_url( 'admin-ajax.php' ),
+            'text_write_feedback' => esc_html__( 'Please write a feedback.', 'order-reviews-for-woocommerce' ),
+            'text_rate_order'     => esc_html__( 'Please add a rating.', 'order-reviews-for-woocommerce' ),
         );
         
         
@@ -73,11 +75,10 @@ class Resources
             if( !$field['show_in_js'] )
                 continue;
             
-            $data[ $field['id'] ] = get_option( $prefix . $field['id'], $field[ 'value' ] );
+            $data[ $field['id'] ] = get_option( $prefix . $field['id'], (isset($field['value'])) ? $field['value'] : '' );
         }
 
         wp_localize_script( 'orfw-front', 'orfw_data', $data);
-
     }
 
 
@@ -106,6 +107,12 @@ class Resources
     public function scripts()
     {
         $scripts = array(
+            'orfw' => array(
+                'src'       => ORFW_RESOURCES . '/js/orfw.js',
+                'deps'      => array( 'jquery' ),
+                'version'   => filemtime( ORFW_PATH . '/resources/js/orfw.js' ),
+                'in_footer' => true
+            ),
             'orfw-admin' => array(
                 'src'       => ORFW_RESOURCES . '/js/admin.js',
                 'deps'      => array( 'jquery' ),
@@ -137,6 +144,10 @@ class Resources
     public function styles()
     {
         $styles = array(
+            'animate-css' => array(
+                'src'     => ORFW_RESOURCES . '/css/animate.css',
+                'version' => filemtime( ORFW_PATH . '/resources/css/animate.css' )
+            ),
             'jompha-admin-core' => array(
                 'src'     => ORFW_RESOURCES . '/css/admin-core.css',
                 'version' => filemtime( ORFW_PATH . '/resources/css/admin-core.css' ),
