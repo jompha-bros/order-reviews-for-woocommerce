@@ -1,18 +1,18 @@
-<div id="orfw_popup" class="popup-one">
+<div id="orfw_popup" class="popup-one hide">
     <div class="orfw_popup_inner">
         <div class="orfw_popup_header">
             
             <div class="orfw_popup_order_info">
                 <h3><?php echo esc_html( 'Your Last Order', 'order-reviews-for-woocommerce' ); ?></h3>
                 <h1 data-order-id="<?php echo esc_html( $this->orderData->ID ); ?>" id="order-id"><?php echo esc_html( $this->orderData->ID ); ?></h1>
-                <p><?php echo esc_html( $this->orderData->post_date ); ?></p>
+                <p><?php echo esc_html( $this->orderData->date_completed ); ?></p>
             </div>
             
             <div class="orfw_popup_order_products glide">
                 <div data-glide-el="track" class="glide__track">
                     <ul class="glide__slides">
                         <?php
-                        $order = wc_get_order( $this->orderData->ID );
+                        $order = $this->orderData;
 
                         foreach ( $order->get_items() as $item )
                         {

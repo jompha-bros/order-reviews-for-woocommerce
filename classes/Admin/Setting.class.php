@@ -95,7 +95,7 @@ class Setting
 			),
 			
 			array(
-				'id'          => 'template_show_count',
+				'id'          => 'template_view_count',
 				'type'        => 'number',
 				'section'     => 'general',
 				'label'       => esc_html__( 'View count', 'order-reviews-for-woocommerce' ),
@@ -360,6 +360,9 @@ class Setting
 	{
 		$value = get_option( $field['unique_id'] );
 
+		if ( !isset($field['value']) )
+			$field['value'] = '';
+
 		switch ( $field['type'] )
 		{
 			case 'textarea':
@@ -371,11 +374,18 @@ class Setting
 				break;
 
 			case 'select':
-				echo '<select name="' . esc_attr( $field['unique_id'] ) . '">';
+				$isMultiple = ( isset($field['multiple']) && $field['multiple'] == true ) ? true : false;
+				$multiple   = ( $isMultiple ) ? 'multiple' : '';
+				$brackets   = ( $isMultiple ) ? '[]' : '';
+
+				echo '<select name="' . esc_attr( $field['unique_id'] ) . $brackets . '" ' . $multiple . '>';
 				foreach( $field['options'] as $optValue => $optText )
 				{
-					$selected = ($value === $optValue) ? 'selected' : '';
-					echo sprintf( '<option value="%1$s" %3$s>%2$s</option>', esc_attr( $optValue ), esc_html( $optText ), $selected );
+					echo sprintf( '<option value="%1$s" %3$s>%2$s</option>',
+						esc_attr( $optValue ),
+						esc_html( $optText ),
+						($value === $optValue) ? 'selected' : ''
+					);
 				}
 				echo '</select>';
 
@@ -390,15 +400,17 @@ class Setting
 				break;
 
 			case 'checkbox':
-				$options = $field['options'];
+				$options 	 = $field['options'];
+				$isMultiple  = (count($options) > 1) ? true : false;
+				$brackets 	 = ($isMultiple) ? '[]' : '';
 
 				foreach( $options as $optValue => $optText )
 				{
-					echo sprintf( '<input type="checkbox" id="%5$s" name="%1$s[]" value="%2$s" %4$s> <label for="%5$s">%3$s</label> <br>',
+					echo sprintf( '<input type="checkbox" id="%5$s" name="%1$s' . $brackets . '" value="%2$s" %4$s> <label for="%5$s">%3$s</label> <br>',
 						esc_attr( $field['unique_id'] ),
 						esc_attr( $optValue ),
 						esc_html( $optText ),
-						( is_array($value) && in_array($optValue, $value) ) ? 'checked' : '',
+						($isMultiple) ? (is_array($value) && in_array($optValue, $value) ? 'checked' : '') : ($optValue == $value ? 'checked' : ''),
 						$field['unique_id'] . '_' . strtolower(preg_replace('/[^A-Za-z0-9_-]/i', '', $optValue))
 					);
 				}
@@ -409,7 +421,7 @@ class Setting
 
 				foreach( $options as $optValue => $optText )
 				{
-					echo sprintf( '<input type="radio" id="%5$s" name="%1$s[]" value="%2$s" %4$s> <label for="%5$s">%3$s</label><br>',
+					echo sprintf( '<input type="radio" id="%5$s" name="%1$s" value="%2$s" %4$s> <label for="%5$s">%3$s</label><br>',
 						esc_attr( $field['unique_id'] ),
 						esc_attr( $optValue ),
 						esc_html( $optText ),

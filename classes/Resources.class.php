@@ -106,6 +106,12 @@ class Resources
     public function scripts()
     {
         $scripts = array(
+            'orfw' => array(
+                'src'       => ORFW_RESOURCES . '/js/orfw.js',
+                'deps'      => array( 'jquery' ),
+                'version'   => filemtime( ORFW_PATH . '/resources/js/orfw.js' ),
+                'in_footer' => true
+            ),
             'orfw-admin' => array(
                 'src'       => ORFW_RESOURCES . '/js/admin.js',
                 'deps'      => array( 'jquery' ),
