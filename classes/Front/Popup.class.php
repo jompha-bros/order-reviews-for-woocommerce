@@ -140,6 +140,6 @@ class Popup
     public function view()
     {   
         $this->orderData = $this->checkOrder();
-        //include_once ORFW_RENDER_FRONT . '/markup/popup-design-1.php';
+        include_once ORFW_RENDER_FRONT . '/markup/popup-design-1.php';
     }
 }
