@@ -139,7 +139,18 @@ class Popup
 
     public function view()
     {   
-        $this->orderData = $this->checkOrder();
-        //include_once ORFW_RENDER_FRONT . '/markup/popup-design-1.php';
+        $this->orderData = wc_get_order( $this->checkOrder()->ID );
+
+        //var_dump($this->orderData);
+
+        $completedDate = strtotime($this->orderData->date_completed);
+        $showAfterHrs = get_option( 'template_show_after_hours', 5 );
+
+        $timeToShow = strtotime('+'.$showAfterHrs.' hours', $completedDate);
+
+        if( $timeToShow > current_time( 'timestamp' ) )
+            return;
+
+        include_once ORFW_RENDER_FRONT . '/markup/popup-design-1.php';
     }
 }

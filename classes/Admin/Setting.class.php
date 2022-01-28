@@ -95,7 +95,7 @@ class Setting
 			),
 			
 			array(
-				'id'          => 'template_show_count',
+				'id'          => 'template_view_count',
 				'type'        => 'number',
 				'section'     => 'general',
 				'label'       => esc_html__( 'View count', 'order-reviews-for-woocommerce' ),
