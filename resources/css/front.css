@@ -1,5 +1,11 @@
 .hide {
   display: none;
+  opacity: 0;
+}
+
+.active {
+	display: block;
+	opacity: 1;
 }
 
 /*glide style*/
@@ -355,3 +361,18 @@ Popup Two
 	  height: 32px;
 	}
   }
+
+  /* Orfw Review Information */
+	.orfw-review-info{
+		font-style: var(--orfw-review-font-style);
+		font-size: var(--orfw-review-font-size);
+		color: var(--orfw-review-font-color);
+		background-color: var(--orfw-review-background);
+		width: fit-content;
+		border-radius: 5px;
+		padding: 5px;
+		margin-top: 5px;
+	}
+	.orfw-review-info a{
+		color: var(--orfw-review-font-link-color);
+	}

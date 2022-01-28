@@ -7,11 +7,12 @@ function setCookie(cname, cvalue, seconds)
     document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/;SameSite=lax;domain=' + domainName;
 }
 
-function getCookie(name)
+function getCookie(cname)
 {
     const value = '; ' + document.cookie;
-    const parts = value.split('; ' + name + '=');
-
+    const parts = value.split('; ' + cname + '=');
     if ( parts.length === 2 )
         return parts.pop().split(';').shift();
+    
+    return null;
 }

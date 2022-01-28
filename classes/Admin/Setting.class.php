@@ -95,7 +95,7 @@ class Setting
 			),
 			
 			array(
-				'id'          => 'template_show_count',
+				'id'          => 'template_view_count',
 				'type'        => 'number',
 				'section'     => 'general',
 				'label'       => esc_html__( 'View count', 'order-reviews-for-woocommerce' ),
@@ -241,7 +241,7 @@ class Setting
 			),
 
 			array(
-				'id'      	  => 'spd_card',
+				'id'      	  => 'sri_card_bg',
 				'type'    	  => 'color',
 				'section' 	  => 'styles',
 				'label'   	  => esc_html__( 'Review Box', 'order-reviews-for-woocommerce' ),
@@ -250,7 +250,7 @@ class Setting
 			),
 
 			array(
-				'id'      	  => 'spd_card_text',
+				'id'      	  => 'sri_font_color',
 				'type'    	  => 'color',
 				'section' 	  => 'styles',
 				'label'   	  => esc_html__( 'Review Color', 'order-reviews-for-woocommerce' ),
@@ -259,7 +259,7 @@ class Setting
 			),
 
 			array(
-				'id'      	  => 'spd_card_link',
+				'id'      	  => 'sri_link_color',
 				'type'    	  => 'color',
 				'section' 	  => 'styles',
 				'label'   	  => esc_html__( 'Review Link Color', 'order-reviews-for-woocommerce' ),
@@ -268,7 +268,7 @@ class Setting
 			),
 
 			array(
-				'id'      => 'spd_card_font_size',
+				'id'      => 'sri_font_size',
 				'type'    => 'select',
 				'section' => 'styles',
 				'label'   => esc_html__( 'Review Font Size', 'order-reviews-for-woocommerce' ),
@@ -281,11 +281,14 @@ class Setting
 			),
 
 			array(
-				'id'          => 'spd_card_font_style',
-				'type'        => 'toggle',
-				'section'     => 'styles',
-				'label'   	  => esc_html__( 'Review Font Style', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'Mark if you want an italic style', 'order-reviews-for-woocommerce' ),
+				'id'      => 'sri_font_style',
+				'type'    => 'select',
+				'section' => 'styles',
+				'label'   => esc_html__( 'Review Font Style', 'order-reviews-for-woocommerce' ),
+				'options' => array(
+					'normal'  => esc_html__( 'Normal',  'order-reviews-for-woocommerce' ),
+					'italic' => esc_html__( 'Italic', 'order-reviews-for-woocommerce' )
+				),
 				'show_in_js'  => false,
 			),
 
