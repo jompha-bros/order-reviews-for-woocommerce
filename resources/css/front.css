@@ -8,6 +8,15 @@
 	--wcolor: #ecf0f1;
 }
 
+.hide {
+	display: none;
+	opacity: 0;
+}
+
+.active {
+	display: block;
+	opacity: 1;
+}
 /*glide style*/
 .glide {
   position: relative;
