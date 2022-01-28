@@ -13,39 +13,60 @@ jQuery(document).ready(function()
 
     orfwGlide.mount();
 
+
+
     var ratingStars = jQuery('#orfw_popup .feedback input'),
-        ratingComment = jQuery('#orfw_popup #orfw_popup_comment');
+        feedback = jQuery('#orfw_popup #orfw_popup_comment'),
+        submitButton = jQuery('#onPopupSubmit'),
+        skipButton = jQuery('#orfw_popup_skip'); 
 
     ratingStars.on('click', function() 
     {
-        ratingComment.fadeIn();
+        feedback.fadeIn();
     });
 
-    jQuery('#onPopupSubmit').on('click', function() 
-    {
-        var order_id      = jQuery('#order-id').data('order-id'),
-            product_ids   = [];
-            reviewComment = 'This is test review',
-            ratingStars   = 4;
 
+    //rating
+    ratingStars.on('change', function ()
+    {
+        var orfwRating = jQuery(this).val();
+        var orfwFeedback = feedback.val();
+        
+    });
+
+    //feedback box
+    feedback.on('keyup', function ()
+    {
+        var orfwFeedback = jQuery(this).val();
+    });
+
+    //submit button
+    submitButton.on('click', function() 
+    {
+        var orfwOrderId      = jQuery('#order-id').data('order-id'),
+            orfwProductIds   = [24, 33, 16],
+            orfwFeedback = feedback.val(),
+            orfwRating = ratingStars.val();
+        
+        
         jQuery('.orfw_popup_order_products').find('ul').find('li').each(function()
         {
-            product_ids.push(jQuery(this).data('product-id'));
+            orfwProductIds.push(jQuery(this).data('product-id'));
         });
 
         jQuery.ajax({
             type: 'post',
             url: orfw_front_data.ajaxurl,
             data: {
-                action: 'orfwPopupSubmit',
-                order_id: order_id,
-                product_ids: product_ids,
-                review: reviewComment,
-                rating: ratingStars,
+                action: orfwPopupSubmit,
+                order_id: orfwOrderId,
+                product_ids: orfwProductIds,
+                review: orfwFeedback,
+                rating: orfwRating,
             },
             beforeSend()
             {
-                console.log('Submited review for: ' + order_id);
+                console.log('Submited review for: ' + orfwOrderId);
                 jQuery('#onPopupSubmit').text('Submitting..')
             },
             dataType: 'json',
@@ -55,5 +76,15 @@ jQuery(document).ready(function()
                 //jQuery("#orfw_popup").remove();
             },
         });
+    });
+
+    
+
+    //skip button
+    jQuery(document).on('click', skipButton, function ()
+    {
+        var orfwPopupContainer = jQuery('#orfw_popup');
+
+
     });
 });

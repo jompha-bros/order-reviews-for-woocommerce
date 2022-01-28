@@ -56,7 +56,7 @@ class Setting
 		);
 	}
 
-	private function fields()
+	public static function fields()
 	{
 		return array(
 
@@ -67,6 +67,7 @@ class Setting
 				'label'       => esc_html__( 'Interval Delay', 'order-reviews-for-woocommerce' ),
 				'placeholder' => '',
 				'description' => esc_html__( 'After the popup is closed, show again after X hours.', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => true,
 			),
 
 			array(
@@ -78,6 +79,7 @@ class Setting
 				'options' => array(
 					'yes' => esc_html__( 'Yes', 'order-reviews-for-woocommerce' ),
 				),
+				'show_in_js'  => true,
 			),
 			
 			array(
@@ -89,6 +91,7 @@ class Setting
 				'options' => array(
 					'yes' => esc_html__( 'Yes', 'order-reviews-for-woocommerce' ),
 				),
+				'show_in_js'  => true,
 			),
 			
 			array(
@@ -98,6 +101,7 @@ class Setting
 				'label'       => esc_html__( 'View count', 'order-reviews-for-woocommerce' ),
 				'placeholder' => esc_html__( '2', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'How many times the template will show to customer?', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => true,
 			),
 
 			array(
@@ -107,6 +111,7 @@ class Setting
 				'label'       => esc_html__( 'Show after hours', 'order-reviews-for-woocommerce' ),
 				'placeholder' => esc_html__( '24', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'After how many hours the template will show after mark the order as completed?', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => true,
 			),
 
 			array(
@@ -116,6 +121,7 @@ class Setting
 				'value'		  => '#f4b248',
 				'label'       => esc_html__( 'Header Background', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Set background for the template header', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
 			),
 
 			array(
@@ -125,6 +131,7 @@ class Setting
 				'value'		  => '#ecf0f1',
 				'label'       => esc_html__( 'Body Background', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Set background for the template body', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
 			),
 
 			array(
@@ -134,6 +141,7 @@ class Setting
 				'value'		  => '#442a00',
 				'label'       => esc_html__( 'Header text color', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Set header text color', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
 			),
 
 			array(
@@ -143,6 +151,7 @@ class Setting
 				'value'		  => '#442a00',
 				'label'       => esc_html__( 'Body text color', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Set body text color', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
 			),
 
 			array(
@@ -152,6 +161,7 @@ class Setting
 				'value'		  => '#f4b248',
 				'label'       => esc_html__( 'Button Background', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Set button background color', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
 			),
 
 			array(
@@ -161,6 +171,7 @@ class Setting
 				'value'		  => '#ecf0f1',
 				'label'       => esc_html__( 'Button text color', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Set button background color', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
 			),
 
 			array(
@@ -170,6 +181,7 @@ class Setting
 				'value'		  => '#f4b248',
 				'label'       => esc_html__( 'Skip/Close color', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Set skip/close color', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
 			),
 
 			array(
@@ -178,6 +190,7 @@ class Setting
 				'section'     => 'content',
 				'label'       => esc_html__( 'Rate the order', 'order-reviews-for-woocommerce' ),
 				'value' 	  => esc_attr( 'Rate the order' ),
+				'show_in_js'  => false,
 			),
 
 			array(
@@ -186,6 +199,7 @@ class Setting
 				'section'     => 'content',
 				'label'       => esc_html__( 'Write feedback', 'order-reviews-for-woocommerce' ),
 				'value' 	  => esc_attr( 'Write feedback' ),
+				'show_in_js'  => false,
 			),
 
 			array(
@@ -194,6 +208,7 @@ class Setting
 				'section'     => 'content',
 				'label'       => esc_html__( 'Footer Text', 'order-reviews-for-woocommerce' ),
 				'value' 	  => esc_attr( 'Please provide your honest feedback!' ),
+				'show_in_js'  => false,
 			),
 
 			array(
@@ -203,6 +218,7 @@ class Setting
 				'value'		  => '#f4b248',
 				'label'       => esc_html__( 'Stars color', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Set stars color', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
 			),
 
 			array(
@@ -211,6 +227,7 @@ class Setting
 				'section' 	  => 'general',
 				'label'   	  => esc_html__( 'Force Order', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Force customer to give a review and hide the skip button', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
 			),
 
 			array(
@@ -219,6 +236,7 @@ class Setting
 				'section' 	  => 'styles',
 				'label'   	  => esc_html__( 'Review Box', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Background color of the card', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
 			),
 
 			array(
@@ -227,6 +245,7 @@ class Setting
 				'section' 	  => 'styles',
 				'label'   	  => esc_html__( 'Review Color', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Review color of the text ', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
 			),
 
 			array(
@@ -235,6 +254,7 @@ class Setting
 				'section' 	  => 'styles',
 				'label'   	  => esc_html__( 'Review Link Color', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Link color (products) of the text', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
 			),
 
 			array(
@@ -246,7 +266,8 @@ class Setting
 					'large'  => esc_html__( 'Large',  'order-reviews-for-woocommerce' ),
 					'medium' => esc_html__( 'Medium', 'order-reviews-for-woocommerce' ),
 					'small'  => esc_html__( 'Small',  'order-reviews-for-woocommerce' ),
-				)
+				),
+				'show_in_js'  => false,
 			),
 
 			array(
@@ -255,6 +276,7 @@ class Setting
 				'section'     => 'styles',
 				'label'   	  => esc_html__( 'Review Font Style', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Mark if you want an italic style', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
 			),
 
 		);
@@ -306,7 +328,7 @@ class Setting
 
 	public function addFields()
 	{
-		foreach ( $this->fields() as $field )
+		foreach ( self::fields() as $field )
 		{
 			$uniqueID = self::$optPrefix . $field['id'];
 

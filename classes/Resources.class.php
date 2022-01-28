@@ -55,11 +55,31 @@ class Resources
             wp_register_script( $handle, $script['src'], $deps, $version, $in_footer );
         }
 
-        wp_localize_script( 'orfw-front', 'orfw_front_data', array( 
-            'ajaxurl'       => admin_url( 'admin-ajax.php' ),
-            'object_name'   => 'orfw_front_data',
-        ));
+        $this->localize();
+
     }
+
+    private function localize()
+    {
+        $fields = \ORFW\Admin\Setting::fields();
+        $prefix = \ORFW\Admin\Setting::$optPrefix;
+        $data = array( 
+            'ajaxurl'       => admin_url( 'admin-ajax.php' ),
+        );
+        
+        
+        foreach( $fields as $field )
+        {
+            if( !$field['show_in_js'] )
+                continue;
+            
+            $data[ $field['id'] ] = get_option( $prefix . $field['id'], $field[ 'value' ] );
+        }
+
+        wp_localize_script( 'orfw-front', 'orfw_data', $data);
+
+    }
+
 
     /**
      * Register styles
