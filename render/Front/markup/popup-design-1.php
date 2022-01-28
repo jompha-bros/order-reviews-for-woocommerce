@@ -1,4 +1,4 @@
-<div id="orfw_popup" class="popup-one hide">
+<div id="orfw_popup" class="popup-one orfw-use-custom-colors">
     <div class="orfw_popup_inner">
         <div class="orfw_popup_header">
             
@@ -38,11 +38,10 @@
                     </ul>
                 </div>
             </div>
-
         </div>
 
         <div class="orfw_popup_footer">
-            <h2><?php echo esc_html( 'Rate the order', 'order-reviews-for-woocommerce' ); ?></h2>
+            <h2><?php $customText = get_option( 'orfw_text_rate_order_heading', '' ); echo (empty($customText)) ? esc_html( 'Rate the order', 'order-reviews-for-woocommerce' ) : esc_html( $customText ); ?></h2>
 
             <div class="orfw_popup_rating">
                 
@@ -71,15 +70,20 @@
                     </div>
                 </div>
 
-                <textarea name="rating_comment " id="orfw_popup_comment" cols="20" rows="5" placeholder="Write Feedback"></textarea>
-
+                <textarea name="rating_comment " id="orfw_popup_comment" cols="20" rows="5" placeholder="<?php $customText = get_option( 'orfw_text_write_feedback', '' ); echo (empty($customText)) ? esc_html( 'Write Feedback', 'order-reviews-for-woocommerce' ) : esc_html( $customText ); ?>"></textarea>
             </div>
+
+            <p class="orfw-popup-error-wrapper">
+                <span class="dashicons dashicons-info-outline"></span> <span class="orfw-popup-error-text"></span>
+            </p>
 
             <button type="submit" id="onPopupSubmit"><?php echo esc_html( 'Submit', 'order-reviews-for-woocommerce' ); ?></button>
             
-            <h4 class="disclaimer"><?php echo esc_html( 'Please provide your honest feedback!', 'order-reviews-for-woocommerce' ); ?></h4>
-
-            <a id="orfw_popup_skip" href=""><?php echo esc_html( 'Skip', 'order-reviews-for-woocommerce' ); ?></a>
+            <h4 class="disclaimer"><?php $customText = get_option( 'orfw_text_footer', '' ); echo (empty($customText)) ? esc_html( 'Please provide your honest feedback!', 'order-reviews-for-woocommerce' ) : esc_html( $customText ); ?></h4>
+            
+            <?php if ( get_option( 'orfw_force_order', 'no' ) != 'yes' ) { ?>
+            <a id="orfw_popup_skip" href="#"><?php echo esc_html( 'Skip', 'order-reviews-for-woocommerce' ); ?></a>
+            <?php } ?>
         </div>
 
     </div>

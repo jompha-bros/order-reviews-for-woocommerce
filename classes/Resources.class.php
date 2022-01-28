@@ -64,7 +64,9 @@ class Resources
         $fields = \ORFW\Admin\Setting::fields();
         $prefix = \ORFW\Admin\Setting::$optPrefix;
         $data = array( 
-            'ajaxurl'       => admin_url( 'admin-ajax.php' ),
+            'ajaxurl'             => admin_url( 'admin-ajax.php' ),
+            'text_write_feedback' => esc_html__( 'Please write a feedback.', 'order-reviews-for-woocommerce' ),
+            'text_rate_order'     => esc_html__( 'Please add a rating.', 'order-reviews-for-woocommerce' ),
         );
         
         
@@ -142,6 +144,10 @@ class Resources
     public function styles()
     {
         $styles = array(
+            'animate-css' => array(
+                'src'     => ORFW_RESOURCES . '/css/animate.css',
+                'version' => filemtime( ORFW_PATH . '/resources/css/animate.css' )
+            ),
             'jompha-admin-core' => array(
                 'src'     => ORFW_RESOURCES . '/css/admin-core.css',
                 'version' => filemtime( ORFW_PATH . '/resources/css/admin-core.css' ),

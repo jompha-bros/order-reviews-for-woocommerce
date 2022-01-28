@@ -2,11 +2,14 @@ jQuery(document).ready(function()
 {
     'use strict';
 
+    if ( !jQuery('#orfw_popup').length )
+        return;
+
     const orfwGlide = new Glide('.orfw_popup_order_products', {
         type: 'carousel',
         autoplay: 1,
         animationDuration: 3000,
-        animationTimingFunc: "linear",
+        animationTimingFunc: 'linear',
         perView: 3.5,
         focusAt: 0,
     });
@@ -46,11 +49,42 @@ jQuery(document).ready(function()
     //submit button
     submitButton.on('click', function() 
     {
-        var orfwOrderId      = jQuery('#order-id').data('order-id'),
-            orfwProductIds   = [24, 33, 16],
-            orfwFeedback = feedback.val(),
-            orfwRating = ratingStars.val();
+        if ( !jQuery('#orfw_popup .feedback input:checked').length )
+        {
+            jQuery('.orfw-popup-error-wrapper')
+                .find('.orfw-popup-error-text')
+                    .text(orfw_data.text_rate_order)
+            .end()
+            .show();
+            return;
+        }
         
+        var orfwOrderId          = jQuery('#order-id').data('order-id'),
+            orfwProductIds       = [24, 33, 16],
+            orfwFeedback         = feedback.val(),
+            orfwRating           = parseInt(jQuery('#orfw_popup .feedback input:checked').val()),
+            orfwForceFeedback    = (orfw_data.template_force_feedback == 'yes') ? true : false,
+            orfwForceBadFeedback = (orfw_data.template_force_bad_feedback == 'yes') ? true : false;
+
+        if (orfwForceFeedback && !orfwFeedback.length)
+        {
+            jQuery('.orfw-popup-error-wrapper')
+                .find('.orfw-popup-error-text')
+                    .text(orfw_data.text_write_feedback)
+            .end()
+            .show();
+            return;
+        }
+
+        if (orfwForceBadFeedback && jQuery('#orfw_popup .feedback input:checked').val() < 4 && !orfwFeedback.length)
+        {
+            jQuery('.orfw-popup-error-wrapper')
+                .find('.orfw-popup-error-text')
+                    .text(orfw_data.text_write_feedback)
+            .end()
+            .show();
+            return;
+        }
         
         jQuery('.orfw_popup_order_products').find('ul').find('li').each(function()
         {
@@ -59,9 +93,9 @@ jQuery(document).ready(function()
 
         jQuery.ajax({
             type: 'post',
-            url: orfw_front_data.ajaxurl,
+            url: orfw_data.ajaxurl,
             data: {
-                action: orfwPopupSubmit,
+                action: 'orfwPopupSubmit',
                 order_id: orfwOrderId,
                 product_ids: orfwProductIds,
                 review: orfwFeedback,
@@ -76,7 +110,7 @@ jQuery(document).ready(function()
             success: function (response)
             {
                 console.log(response);
-                //jQuery("#orfw_popup").remove();
+                //jQuery('#orfw_popup').remove();
             },
         });
     });
@@ -96,7 +130,10 @@ jQuery(document).ready(function()
     {   
         e.preventDefault();
         var orfwPopupContainer = jQuery('#orfw_popup');
+        orfwPopupContainer.fadeOut();
 
+        var orfwIntervalDelay = parseInt(orfw_data.template_interval_delay);
+        setCookie( 'orfw-template-interval-delay', 'yes', (orfwIntervalDelay * 60 * 60) );
         orfwShowCount();
     });
 

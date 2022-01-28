@@ -29,6 +29,7 @@ class Initialize
     {
         wp_enqueue_style( 'orfw' );
         wp_enqueue_style( 'orfw-front' );
+        wp_enqueue_style( 'animate-css' );
     }
 
     private function scripts()
