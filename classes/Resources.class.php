@@ -73,11 +73,10 @@ class Resources
             if( !$field['show_in_js'] )
                 continue;
             
-            $data[ $field['id'] ] = get_option( $prefix . $field['id'], $field[ 'value' ] );
+            $data[ $field['id'] ] = get_option( $prefix . $field['id'], (isset($field['value'])) ? $field['value'] : '' );
         }
 
         wp_localize_script( 'orfw-front', 'orfw_data', $data);
-
     }
 
 

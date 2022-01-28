@@ -152,6 +152,5 @@ class Popup
             return;
 
         include_once ORFW_RENDER_FRONT . '/markup/popup-design-1.php';
-
     }
 }

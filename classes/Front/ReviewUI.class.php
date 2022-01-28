@@ -4,6 +4,9 @@ namespace ORFW\Front;
 class ReviewUI
 {
     public static $instance;
+    private $enabled;
+    private $fontSize;
+    private $fontStyle;
 
     public static function getInstance()
     {
@@ -16,6 +19,44 @@ class ReviewUI
     private function __construct()
     {
         add_action( 'woocommerce_review_after_comment_text', array( $this, 'afterReviewText' ) );
+        add_action( 'wp_head', array( $this, 'productReviewDisplayCss' ) );
+
+        $this->fontSize  = get_option( 'orfw_sri_font_size', 'medium' );
+        $this->fontStyle = get_option( 'orfw_sri_font_style', 'normal' );
+
+        $this->enabled = true;
+    }
+
+    public function productReviewDisplayCss()
+    {
+        if ( !$this->enabled )
+            return;
+
+        switch( $this->fontSize )
+        {
+            case 'large': '2rem';
+            case 'small': '1rem';
+            default: '1.25rem';
+        }
+
+        switch( $this->fontStyle )
+        {
+            case 'italic': 'italic';
+            default: 'normal';
+        }
+
+        ?>
+            <style>
+                :root{
+                    --orfw-review-font-style: <?php echo esc_html( $this->fontStyle ); ?>;
+                    --orfw-review-font-size: <?php echo esc_html( $this->fontSize ); ?>;
+                    --orfw-review-font-color: <?php echo wp_kses( get_option( 'orfw_sri_font_color', '#28303d' ), array() ); ?>;
+                    --orfw-review-font-link-color: <?php echo wp_kses( get_option( 'orfw_sri_link_color', '#28303d' ), array() ); ?>;
+                    --orfw-review-background: <?php echo wp_kses( get_option( 'orfw_sri_card_bg', 'transparent' ), array() ); ?>;
+                }
+            </style>
+
+        <?php
     }
 
     public function afterReviewText( $comment )
