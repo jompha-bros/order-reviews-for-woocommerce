@@ -1,0 +1,31 @@
+.orfw-horizontal-bounce {
+    animation: orfw-horizontal-bounce 1250ms infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes orfw-spin {
+    0% {
+        transform: rotate( 0deg );
+    }
+    100% {
+        transform: rotate( 360deg );
+    }
+}
+
+@keyframes orfw-horizontal-bounce {
+    0% {
+        transform: translateX(0px);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    50% {
+        transform: translateX(0);
+    }
+    75% {
+        transform: translateX(5px);
+    }
+    100% {
+        transform: translateX(0px);
+    }
+}

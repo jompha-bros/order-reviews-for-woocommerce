@@ -1,11 +1,5 @@
 .hide {
   display: none;
-  opacity: 0;
-}
-
-.active {
-	display: block;
-	opacity: 1;
 }
 
 /*glide style*/
@@ -136,22 +130,25 @@ direction: rtl; }
 	font-weight: normal;
 }
 
-#orfw_popup .orfw_popup_footer button {
+#orfw_popup .orfw_popup_footer #orfw-template-submit-button {
 	padding: 10px 45px;
 	border-radius: 2px;
 	display: block;
 	margin: 10px auto 0;
 	font-weight: normal;
 	text-decoration: none;
-	line-height: 21px;
+	cursor: pointer;
 }
-#orfw_popup.orfw-use-default-colors .orfw_popup_footer button {
+#orfw_popup.orfw-use-default-colors .orfw_popup_footer #orfw-template-submit-button {
 	background-color: #f4b248;
 	color: #ffffff;
 }
-#orfw_popup.orfw-use-custom-colors .orfw_popup_footer button {
+#orfw_popup.orfw-use-custom-colors .orfw_popup_footer #orfw-template-submit-button {
 	background-color: var(--orfw-template-submit-background-color);
 	color: var(--orfw-template-submit-text-color);
+}
+#orfw_popup .orfw_popup_footer #orfw-template-submit-button span {
+	vertical-align: middle;
 }
 
 #orfw_popup h4.disclaimer {

@@ -21,10 +21,8 @@ jQuery(document).ready(function()
     var orfwPopup = jQuery('#orfw_popup'),
         ratingStars = jQuery('#orfw_popup .feedback input'),
         feedback = jQuery('#orfw_popup #orfw_popup_comment'),
-        submitButton = jQuery('#onPopupSubmit'),
-        skipButton = jQuery('#orfw_popup_skip'),
-        orfwViewCountOPT = ( isNaN(orfw_data.template_view_count) || orfw_data.template_view_count == '' ) ? 2 : parseInt( orfw_data.template_view_count ),
-        orfwViewCountCookie = ( getCookie('template_view_count') == null ) ? 0 : parseInt( getCookie('template_view_count') );
+        submitButton = jQuery('#orfw-template-submit-button'),
+        orfwFrequencyCount = ( getCookie('orfw-template-view-frequency') == null ) ? 0 : parseInt( getCookie('orfw-template-view-frequency') );
 
     ratingStars.on('click', function() 
     {
@@ -103,47 +101,35 @@ jQuery(document).ready(function()
             },
             beforeSend()
             {
-                console.log('Submited review for: ' + orfwOrderId);
-                jQuery('#onPopupSubmit').text('Submitting..')
+                jQuery('#orfw-popup-submit-save-icon').addClass('dashicons dashicons-arrow-right-alt2 orfw-horizontal-bounce').attr('disabled', true);
             },
             dataType: 'json',
-            success: function (response)
+            success: function(response)
             {
                 console.log(response);
-                //jQuery('#orfw_popup').remove();
             },
+            complete: function()
+            {
+                jQuery('#orfw-popup-submit-save-icon').removeClass('dashicons dashicons-arrow-right-alt2 orfw-horizontal-bounce');
+            }
         });
     });
 
-    // Show
-    if (orfwViewCountCookie == '' || isNaN(orfwViewCountCookie)) {
-        setCookie('template_view_count', 0, ( 30 * 24 * 60 * 60 ));
+    if ( orfwFrequencyCount <= ( orfw_data.template_view_frequency == '' ? 2 : parseInt( orfw_data.template_view_frequency ) ) )
+    {
+        orfwPopup.removeClass('hide');
     }
 
-    if( orfwViewCountCookie <= orfwViewCountOPT) {
-        orfwPopup.removeClass('hide').addClass('active');
-    }
-
-
-    //skip button
     jQuery(document).on('click', '#orfw_popup_skip', function (e)
     {   
         e.preventDefault();
+
         var orfwPopupContainer = jQuery('#orfw_popup');
         orfwPopupContainer.fadeOut();
 
-        var orfwIntervalDelay = parseInt(orfw_data.template_interval_delay);
-        setCookie( 'orfw-template-interval-delay', 'yes', (orfwIntervalDelay * 60 * 60) );
-        orfwShowCount();
+        var orfwAgainPeriod = parseInt(orfw_data.template_again_period);
+        setCookie( 'orfw-template-again-period', 'yes', (orfwAgainPeriod * 60 * 60) );
+
+        setCookie( 'orfw-template-view-frequency', (orfwFrequencyCount + 1), ( 30 * 24 * 60 * 60 ) );
     });
-
-    //How many times the popup will show to the user?
-    function orfwShowCount()
-    {
-        if( orfwViewCountCookie == '' || isNaN(orfwViewCountCookie) )
-            setCookie( 'template_view_count', 1, ( 30 * 24 * 60 * 60 ) );
-        else
-            setCookie( 'template_view_count', (orfwViewCountCookie + 1), ( 30 * 24 * 60 * 60 ) );
-    }
-
 });

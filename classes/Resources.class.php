@@ -156,6 +156,10 @@ class Resources
                 'src'     => ORFW_RESOURCES . '/css/icons.css',
                 'version' => filemtime( ORFW_PATH . '/resources/css/icons.css' ),
             ),
+            'orfw' => array(
+                'src'     => ORFW_RESOURCES . '/css/orfw.css',
+                'version' => filemtime( ORFW_PATH . '/resources/css/orfw.css' ),
+            ),
             'orfw-admin' => array(
                 'src'     => ORFW_RESOURCES . '/css/admin.css',
                 'version' => filemtime( ORFW_PATH . '/resources/css/admin.css' ),

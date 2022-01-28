@@ -61,12 +61,35 @@ class Setting
 		return array(
 
 			array(
-				'id'          => 'template_interval_delay',
+				'id'          => 'template_wait_period',
 				'type'        => 'number',
 				'section'     => 'general',
-				'label'       => esc_html__( 'Interval Delay', 'order-reviews-for-woocommerce' ),
-				'placeholder' => '',
-				'description' => esc_html__( 'After the popup is closed, show again after X hours.', 'order-reviews-for-woocommerce' ),
+				'label'       => esc_html__( 'Wait Period', 'order-reviews-for-woocommerce' ),
+				'placeholder' => esc_html__( '12', 'order-reviews-for-woocommerce' ),
+				'value' 	  => esc_html__( '3', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'How many hours after the order is completed the popup will first be shown to the user?', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => true,
+			),
+
+			array(
+				'id'          => 'template_again_period',
+				'type'        => 'number',
+				'section'     => 'general',
+				'label'       => esc_html__( 'Again Period', 'order-reviews-for-woocommerce' ),
+				'placeholder' => esc_html__( '12', 'order-reviews-for-woocommerce' ),
+				'value' 	  => esc_html__( '6', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'After the popup is skipped, ask for review again after X hours.', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => true,
+			),
+
+			array(
+				'id'          => 'template_view_frequency',
+				'type'        => 'number',
+				'section'     => 'general',
+				'label'       => esc_html__( 'Frequency', 'order-reviews-for-woocommerce' ),
+				'placeholder' => esc_html__( '3', 'order-reviews-for-woocommerce' ),
+				'value' 	  => esc_html__( '2', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'How many times the template will show to customer?', 'order-reviews-for-woocommerce' ),
 				'show_in_js'  => true,
 			),
 
@@ -75,7 +98,7 @@ class Setting
 				'type'        => 'checkbox',
 				'section'     => 'general',
 				'label'       => esc_html__( 'Force Write Feedback', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'If checked, users will have to write a feedback.', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'If checked, users must have to write a feedback.', 'order-reviews-for-woocommerce' ),
 				'options' => array(
 					'yes' => esc_html__( 'Yes', 'order-reviews-for-woocommerce' ),
 				),
@@ -87,33 +110,13 @@ class Setting
 				'type'        => 'checkbox',
 				'section'     => 'general',
 				'label'       => esc_html__( 'Force Feedback for Bad Rating', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'If checked, users will have to write a feedback if the rating is equal to or less than 3.', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'If checked, users must have to write a feedback if the rating is equal to or less than 3.', 'order-reviews-for-woocommerce' ),
 				'options' => array(
 					'yes' => esc_html__( 'Yes', 'order-reviews-for-woocommerce' ),
 				),
 				'show_in_js'  => true,
 			),
 			
-			array(
-				'id'          => 'template_view_count',
-				'type'        => 'number',
-				'section'     => 'general',
-				'label'       => esc_html__( 'View count', 'order-reviews-for-woocommerce' ),
-				'placeholder' => esc_html__( '2', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'How many times the template will show to customer?', 'order-reviews-for-woocommerce' ),
-				'show_in_js'  => true,
-			),
-
-			array(
-				'id'          => 'template_show_after_hours',
-				'type'        => 'number',
-				'section'     => 'general',
-				'label'       => esc_html__( 'Show after hours', 'order-reviews-for-woocommerce' ),
-				'placeholder' => esc_html__( '24', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'After how many hours the template will show after mark the order as completed?', 'order-reviews-for-woocommerce' ),
-				'show_in_js'  => true,
-			),
-
 			array(
 				'id'          => 'template_header_background_color',
 				'type'        => 'color',

@@ -4,7 +4,8 @@ namespace ORFW\Front;
 class Popup
 {
     public static $instance;
-    public $orderData;
+    public $orderID = null;
+    public $order;
 
     /**
     * Singleton Pattern
@@ -19,25 +20,80 @@ class Popup
         return self::$instance;
     }
 
-    /**
-    * Constructor
-    *
-    * @return void
-    */
     private function __construct()
     {
-        add_action( 'wp_head',                        array( $this, 'colorVariables' ), 0 );
+        if ( !$this->hasOrdered() )
+            return;
 
+        add_action( 'wp_head',                        array( $this, 'colorVariables' ), 0 );
         add_action( 'wp_footer',                      array( $this, 'view') );
         add_action( 'wp_ajax_orfwPopupSubmit',        array( $this, 'orfwPopupSubmit' ));
         add_action( 'wp_ajax_nopriv_orfwPopupSubmit', array( $this, 'orfwPopupSubmit' ));
     }
 
-    /**
-    * Handle output of banner
-    *
-    * @return void
-    */
+    public function hasOrdered()
+    {
+        $lastOrder = get_posts( array(
+            'numberposts' => 1,
+            'meta_key'    => '_customer_user',
+            'meta_value'  => get_current_user_id(),
+            'post_type'   => 'shop_order',
+            'post_status' => 'wc-completed',
+            'fields'      => 'ids',
+            'meta_query'  => array(
+                array(
+                    'key'   => 'orfw_order',
+                    'value' => '1',
+                )
+            ),
+        ) );
+
+        if ( !count( $lastOrder ) )
+        {
+            //check for last 72hrs orders
+            $lastOrder = get_posts( array(
+                'numberposts' => 1,
+                'meta_key'    => '_customer_user',
+                'meta_value'  => get_current_user_id(),
+                'post_type'   => 'shop_order',
+                'post_status' => 'wc-completed',
+                'fields'      => 'ids',
+                'date_query' => [
+                    [
+                        'after'     => '72 hour ago',  
+                        'inclusive' => true,
+                    ],
+                ],
+            ) );
+        }
+
+        if ( !isset($lastOrder[0]) )
+            return false;
+    
+        $this->orderID = $lastOrder[0];
+        $this->order   = wc_get_order( $this->orderID );
+
+        return true;
+    }
+
+    public function view()
+    {   
+        if ( $this->isWaitPeriod() || $this->isAgainPeriod() )
+            return;
+      
+        include_once ORFW_RENDER_FRONT . '/markup/popup-design-1.php';
+    }
+
+    private function isWaitPeriod()
+    {
+        return ( strtotime( '+' . get_option( 'orfw_template_wait_period', 3 ) . ' hours', strtotime( $this->order->date_completed ) ) > current_time( 'timestamp' ) ) ? true : false;
+    }
+
+    private function isAgainPeriod()
+    {
+        return ( isset($_COOKIE['orfw-template-again-period']) ) ? true : false;
+    }
+
     public function colorVariables()
     {   
         // if ( 'yes' !== $this->enabled ) 
@@ -112,81 +168,5 @@ class Popup
 
         echo wp_json_encode( $reviewIds );
         wp_die();
-    }
-
-    public function hasOrdered()
-    {
-        //https://stackoverflow.com/questions/53050736/check-if-customer-wrote-a-review-for-a-product-in-woocommerce
-        //https://stackoverflow.com/questions/38874189/checking-if-customer-has-already-bought-something-in-woocommerce
-        //https://developer.wordpress.org/reference/functions/get_posts/
-        $previousOrder = get_posts( array(
-            'numberposts' => 1,
-            'meta_key'    => '_customer_user',
-            'meta_value'  => get_current_user_id(),
-            'post_type'   => 'shop_order',
-            'post_status' => 'wc-completed',
-            'fields'      => array('ids'), // 'all', 
-            'meta_query'  => array(
-                array(
-                    'key'   => 'orfw_order',
-                    'value' => '1',
-                )
-            ),
-        ) );
-
-        if ( count( $previousOrder ) > 0 )
-        {   
-            //check order with orfw_order meta
-            return $previousOrder[0];
-        }
-        else
-        {
-            //check for last 72hrs orders
-            $previousOrder = get_posts( array(
-                'numberposts' => 1,
-                'meta_key'    => '_customer_user',
-                'meta_value'  => get_current_user_id(),
-                'post_type'   => 'shop_order',
-                'post_status' => 'wc-completed',
-                'fields'      => array('ids'), // 'all', 
-                'date_query' => [
-                    [
-                        'after'     => '72 hour ago',  
-                        'inclusive' => true,
-                    ],
-                ],
-            ) );
-            
-            return $previousOrder[0];
-        }
-    
-        return $previousOrder[0];
-    }
-
-    public function checkOrder ()
-    {
-        $orders = $this->hasOrdered();
-        return $orders;
-        //return $getIds;
-    }
-
-    public function view()
-    {   
-        if ( isset($_COOKIE['orfw-template-interval-delay']) )
-            return;
-        
-        $this->orderData = wc_get_order( $this->checkOrder()->ID );
-
-        //var_dump($this->orderData);
-
-        $completedDate = strtotime($this->orderData->date_completed);
-        $showAfterHrs = get_option( 'template_show_after_hours', 5 );
-
-        $timeToShow = strtotime('+'.$showAfterHrs.' hours', $completedDate);
-
-        if( $timeToShow > current_time( 'timestamp' ) )
-            return;
-      
-        include_once ORFW_RENDER_FRONT . '/markup/popup-design-1.php';
     }
 }

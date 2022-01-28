@@ -1,18 +1,18 @@
-<div id="orfw_popup" class="popup-one orfw-use-custom-colors">
+<div id="orfw_popup" class="orfw-use-custom-colors hide">
     <div class="orfw_popup_inner">
         <div class="orfw_popup_header">
             
             <div class="orfw_popup_order_info">
                 <h3><?php echo esc_html( 'Your Last Order', 'order-reviews-for-woocommerce' ); ?></h3>
-                <h1 data-order-id="<?php echo esc_html( $this->orderData->ID ); ?>" id="order-id"><?php echo esc_html( $this->orderData->ID ); ?></h1>
-                <p><?php echo esc_html( $this->orderData->date_completed ); ?></p>
+                <h1 data-order-id="<?php echo esc_html( $this->orderID ); ?>" id="order-id">#<?php echo esc_html( $this->orderID ); ?></h1>
+                <p><?php echo esc_html( date('d-m-Y h:i A', strtotime($this->order->get_date_completed()) ) ); ?></p>
             </div>
             
             <div class="orfw_popup_order_products glide">
                 <div data-glide-el="track" class="glide__track">
                     <ul class="glide__slides">
                         <?php
-                        $order = $this->orderData;
+                        $order = $this->order;
 
                         foreach ( $order->get_items() as $item )
                         {
@@ -77,7 +77,10 @@
                 <span class="dashicons dashicons-info-outline"></span> <span class="orfw-popup-error-text"></span>
             </p>
 
-            <button type="submit" id="onPopupSubmit"><?php echo esc_html( 'Submit', 'order-reviews-for-woocommerce' ); ?></button>
+            <button id="orfw-template-submit-button">
+                <span><?php echo esc_html( 'Submit', 'order-reviews-for-woocommerce' ); ?></span>
+                <span id="orfw-popup-submit-save-icon"></span>
+            </button>
             
             <h4 class="disclaimer"><?php $customText = get_option( 'orfw_text_footer', '' ); echo (empty($customText)) ? esc_html( 'Please provide your honest feedback!', 'order-reviews-for-woocommerce' ) : esc_html( $customText ); ?></h4>
             
