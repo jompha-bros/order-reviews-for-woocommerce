@@ -4,18 +4,21 @@ jQuery(document).ready(function()
 
     if ( !jQuery('#orfw_popup').length )
         return;
+    
+    var orfwSliderLoop = ( jQuery('.owl-carousel').children('.item').length > 3 ) ? true : false;
+    
+    console.log(orfwSliderLoop);
 
-    const orfwGlide = new Glide('.orfw_popup_order_products', {
-        type: 'carousel',
-        autoplay: 1,
-        animationDuration: 3000,
-        animationTimingFunc: 'linear',
-        perView: 3.5,
-        focusAt: 0,
+    jQuery('.owl-carousel').owlCarousel({
+        loop: orfwSliderLoop,
+        margin: 20,
+        center: orfwSliderLoop,
+        items: jQuery(this).children('.item').length,
+        autoplay: orfwSliderLoop,
+        autoWidth: true,
+        autoplayTimeout:1000,
+        autoplayHoverPause:true,
     });
-
-    orfwGlide.mount();
-
 
 
     var orfwPopup = jQuery('#orfw_popup'),

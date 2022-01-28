@@ -26,16 +26,18 @@ class Initialize
     }
 
     private function styles()
-    {
+    {   
+        wp_enqueue_style( 'owl-carousel' );
+        wp_enqueue_style( 'animate-css' );
         wp_enqueue_style( 'orfw' );
         wp_enqueue_style( 'orfw-front' );
-        wp_enqueue_style( 'animate-css' );
     }
 
     private function scripts()
     {
-        wp_enqueue_script( 'orfw' );
         wp_enqueue_script( 'glide' );
+        wp_enqueue_script( 'owl-carousel' );
+        wp_enqueue_script( 'orfw' );
         wp_enqueue_script( 'orfw-front' );
     }
 

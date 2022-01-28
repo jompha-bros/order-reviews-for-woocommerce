@@ -8,34 +8,32 @@
                 <p><?php echo esc_html( date('d-m-Y h:i A', strtotime($this->order->get_date_completed()) ) ); ?></p>
             </div>
             
-            <div class="orfw_popup_order_products glide">
-                <div data-glide-el="track" class="glide__track">
-                    <ul class="glide__slides">
-                        <?php
-                        $order = $this->order;
+            <div class="orfw_popup_order_products">
+                <div class="owl-carousel owl-loaded">
+                    <?php
+                    $order = $this->order;
 
-                        foreach ( $order->get_items() as $item )
-                        {
-                            $product = $item->get_product();
-                        ?>
+                    foreach ( $order->get_items() as $item )
+                    {
+                        $product = $item->get_product();
+                    ?>
 
-                        <li class="glide__slide product" data-product-id="<?php echo esc_attr( $product->get_id() ); ?>">
-                            <?php 
-                            echo wp_kses( 
-                                $product->get_image('thumbnail'), 
-                                array(
-                                    'img' => array(
-                                        'src' => array()
-                                    )
-                                ) 
-                            );
-                            ?>
-                        </li>
-
+                    <div class="product item" data-product-id="<?php echo esc_attr( $product->get_id() ); ?>">
                         <?php 
-                        } 
+                        echo wp_kses( 
+                            $product->get_image('thumbnail'), 
+                            array(
+                                'img' => array(
+                                    'src' => array()
+                                )
+                            ) 
+                        );
                         ?>
-                    </ul>
+                    </div>
+
+                    <?php 
+                    } 
+                    ?>
                 </div>
             </div>
         </div>

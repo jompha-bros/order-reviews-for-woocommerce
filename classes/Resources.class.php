@@ -125,6 +125,12 @@ class Resources
                 'version'   => filemtime( ORFW_PATH . '/resources/js/glide.js' ),
                 'in_footer' => true
             ),
+            'owl-carousel' => array(
+                'src'       => ORFW_RESOURCES . '/js/owl.carousel.min.js',
+                'deps'      => array( 'jquery' ),
+                'version'   => filemtime( ORFW_PATH . '/resources/js/owl.carousel.min.js' ),
+                'in_footer' => true
+            ),
             'orfw-front' => array(
                 'src'       => ORFW_RESOURCES . '/js/front.js',
                 'deps'      => array( 'jquery' ),
@@ -145,6 +151,10 @@ class Resources
     {
         $styles = array(
             'animate-css' => array(
+                'src'     => ORFW_RESOURCES . '/css/owl.carousel.min.css',
+                'version' => filemtime( ORFW_PATH . '/resources/css/owl.carousel.min.css' )
+            ),
+            'owl-carousel' => array(
                 'src'     => ORFW_RESOURCES . '/css/animate.css',
                 'version' => filemtime( ORFW_PATH . '/resources/css/animate.css' )
             ),
