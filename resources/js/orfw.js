@@ -1,3 +1,4 @@
+'use strict';
 function setCookie(cname, cvalue, seconds) 
 {
     var domainName = window.location.hostname;
