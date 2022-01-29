@@ -79,6 +79,8 @@
                     .text(orfw_data.text_write_feedback)
             .end()
             .show();
+            
+            feedback.addClass('orfw-shakeX').focus();
             return;
         }
 
