@@ -85,7 +85,7 @@
             <h4 class="disclaimer"><?php $customText = get_option( 'orfw_text_footer', '' ); echo (empty($customText)) ? esc_html( 'Please provide your honest feedback!', 'order-reviews-for-woocommerce' ) : esc_html( $customText ); ?></h4>
             
             <?php if ( get_option( 'orfw_force_review', 'no' ) != 'yes' ) { ?>
-            <a id="orfw-popup-skip" href="#"><?php echo esc_html( 'Skip', 'order-reviews-for-woocommerce' ); ?></a>
+            <a id="orfw-popup-skip" href=""><?php echo esc_html( 'Skip', 'order-reviews-for-woocommerce' ); ?></a>
             <?php } ?>
         </div>
 
