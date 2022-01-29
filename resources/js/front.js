@@ -37,6 +37,7 @@
     ratingStars.on('click', function() 
     {
         feedback.fadeIn();
+        orfwPopupError.hide();
     });
 
 
@@ -45,7 +46,7 @@
     {
         var orfwRating = jQuery(this).val();
         var orfwFeedback = feedback.val();
-        
+        orfwPopupError.hide();
     });
 
     //feedback box
@@ -69,7 +70,7 @@
         }
         
         var orfwOrderId          = jQuery('#order-id').data('order-id'),
-            orfwProductIds       = [24, 33, 16],
+            orfwProductIds       = [],
             orfwFeedback         = feedback.val(),
             orfwRating           = parseInt(jQuery('#orfw-popup .feedback input:checked').val()),
             orfwForceFeedback    = (orfw_data.template_force_feedback == 'yes') ? true : false,

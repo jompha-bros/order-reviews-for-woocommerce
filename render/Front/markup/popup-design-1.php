@@ -1,4 +1,4 @@
-<div id="orfw-popup" class="orfw-use-<?php echo ( $this->colorScheme == true ) ? 'custom' : 'default'; ?>-colors hide">
+<div id="orfw-popup" class="orfw-use-<?php echo ( get_option( 'orfw_template_color_scheme', 'default' ) == 'custom' ) ? 'custom' : 'default'; ?>-colors hide">
     <div class="orfw-popup-inner">
         <div class="orfw-popup-header">
             
@@ -6,7 +6,7 @@
                 <h3><?php $customText = get_option( 'orfw_text_last_order_heading', '' ); echo (empty($customText)) ? esc_html( 'Your Last Order', 'order-reviews-for-woocommerce' ) : esc_html( $customText ); ?></h3>
                 <h1 data-order-id="<?php echo esc_html( $this->orderID ); ?>" id="order-id">#<?php echo esc_html( $this->orderID ); ?></h1>
                 <?php if ( get_option( 'orfw_template_show_time', 'yes' ) == 'yes' ) : ?>
-                <p><?php echo esc_html( date('d-m-Y h:i A', strtotime($this->order->get_date_completed()) ) ); ?></p>
+                <p><?php echo esc_html( time_elapsed_string( '@' . strtotime($this->order->get_date_completed()) ) ); ?></p>
                 <?php endif; ?>
             </div>
             

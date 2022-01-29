@@ -62,15 +62,15 @@ class Setting
 				'Settings', 
 				'manage_woocommerce', 
 				self::$pageSlug, 
-				array($this, 'renderPage'), 
+				array($this, 'renderPage'),
 				0
 			),
 			array(
 				self::$pageSlug, 
-				'Reviews by orfw', 
-				'Reviews', 
+				'Order Reviews', 
+				'Order Reviews', 
 				'manage_woocommerce', 
-				'orfw_reviews', 
+				'orfw-reviews', 
 				array($this, 'renderReviews'), 
 				1
 			),
@@ -79,9 +79,10 @@ class Setting
 				esc_html__( 'Order Reviews', 'order-reviews-for-woocommerce' ),
 				esc_html__( 'Order Reviews', 'order-reviews-for-woocommerce' ),
 				'manage_woocommerce',
-				'orfw_reviews_link',
-				function(){
-					wp_safe_redirect( admin_url( 'admin.php?page=orfw_reviews' ), 301 ); 
+				'orfw-reviews-link',
+				function()
+				{
+					wp_safe_redirect( admin_url( 'admin.php?page=orfw-reviews' ), 301 ); 
   					exit;
 				},
 				1

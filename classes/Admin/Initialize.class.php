@@ -29,7 +29,7 @@ class Initialize
     {
         wp_enqueue_style( 'orfw' );
 
-        if ( 'woocommerce_page_orfw-settings' === $screen )
+        if ( preg_match('/orfw-([A-Za-z0-9_-]+)$/i', $screen) )
         {
             wp_enqueue_style( 'jompha-admin-core' );
             wp_enqueue_style( 'jompha-icons' );
@@ -39,7 +39,7 @@ class Initialize
 
     private function scripts( $screen )
     {   
-        if ( 'woocommerce_page_orfw-settings' === $screen )
+        if ( preg_match('/orfw-([A-Za-z0-9_-]+)$/i', $screen) )
         {
             wp_enqueue_script( 'orfw-admin' );
         }

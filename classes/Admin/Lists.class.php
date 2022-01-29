@@ -22,60 +22,72 @@ class Lists
 
     public function addReviewColumns( $columns )  
     {
-        
         $columns = array(
-            'cb'            => '<input type="checkbox" />', // Render a checkbox instead of text
-            'order_id'      => __( 'Order Id',      'order-reviews-for-woocommerce' ),
-            'review_title'  => __( 'Review Title',  'order-reviews-for-woocommerce' ),
-            'review_rating' => __( 'Review Rating', 'order-reviews-for-woocommerce' ),
-            'review_user'   => __( 'Review User',   'order-reviews-for-woocommerce' ),
-            'review_time'   => __( 'Review Time',   'order-reviews-for-woocommerce' )
+            'cb'            => '<input type="checkbox">',
+            'order_id'      => esc_html__( 'Order ID',      'order-reviews-for-woocommerce' ),
+            'review_title'  => esc_html__( 'Feedback',  'order-reviews-for-woocommerce' ),
+            'review_rating' => esc_html__( 'Rating', 'order-reviews-for-woocommerce' ),
+            'review_user'   => esc_html__( 'Customer',   'order-reviews-for-woocommerce' ),
+            'review_time'   => esc_html__( 'Time',   'order-reviews-for-woocommerce' )
         );
 
         return $columns;
-
     }
 
-    public function customFieldColumnContent( $column, $post_id )
+    public function customFieldColumnContent( $column, $reviewID )
     {
+        // echo '</select>'; ?????
 
-        echo '</select>';
-        switch ($column) {
-            case 'order_id' :
-                $post_meta = get_post_meta( $post_id );
-                echo __('Order Id');
+        $orderID = get_post_meta( $reviewID, 'orfw_order_id', true );
+        $review  = get_post( $reviewID );
+        $order   = wc_get_order( $orderID );
+
+        switch ( $column )
+        {
+            case 'order_id':
+                echo sprintf( '<a href="%1$s"><strong>%2$s</strong></a>',
+                    esc_url( get_edit_post_link( $reviewID ) ),
+                    esc_html__( "#{$orderID} {$order->get_customer_first_name()} {$order->get_customer_last_name()}", 'order-reviews-for-woocommerce' )
+                );
                 break;
-            case 'review_title' :
-                echo __('Review Title');
+
+            case 'review_title':
+                echo esc_html( $review->post_content );
                 break;
-            case 'review_rating' :
-                echo __('Review Rating');
+
+            case 'review_rating':
+                $stars = intval(get_post_meta( $reviewID, 'orfw_rating', true ));
+                for ( $i = 1; $i <= 5; $i++ )
+                { 
+                    echo ($i > $stars) ? '<span class="orfw-star-empty"></span>' : '<span class="orfw-star"></span>';
+                }
                 break;
-            case 'review_user' :
-                echo __('Review User');
+
+            case 'review_user':
+                echo sprintf( '<a href="%1$s">%2$s</a>',
+                    get_edit_user_link( $order->get_customer_id() ),
+                    esc_html( "{$order->get_customer_first_name()} {$order->get_customer_last_name()}", 'order-reviews-for-woocommerce' )
+                );
                 break;
-                break;
-            case 'review_time' :
-                echo __('Review Time');
+                
+            case 'review_time':
+                echo esc_html__( date('M j Y, h:i A', strtotime($review->post_date)), 'order-reviews-for-woocommerce' );
                 break;
         }
-
     }
 
     public function removeAllRowActions( $actions, $post )
     {
-
         global $current_screen;
 
-        if ($current_screen->post_type != 'orfw_review') return $actions;
+        if ( 'orfw_review' != $current_screen->post_type )
+            return $actions;
 
-        unset($actions['view']);
-        unset($actions['inline hide-if-no-js']);
-        unset($actions['edit']);
-        unset($actions['trash']);
+        unset( $actions['view'] );
+        unset( $actions['inline hide-if-no-js'] );
+        unset( $actions['edit'] );
+        unset( $actions['trash'] );
 
         return $actions;
-
     }
-
 }
