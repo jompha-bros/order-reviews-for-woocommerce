@@ -1,25 +1,30 @@
-jQuery(document).ready(function() 
-{
+; jQuery(document).ready(function () {
     'use strict';
 
-    if ( !jQuery('#orfw-popup').length )
+    if (!jQuery('#orfw-popup').length)
         return;
     
-    var orfwSliderLoop = ( jQuery('.owl-carousel').children('.item').length > 3 ) ? true : false;
-    
-    console.log(orfwSliderLoop);
+    var orfwSliderItems = jQuery('.owl-carousel').children('.item'),
+        orfwSetSliderItems = (orfwSliderItems.length <= 4) ? {items: orfwSliderItems.length, width: true} : { items: 4, width: false },
+        orfwSliderLoop = ( orfwSliderItems.length > 3 ) ? true : false,
+        orfwSliderCenter = (orfwSliderItems.length > 3 || orfwSliderItems.length == 1) ? true : false;
 
     jQuery('.owl-carousel').owlCarousel({
         loop: orfwSliderLoop,
         margin: 20,
-        center: orfwSliderLoop,
-        items: jQuery(this).children('.item').length,
+        center: orfwSliderCenter,
+        items: orfwSetSliderItems.items,
         autoplay: orfwSliderLoop,
-        autoWidth: true,
+        autoWidth: orfwSetSliderItems.width,
+        autoHeight: true,
         autoplayTimeout:1000,
-        autoplayHoverPause:true,
+        autoplayHoverPause: true,
+        dots: false,
     });
 
+    if ( orfwSliderItems.length === 2 )
+        orfwSliderItems.last().parent('.owl-item').addClass('mrzero');
+    
 
     var orfwPopup = jQuery('#orfw-popup'),
         ratingStars = jQuery('#orfw-popup .feedback input'),
@@ -74,6 +79,8 @@ jQuery(document).ready(function()
                     .text(orfw_data.text_write_feedback)
             .end()
             .show();
+            
+            feedback.addClass('orfw-shakeX').focus();
             return;
         }
 

@@ -144,13 +144,9 @@ class Resources
     public function styles()
     {
         $styles = array(
-            'animate-css' => array(
+            'owl-carousel' => array(
                 'src'     => ORFW_RESOURCES . '/css/owl.carousel.min.css',
                 'version' => filemtime( ORFW_PATH . '/resources/css/owl.carousel.min.css' )
-            ),
-            'owl-carousel' => array(
-                'src'     => ORFW_RESOURCES . '/css/animate.css',
-                'version' => filemtime( ORFW_PATH . '/resources/css/animate.css' )
             ),
             'jompha-admin-core' => array(
                 'src'     => ORFW_RESOURCES . '/css/admin-core.css',
