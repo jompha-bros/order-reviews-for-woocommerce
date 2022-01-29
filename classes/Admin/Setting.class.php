@@ -44,16 +44,54 @@ class Setting
     }
 
 	public function menu() 
-	{
-		add_submenu_page(
-			'woocommerce',
-			esc_html__( 'ORFW', 'order-reviews-for-woocommerce' ),
-			esc_html__( 'ORFW', 'order-reviews-for-woocommerce' ),
-			'manage_woocommerce',
-			self::$pageSlug,
-			array( $this, 'renderPage' ),
-			0
+	{	
+		add_menu_page(
+			esc_html('Order Reviews for WooCommerce', 'order-reviews-for-woocommerce'), 
+			esc_html('ORFW', 'order-reviews-for-woocommerce'), 
+			'manage_woocommerce', 
+			self::$pageSlug, 
+			array( $this, 'renderPage' ), 
+			'dashicons-feedback', 
+			56
 		);
+
+		$menuArguments = array(
+			array(
+				self::$pageSlug, 
+				'ORFW Settings', 
+				'Settings', 
+				'manage_woocommerce', 
+				self::$pageSlug, 
+				array($this, 'renderPage'), 
+				0
+			),
+			array(
+				self::$pageSlug, 
+				'Reviews by orfw', 
+				'Reviews', 
+				'manage_woocommerce', 
+				'orfw_reviews', 
+				array($this, 'renderReviews'), 
+				1
+			),
+			array(
+				'woocommerce',
+				esc_html__( 'Order Reviews', 'order-reviews-for-woocommerce' ),
+				esc_html__( 'Order Reviews', 'order-reviews-for-woocommerce' ),
+				'manage_woocommerce',
+				'orfw_reviews_link',
+				function(){
+					wp_safe_redirect( admin_url( 'admin.php?page=orfw_reviews' ), 301 ); 
+  					exit;
+				},
+				1
+			),
+		);
+
+		foreach( $menuArguments as $argument )
+		{	
+			add_submenu_page(...$argument);
+		}
 	}
 
 	public static function fields()
@@ -342,6 +380,27 @@ class Setting
 					submit_button();
 					?>
 				</form>
+			</div>
+			<?php /* <div class="jmph-endorse">
+				<h2>Recommended Plugins</h2>
+				<a href="https://wordpress.org/plugins/ultimate-coupon-for-woocommerce" target="_blank">
+					<img src="<?php echo JSP_RESOURCES; ?>/images/jsp-banner.png" alt="">
+				</a>
+			</div> */ ?>
+        </div>
+	<?php
+	}
+
+	public function renderReviews()
+	{
+	?>
+        <div class="wrap jmph-settings-container">
+            <div class="jmph-sets">
+				<h1><?php echo esc_html__( 'Reviews', 'order-reviews-for-woocommerce' ); ?></h1>
+				<p><?php echo esc_html__( 'Subtitle here', 'order-reviews-for-woocommerce' ); ?></p>
+
+
+				
 			</div>
 			<?php /* <div class="jmph-endorse">
 				<h2>Recommended Plugins</h2>
