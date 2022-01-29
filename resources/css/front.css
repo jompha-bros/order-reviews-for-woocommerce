@@ -83,7 +83,7 @@
     border: 0px;
 	outline: 0;
 }
-#orfw-popup .orfw-popup-footer #orfw-template-submit-button:disabled{
+#orfw-popup .orfw-popup-footer #orfw-template-submit-button:disabled {
 	cursor: default;
 }
 #orfw-popup.orfw-use-default-colors .orfw-popup-footer #orfw-template-submit-button {

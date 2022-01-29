@@ -134,25 +134,19 @@ class Setting
 
 			array(
 				'id'          => 'template_force_feedback',
-				'type'        => 'checkbox',
+				'type'        => 'toggle',
 				'section'     => 'general',
 				'label'       => esc_html__( 'Force Write Feedback', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'If checked, users must have to write a feedback.', 'order-reviews-for-woocommerce' ),
-				'options' => array(
-					'yes' => esc_html__( 'Yes', 'order-reviews-for-woocommerce' ),
-				),
 				'show_in_js'  => true,
 			),
 			
 			array(
 				'id'          => 'template_force_bad_feedback',
-				'type'        => 'checkbox',
+				'type'        => 'toggle',
 				'section'     => 'general',
 				'label'       => esc_html__( 'Force Feedback for Bad Rating', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'If checked, users must have to write a feedback if the rating is equal to or less than 3.', 'order-reviews-for-woocommerce' ),
-				'options' => array(
-					'yes' => esc_html__( 'Yes', 'order-reviews-for-woocommerce' ),
-				),
 				'show_in_js'  => true,
 			),
 			

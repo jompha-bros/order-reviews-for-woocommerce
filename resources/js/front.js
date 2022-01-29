@@ -76,7 +76,7 @@
             orfwForceFeedback    = (orfw_data.template_force_feedback == 'yes') ? true : false,
             orfwForceBadFeedback = (orfw_data.template_force_bad_feedback == 'yes') ? true : false;
 
-        if (orfwForceFeedback && !orfwFeedback.length)
+        if ( orfwForceFeedback && !orfwFeedback.length)
         {
             orfwPopupError
                 .find('.orfw-popup-error-text')
@@ -95,6 +95,8 @@
                     .text(orfw_data.text_write_feedback)
             .end()
             .show();
+
+            feedback.addClass('orfw-shakeX').focus();
             return;
         }
         
@@ -119,15 +121,18 @@
             beforeSend()
             {
                 jQuery('#orfw-popup-submit-save-icon').addClass('dashicons-arrow-right-alt2 orfw-horizontal-bounce');
+                submitButton.prop('disabled', true);
             },
             dataType: 'json',
             success: function(response)
             {
-                submitButton.prop("disabled", true)
-                    .css('background', '#29af81');
-                
+                submitButton.css('background', '#29af81');
+                    
                 jQuery('#orfw-popup-submit-save-icon').addClass('dashicons-yes-alt');
-                //orfwPopup.fadeOut();
+                
+                setTimeout(() => {
+                    orfwPopup.fadeOut();
+                }, 3000);
             },
             complete: function()
             {
