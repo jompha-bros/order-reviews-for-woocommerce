@@ -37,33 +37,59 @@ class Popup
             'numberposts' => 1,
             'meta_key'    => '_customer_user',
             'meta_value'  => get_current_user_id(),
+            'order'       => 'DESC',
             'post_type'   => 'shop_order',
             'post_status' => 'wc-completed',
             'fields'      => 'ids',
             'meta_query'  => array(
+                'relation' => 'AND',
                 array(
-                    'key'   => 'orfw_order',
-                    'value' => '1',
+                    'relation' => 'OR',
+                    array(
+                        'key'     => 'orfw_reviewed',
+                        'value'   => true,
+                        'compare' => '!=',
+                    ),
+                    array(
+                        'key'     => 'orfw_reviewed',
+                        'compare' => 'NOT EXISTS',
+                    )
+                ),
+                array(
+                    'key'     => 'orfw_is_order',
+                    'value'   => true,
                 )
             ),
         ) );
 
-        if ( !count( $lastOrder ) )
+        if ( !count($lastOrder) )
         {
-            //check for last 72hrs orders
             $lastOrder = get_posts( array(
                 'numberposts' => 1,
                 'meta_key'    => '_customer_user',
                 'meta_value'  => get_current_user_id(),
+                'order'       => 'DESC',
                 'post_type'   => 'shop_order',
                 'post_status' => 'wc-completed',
                 'fields'      => 'ids',
-                'date_query' => [
-                    [
-                        'after'     => '72 hour ago',  
+                'meta_query'  => array(
+                    'relation' => 'OR',
+                    array(
+                        'key'     => 'orfw_reviewed',
+                        'value'   => true,
+                        'compare' => '!=',
+                    ),
+                    array(
+                        'key'     => 'orfw_reviewed',
+                        'compare' => 'NOT EXISTS',
+                    ),
+                ),
+                'date_query' => array(
+                    array(
+                        'after'     => date('Y-m-d', strtotime('-3 days')),  
                         'inclusive' => true,
-                    ],
-                ],
+                    ),
+                ),
             ) );
         }
 
@@ -133,14 +159,14 @@ class Popup
         $review    = $_POST['review'];
         $rating    = $_POST['rating'];
         $customer  = wp_get_current_user();
-        $reviewIds = array();
+        $reviewIDs = array();
 
-        foreach ( $productIDs as $productId )
+        foreach ( $productIDs as $productID )
         {
-            if ( comments_open( $productId ) ) 
+            if ( comments_open( $productID ) )
             {
-                $reviewData = array(
-                    'comment_post_ID'      => $productId,
+                $reviewID = wp_insert_comment( array(
+                    'comment_post_ID'      => $productID,
                     'comment_type'         => 'review',
                     'comment_content'      => $review,
                     'comment_parent'       => 0,
@@ -154,19 +180,16 @@ class Popup
                         'orfw_order_id'     => $orderID,
                     ),
                     'comment_approved'     => 1,
-                );
-                
-                $review_id = wp_insert_comment( $reviewData );
+                ) );
 
-                if ( ! is_wp_error( $review_id ) ) 
-                {   
-                    $reviewIds[] = $review_id;
-                }
-
+                if ( ! is_wp_error( $reviewID ) ) 
+                    $reviewIDs[] = $reviewID;
             }
         }
 
-        echo wp_json_encode( $reviewIds );
+        update_post_meta( $orderID, 'orfw_reviewed', true );
+
+        echo wp_json_encode( $reviewIDs );
         wp_die();
     }
 }

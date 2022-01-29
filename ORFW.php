@@ -52,7 +52,7 @@ final class ORFW
         add_action( 'plugins_loaded',   array( $this, 'run' ) );
         add_action( 'activated_plugin', array($this, 'activationRedirect') );
 
-        add_filter( 'plugin_action_links_' . plugin_basename(__DIR__) . '/jompha-starter-plugin.php', array( $this, 'settingLink' ) );
+        add_filter( 'plugin_action_links_' . plugin_basename(__DIR__) . '/order-reviews-for-woocommerce.php', array( $this, 'settingLink' ) );
         add_filter( 'plugin_row_meta', array( $this, 'helpLinks' ), 10, 2);
     }
 
@@ -294,8 +294,8 @@ final class ORFW
      */
     public function activationRedirect( $plugin ) 
     {
-        if( plugin_basename(__DIR__) . '/jompha-starter-plugin.php' == $plugin && class_exists('woocommerce') )
-            exit( wp_redirect( admin_url( '/admin.php?page=orfw-options' ) ) );
+        if ( plugin_basename(__DIR__) . '/order-reviews-for-woocommerce.php' == $plugin && class_exists('woocommerce') )
+            exit( wp_redirect( admin_url( '/admin.php?page=orfw-settings' ) ) );
     }
 
     /**
@@ -304,9 +304,7 @@ final class ORFW
      */
     public function settingLink( $links ) 
     {
-	    $settingLink = sprintf( "<a href='%s'>%s</a>", esc_url( admin_url( '/admin.php?page=orfw-options' ) ), __( 'Settings','jompha-starter-plugin' ) );
-	    $links[] = $settingLink;
-	    $links[] = $premiumLink;
+	    $links[] = sprintf( '<a href="%s">%s</a>', esc_url( admin_url( '/admin.php?page=orfw-settings' ) ), __( 'Settings','order-reviews-for-woocommerce' ) );
 
 	    return $links;
 	}
@@ -317,11 +315,11 @@ final class ORFW
      */
     public function helpLinks( $links, $plugin )
     {
-        if ( plugin_basename(__DIR__) . '/jompha-starter-plugin.php' != $plugin )
+        if ( plugin_basename(__DIR__) . '/order-reviews-for-woocommerce.php' != $plugin )
             return $links;
         
-        $docsLink    = sprintf( "<a href='%s'>%s</a>", esc_url( '//docs.jompha.com/jompha-starter-plugin' ), __( 'Docs','jompha-starter-plugin' ) );
-        $supportLink = sprintf( "<a href='%s'>%s</a>", esc_url( '//forum.jompha.com' ), __( 'Community support','jompha-starter-plugin' ) );
+        $docsLink    = sprintf( "<a href='%s'>%s</a>", esc_url( '//docs.jompha.com/order-reviews-for-woocommerce' ), __( 'Docs','order-reviews-for-woocommerce' ) );
+        $supportLink = sprintf( "<a href='%s'>%s</a>", esc_url( '//forum.jompha.com' ), __( 'Community support','order-reviews-for-woocommerce' ) );
         
         $links[] = $docsLink;
         $links[] = $supportLink;
