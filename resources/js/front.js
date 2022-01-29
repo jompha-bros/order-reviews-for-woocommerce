@@ -112,7 +112,7 @@
                 action: 'orfw_review_submit',
                 order_id: orfwOrderId,
                 product_ids: orfwProductIds,
-                review: orfwFeedback,
+                feedback: orfwFeedback,
                 rating: orfwRating,
             },
             beforeSend()

@@ -29,7 +29,7 @@ class ReviewUI
 
     public function productReviewDisplayCss()
     {
-        if ( !$this->enabled )
+        if ( ! $this->enabled )
             return;
 
         switch( $this->fontSize )

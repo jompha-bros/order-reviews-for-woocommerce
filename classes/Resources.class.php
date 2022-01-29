@@ -72,7 +72,7 @@ class Resources
         
         foreach( $fields as $field )
         {
-            if( !$field['show_in_js'] )
+            if( ! $field['show_in_js'] )
                 continue;
             
             $data[ $field['id'] ] = get_option( $prefix . $field['id'], (isset($field['value'])) ? $field['value'] : '' );

@@ -22,13 +22,13 @@ class Popup
 
     private function __construct()
     {
-        if ( !$this->hasOrdered() )
+        if ( ! $this->hasOrdered() )
             return;
 
         add_action( 'wp_head',                           array( $this, 'colorVariables' ), 0 );
         add_action( 'wp_footer',                         array( $this, 'view') );
-        add_action( 'wp_ajax_orfw_review_submit',        array( $this, 'submitReview' ));
-        add_action( 'wp_ajax_nopriv_orfw_review_submit', array( $this, 'submitReview' ));
+        add_action( 'wp_ajax_orfw_review_submit',        array( $this, 'onSubmit' ));
+        add_action( 'wp_ajax_nopriv_orfw_review_submit', array( $this, 'onSubmit' ));
     }
 
     public function hasOrdered()
@@ -146,18 +146,21 @@ class Popup
     <?php
     }
 
-    public function submitReview()
+    public function onSubmit()
     {
+        if ( ! isset( $_POST['order_id'], $_POST['product_ids'], $_POST['feedback'], $_POST['rating'] ) )
+            $this->errorJson();
+        
         $orderID    = intval( $_POST['order_id'] );
-        $productIDs = $_POST['product_ids']; // Need to be sanitized the ids.
+        $productIDs = $_POST['product_ids'];
 
-        if ( empty( $orderID ) || empty( $productIDs ) )
-            return;
+        if ( empty( $orderID ) || get_post_type($orderID) != 'shop_order' || !is_array($productIDs) || empty( $productIDs ) )
+            $this->errorJson();
 
-        update_post_meta( $orderID, 'orfw_products', $productIDs );
+        update_post_meta( $orderID, 'orfw_products', orfw_sanitize_array($productIDs) );
 
-        $review    = $_POST['review'];
-        $rating    = $_POST['rating'];
+        $feedback  = sanitize_text_field( $_POST['feedback'] );
+        $rating    = intval( $_POST['rating'] );
         $customer  = wp_get_current_user();
         $reviewIDs = array();
 
@@ -168,7 +171,7 @@ class Popup
                 $reviewID = wp_insert_comment( array(
                     'comment_post_ID'      => $productID,
                     'comment_type'         => 'review',
-                    'comment_content'      => $review,
+                    'comment_content'      => sanitize_text_field( $_POST['feedback'] ),
                     'comment_parent'       => 0,
                     'comment_date'         => date('Y-m-d H:i:s'),
                     'user_id'              => $customer->ID,
@@ -176,8 +179,8 @@ class Popup
                     'comment_author_email' => $customer->user_email,
                     'comment_author_url'   => $customer->user_url,
                     'comment_meta'         => array(
-                        'rating'            => $rating,
-                        'orfw_order_id'     => $orderID,
+                        'rating'           => intval( $_POST['rating'] ),
+                        'orfw_order_id'    => $orderID,
                     ),
                     'comment_approved'     => 1,
                 ) );
@@ -189,7 +192,38 @@ class Popup
 
         update_post_meta( $orderID, 'orfw_reviewed', true );
 
-        echo wp_json_encode( $reviewIDs );
+        $orfwReviewID = wp_insert_post( array(
+            'post_title'   => "#{$orderID} {$customer->user_login}",
+            'post_content' => $feedback,
+            'post_status'  => 'publish',
+            'post_type'    => 'orfw_review'
+        ) );
+
+        if ( $orfwReviewID )
+        {
+            update_post_meta( $orfwReviewID, 'orfw_order_id', $orderID );
+            update_post_meta( $orfwReviewID, 'orfw_rating', intval( $_POST['rating'] ) );
+        }
+
+        $this->successJson();
+    }
+
+    private function successJson( $array = array() )
+    {
+        echo wp_json_encode( array_merge( array(
+            'success' => true,
+            'error'   => false
+        ), $array ) );
+        wp_die();
+    }
+
+    private function errorJson( $message = '' )
+    {
+        echo wp_json_encode( array(
+            'success' => false,
+            'error'   => true,
+            'message' => $message
+        ) );
         wp_die();
     }
 }

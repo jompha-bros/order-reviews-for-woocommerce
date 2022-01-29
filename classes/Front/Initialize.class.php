@@ -45,5 +45,4 @@ class Initialize
      * @return array
      */
     public function inlineStyles(){}
-
 }

@@ -50,10 +50,10 @@ final class ORFW
 
         add_action( 'plugins_loaded',   array( $this, 'bootSystem' ) );
         add_action( 'plugins_loaded',   array( $this, 'run' ) );
-        add_action( 'activated_plugin', array($this, 'activationRedirect') );
+        add_action( 'activated_plugin', array( $this, 'activationRedirect' ) );
 
         add_filter( 'plugin_action_links_' . plugin_basename(__DIR__) . '/order-reviews-for-woocommerce.php', array( $this, 'settingLink' ) );
-        add_filter( 'plugin_row_meta', array( $this, 'helpLinks' ), 10, 2);
+        add_filter( 'plugin_row_meta', array( $this, 'helpLinks' ), 10, 2 );
     }
 
     /**
@@ -72,7 +72,6 @@ final class ORFW
         define( 'ORFW_RESOURCES',     ORFW_URL . '/resources' );
         define( 'ORFW_RENDER',        ORFW_PATH . '/render' );
         define( 'ORFW_RENDER_FRONT',  ORFW_RENDER . '/Front' );
-        define( 'ORFW_POST_TYPE',     'orfw_review' );
     }
 
     /**
@@ -119,6 +118,7 @@ final class ORFW
         include_once ORFW_FRONT_CLASSES . '/Initialize.class.php';
         include_once ORFW_FRONT_CLASSES . '/Popup.class.php';
         include_once ORFW_FRONT_CLASSES . '/ReviewUI.class.php';
+        include_once ORFW_FRONT_CLASSES . '/Order.class.php';
 
         include_once ORFW_CLASSES       . '/Resources.class.php';
     }
@@ -141,6 +141,7 @@ final class ORFW
             \ORFW\Front\Initialize::getInstance();
             \ORFW\Front\Popup::getInstance();
             \ORFW\Front\ReviewUI::getInstance();
+            \ORFW\Front\Order::getInstance();
         }
 
         \ORFW\Resources::getInstance();
@@ -163,33 +164,30 @@ final class ORFW
      */
     public function register_new_post_types()
     {
-        $labels = [
-            'name'               => _x('Order Reviews', 'Plural Name of Order Review', 'order-reviews-for-woocommerce'),
-            'singular_name'      => _x('Order Review', 'Singular Name of Order Review', 'order-reviews-for-woocommerce'),
-            'menu_name'          => __('Order Reviews', 'orfw'),
-            'name_admin_bar'     => __('Order Review', 'order-reviews-for-woocommerce'),
-            'parent_item_colon'  => __('Parent Order Review:', 'order-reviews-for-woocommerce'),
-            'all_items'          => __('All Reviews', 'order-reviews-for-woocommerce'),
-            'add_new_item'       => __('Add New review', 'order-reviews-for-woocommerce'),
-            'add_new'            => __('Add New review', 'order-reviews-for-woocommerce'),
-            'new_item'           => __('New review', 'order-reviews-for-woocommerce'),
-            'edit_item'          => __('Edit review', 'order-reviews-for-woocommerce'),
-            'update_item'        => __('Update review', 'order-reviews-for-woocommerce'),
-            'view_item'          => __('View review', 'order-reviews-for-woocommerce'),
-            'search_items'       => __('Search review', 'order-reviews-for-woocommerce'),
-            'not_found'          => __('No Reviews found', 'order-reviews-for-woocommerce'),
-            'not_found_in_trash' => __('Not Reviews found in Trash', 'order-reviews-for-woocommerce'),
-        ];
-
-        $args = [
-            'label'               => __('Order Review', 'order-reviews-for-woocommerce'),
-            'description'         => __('Order Reviews', 'order-reviews-for-woocommerce'),
-            'labels'              => $labels,
-            'supports'            => ['title', 'editor', 'author'],
+        register_post_type( 'orfw_review', array(
+            'label'               => esc_html__( 'Order Reviews', 'order-reviews-for-woocommerce' ),
+            'description'         => esc_html__( 'Reviews of orders posted by customers.', 'order-reviews-for-woocommerce' ),
+            'labels'              => array(
+                'name'               => esc_html__( 'Order Reviews', 'order-reviews-for-woocommerce' ),
+                'singular_name'      => esc_html__( 'Order Review', 'order-reviews-for-woocommerce' ),
+                'menu_name'          => esc_html__( 'Order Reviews', 'order-reviews-for-woocommerce' ),
+                'name_admin_bar'     => esc_html__( 'Order Review', 'order-reviews-for-woocommerce' ),
+                'parent_item_colon'  => esc_html__( 'Parent Order Review:', 'order-reviews-for-woocommerce' ),
+                'all_items'          => esc_html__( 'All Reviews', 'order-reviews-for-woocommerce' ),
+                'add_new_item'       => esc_html__( 'Add New review', 'order-reviews-for-woocommerce' ),
+                'add_new'            => esc_html__( 'Add New review', 'order-reviews-for-woocommerce' ),
+                'new_item'           => esc_html__( 'New review', 'order-reviews-for-woocommerce' ),
+                'edit_item'          => esc_html__( 'Edit review', 'order-reviews-for-woocommerce' ),
+                'update_item'        => esc_html__( 'Update review', 'order-reviews-for-woocommerce' ),
+                'view_item'          => esc_html__( 'View review', 'order-reviews-for-woocommerce' ),
+                'search_items'       => esc_html__( 'Search review', 'order-reviews-for-woocommerce' ),
+                'not_found'          => esc_html__( 'No Reviews found', 'order-reviews-for-woocommerce' ),
+                'not_found_in_trash' => esc_html__( 'Not Reviews found in Trash', 'order-reviews-for-woocommerce' ),
+            ),
+            'supports'            => array( 'title', 'editor', 'author' ),
             'show_in_rest'        => true,
-            'hierarchical'        => false,
             'public'              => true,
-            'show_ui'             => false, // Restricted Option
+            'show_ui'             => false,
             'show_in_menu'        => true,
             'menu_position'       => 20,
             'menu_icon'           => ORFW_RESOURCES . 'images/icon.png',
@@ -199,11 +197,9 @@ final class ORFW
             'has_archive'         => false,
             'exclude_from_search' => false,
             'publicly_queryable'  => true,
-            'capability_type'     => ORFW_POST_TYPE,
+            'capability_type'     => 'manage_orfw',
             'map_meta_cap'        => true
-        ];
-
-        register_post_type(ORFW_POST_TYPE, $args);
+        ) );
 
         // Create post object
         // $my_post = array(
@@ -226,7 +222,7 @@ final class ORFW
     {
         $installed = get_option( 'orfw_installed' );
 
-        if ( !$installed )
+        if ( ! $installed )
             update_option( 'orfw_installed', time() );
 
         update_option( 'orfw_version', ORFW_VERSION );
@@ -304,7 +300,7 @@ final class ORFW
      */
     public function settingLink( $links ) 
     {
-	    $links[] = sprintf( '<a href="%s">%s</a>', esc_url( admin_url( '/admin.php?page=orfw-settings' ) ), __( 'Settings','order-reviews-for-woocommerce' ) );
+	    $links[] = sprintf( '<a href="%s">%s</a>', esc_url( admin_url( '/admin.php?page=orfw-settings' ) ), esc_html__( 'Settings','order-reviews-for-woocommerce' ) );
 
 	    return $links;
 	}
@@ -318,8 +314,8 @@ final class ORFW
         if ( plugin_basename(__DIR__) . '/order-reviews-for-woocommerce.php' != $plugin )
             return $links;
         
-        $docsLink    = sprintf( "<a href='%s'>%s</a>", esc_url( '//docs.jompha.com/order-reviews-for-woocommerce' ), __( 'Docs','order-reviews-for-woocommerce' ) );
-        $supportLink = sprintf( "<a href='%s'>%s</a>", esc_url( '//forum.jompha.com' ), __( 'Community support','order-reviews-for-woocommerce' ) );
+        $docsLink    = sprintf( "<a href='%s'>%s</a>", esc_url( '//docs.jompha.com/order-reviews-for-woocommerce' ), esc_html__( 'Docs','order-reviews-for-woocommerce' ) );
+        $supportLink = sprintf( "<a href='%s'>%s</a>", esc_url( '//forum.jompha.com' ), esc_html__( 'Community support','order-reviews-for-woocommerce' ) );
         
         $links[] = $docsLink;
         $links[] = $supportLink;
