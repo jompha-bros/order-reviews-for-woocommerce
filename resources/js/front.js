@@ -117,21 +117,25 @@
             },
             beforeSend()
             {
-                jQuery('#orfw-popup-submit-save-icon').addClass('dashicons dashicons-arrow-right-alt2 orfw-horizontal-bounce').attr('disabled', true);
+                jQuery('#orfw-popup-submit-save-icon').addClass('dashicons-arrow-right-alt2 orfw-horizontal-bounce');
             },
             dataType: 'json',
             success: function(response)
             {
-                orfwPopup.fadeOut();
+                submitButton.prop("disabled", true)
+                    .css('background', '#29af81');
+                
+                jQuery('#orfw-popup-submit-save-icon').addClass('dashicons-yes-alt');
+                //orfwPopup.fadeOut();
             },
             complete: function()
             {
-                jQuery('#orfw-popup-submit-save-icon').removeClass('dashicons dashicons-arrow-right-alt2 orfw-horizontal-bounce');
+                jQuery('#orfw-popup-submit-save-icon').removeClass('dashicons-arrow-right-alt2 orfw-horizontal-bounce');
             }
         });
     });
 
-    if ( orfwFrequencyCount < orfwFrequency )
+    if ( orfwFrequency == 0 || orfwFrequencyCount < orfwFrequency )
         orfwPopup.removeClass('hide');
 
     jQuery(document).on('click', '#orfw-popup-skip', function (e)
