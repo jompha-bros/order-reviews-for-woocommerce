@@ -114,6 +114,7 @@ final class ORFW
     {
         include_once ORFW_ADMIN_CLASSES . '/Initialize.class.php';
         include_once ORFW_ADMIN_CLASSES . '/Setting.class.php';
+        include_once ORFW_ADMIN_CLASSES . '/Lists.class.php';
 
         include_once ORFW_FRONT_CLASSES . '/Initialize.class.php';
         include_once ORFW_FRONT_CLASSES . '/Popup.class.php';
@@ -134,6 +135,7 @@ final class ORFW
         {
             \ORFW\Admin\Initialize::getInstance();
             \ORFW\Admin\Setting::getInstance();
+            \ORFW\Admin\Lists::getInstance();
         }
 
         if ( $this->is_request( 'front' ) )
@@ -189,12 +191,11 @@ final class ORFW
             'public'              => true,
             'show_ui'             => false,
             'show_in_menu'        => true,
-            'menu_position'       => 20,
-            'menu_icon'           => ORFW_RESOURCES . 'images/icon.png',
-            'show_in_admin_bar'   => true,
             'show_in_nav_menus'   => true,
+            'show_in_admin_bar'   => true,
+            'menu_position'       => 5,
             'can_export'          => true,
-            'has_archive'         => false,
+            'has_archive'         => true,
             'exclude_from_search' => false,
             'publicly_queryable'  => true,
             'capability_type'     => 'manage_orfw',
@@ -206,10 +207,10 @@ final class ORFW
         //     'post_title'    => 'test',
         //     'post_content'  => 'test',
         //     'post_status'   => 'publish',
-        //     'post_type' => ORFW_POST_TYPE
+        //     'post_type'     => ORFW_POST_TYPE
         // );
         
-        // Insert the post into the database
+        // //Insert the post into the database
         // wp_insert_post( $my_post );
     }
 

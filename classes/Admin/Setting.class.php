@@ -156,6 +156,15 @@ class Setting
 			),
 			
 			array(
+				'id'          => 'template_color_scheme',
+				'type'        => 'toggle',
+				'section'     => 'styles',
+				'label'       => esc_html__( 'Color Scheme', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Turn on if you want to use default color scheme', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
+			),
+
+			array(
 				'id'          => 'template_header_background_color',
 				'type'        => 'color',
 				'section'     => 'styles',

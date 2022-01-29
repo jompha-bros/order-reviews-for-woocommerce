@@ -6,6 +6,7 @@ class Popup
     public static $instance;
     public $orderID = null;
     public $order;
+    private $colorScheme;
 
     /**
     * Singleton Pattern
@@ -29,6 +30,8 @@ class Popup
         add_action( 'wp_footer',                         array( $this, 'view') );
         add_action( 'wp_ajax_orfw_review_submit',        array( $this, 'onSubmit' ));
         add_action( 'wp_ajax_nopriv_orfw_review_submit', array( $this, 'onSubmit' ));
+      
+        $this->colorScheme = get_option( 'orfw_template_color_scheme', false );
     }
 
     public function hasOrdered()
