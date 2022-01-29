@@ -24,7 +24,6 @@
     text-align: center;
     min-width: 350px;
 }
-
 #orfw-popup.orfw-use-default-colors .orfw-popup-inner {
 	background-color: #ffffff;
 	color: #442a00;
@@ -46,7 +45,6 @@
 #orfw-popup .orfw-popup-footer, #orfw-popup .orfw-popup-header {
 	padding: 20px 20px;
 }
-
 /* Inner */
 #orfw-popup .orfw-popup-order-info h3 {
 	margin: 20px 0 0;
@@ -67,30 +65,28 @@
 	font-size: 15px;
 	margin: 0px;
 }
-
 #orfw-popup .orfw-popup-order-products {
     max-width: 360px;
     margin: 10px auto 0;
 }
-
-#orfw-popup .orfw-popup-order-products .owl-dots {
-	display: none;
+#orfw-popup .orfw-popup-order-products .owl-stage .owl-item.mrzero{
+	margin-right: 0!important;
+	float: right;
 }
-
 #orfw-popup .orfw-popup-footer h2 {
 	margin: 5px auto;
 	font-size: 20px;
 	font-weight: normal;
 }
-
 #orfw-popup .orfw-popup-footer #orfw-template-submit-button {
-	padding: 10px 45px;
-	border-radius: 2px;
-	display: block;
-	margin: 10px auto 0;
-	font-weight: normal;
-	text-decoration: none;
-	cursor: pointer;
+    padding: 4px 45px 10px;
+    border-radius: 2px;
+    display: block;
+    margin: 10px auto 0;
+    font-weight: normal;
+    text-decoration: none;
+    border: 0px;
+    cursor: pointer;
 }
 #orfw-popup.orfw-use-default-colors .orfw-popup-footer #orfw-template-submit-button {
 	background-color: #f4b248;

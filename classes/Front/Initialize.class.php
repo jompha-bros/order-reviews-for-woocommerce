@@ -28,7 +28,6 @@ class Initialize
     private function styles()
     {   
         wp_enqueue_style( 'owl-carousel' );
-        wp_enqueue_style( 'animate-css' );
         wp_enqueue_style( 'orfw' );
         wp_enqueue_style( 'orfw-front' );
     }
