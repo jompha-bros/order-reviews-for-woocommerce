@@ -19,17 +19,17 @@ class Initialize
     }
 
 
-    public function enqueue($currentScreen)
+    public function enqueue( $screen )
     {
-        $this->styles($currentScreen);
-        $this->scripts($currentScreen);
+        $this->styles($screen);
+        $this->scripts($screen);
     }
 
-    private function styles($currentScreen)
+    private function styles( $screen )
     {
         wp_enqueue_style( 'orfw' );
 
-        if( 'woocommerce_page_orfw-settings' === $currentScreen )
+        if ( 'woocommerce_page_orfw-settings' === $screen )
         {
             wp_enqueue_style( 'jompha-admin-core' );
             wp_enqueue_style( 'jompha-icons' );
@@ -37,9 +37,9 @@ class Initialize
         }
     }
 
-    private function scripts($currentScreen)
+    private function scripts( $screen )
     {   
-        if( 'woocommerce_page_orfw-settings' === $currentScreen )
+        if ( 'woocommerce_page_orfw-settings' === $screen )
         {
             wp_enqueue_script( 'orfw-admin' );
         }

@@ -1,31 +1,38 @@
-jQuery(document).ready(function() 
-{
+; jQuery(document).ready(function () {
     'use strict';
 
-    if ( !jQuery('#orfw-popup').length )
+    if (!jQuery('#orfw-popup').length)
         return;
     
-    var orfwSliderLoop = ( jQuery('.owl-carousel').children('.item').length > 3 ) ? true : false;
-    
-    console.log(orfwSliderLoop);
+    var orfwSliderItems = jQuery('.owl-carousel').children('.item'),
+        orfwSetSliderItems = (orfwSliderItems.length <= 4) ? {items: orfwSliderItems.length, width: true} : { items: 4, width: false },
+        orfwSliderLoop = ( orfwSliderItems.length > 3 ) ? true : false,
+        orfwSliderCenter = (orfwSliderItems.length > 3 || orfwSliderItems.length == 1) ? true : false;
 
     jQuery('.owl-carousel').owlCarousel({
         loop: orfwSliderLoop,
         margin: 20,
-        center: orfwSliderLoop,
-        items: jQuery(this).children('.item').length,
+        center: orfwSliderCenter,
+        items: orfwSetSliderItems.items,
         autoplay: orfwSliderLoop,
-        autoWidth: true,
+        autoWidth: orfwSetSliderItems.width,
+        autoHeight: true,
         autoplayTimeout:1000,
-        autoplayHoverPause:true,
+        autoplayHoverPause: true,
+        dots: false,
     });
 
+    if ( orfwSliderItems.length === 2 )
+        orfwSliderItems.last().parent('.owl-item').addClass('mrzero');
+    
 
     var orfwPopup = jQuery('#orfw-popup'),
+        orfwPopupError = jQuery('.orfw-popup-error-wrapper'),
         ratingStars = jQuery('#orfw-popup .feedback input'),
         feedback = jQuery('#orfw-popup #orfw-popup-comment'),
         submitButton = jQuery('#orfw-template-submit-button'),
-        orfwFrequencyCount = ( getCookie('orfw-template-view-frequency') == null ) ? 0 : parseInt( getCookie('orfw-template-view-frequency') );
+        orfwFrequency = orfw_data.template_view_frequency == '' ? 3 : parseInt( orfw_data.template_view_frequency ),
+        orfwFrequencyCount = getCookie('orfw-template-view-frequency') == null ? 0 : parseInt( getCookie('orfw-template-view-frequency') );
 
     ratingStars.on('click', function() 
     {
@@ -45,6 +52,7 @@ jQuery(document).ready(function()
     feedback.on('keyup', function ()
     {
         var orfwFeedback = jQuery(this).val();
+        orfwPopupError.hide();
     });
 
     //submit button
@@ -52,7 +60,7 @@ jQuery(document).ready(function()
     {
         if ( !jQuery('#orfw-popup .feedback input:checked').length )
         {
-            jQuery('.orfw-popup-error-wrapper')
+            orfwPopupError
                 .find('.orfw-popup-error-text')
                     .text(orfw_data.text_rate_order)
             .end()
@@ -69,17 +77,19 @@ jQuery(document).ready(function()
 
         if (orfwForceFeedback && !orfwFeedback.length)
         {
-            jQuery('.orfw-popup-error-wrapper')
+            orfwPopupError
                 .find('.orfw-popup-error-text')
                     .text(orfw_data.text_write_feedback)
             .end()
             .show();
+            
+            feedback.addClass('orfw-shakeX').focus();
             return;
         }
 
         if (orfwForceBadFeedback && jQuery('#orfw-popup .feedback input:checked').val() < 4 && !orfwFeedback.length)
         {
-            jQuery('.orfw-popup-error-wrapper')
+            orfwPopupError
                 .find('.orfw-popup-error-text')
                     .text(orfw_data.text_write_feedback)
             .end()
@@ -102,7 +112,7 @@ jQuery(document).ready(function()
                 action: 'orfw_review_submit',
                 order_id: orfwOrderId,
                 product_ids: orfwProductIds,
-                review: orfwFeedback,
+                feedback: orfwFeedback,
                 rating: orfwRating,
             },
             beforeSend()
@@ -112,7 +122,7 @@ jQuery(document).ready(function()
             dataType: 'json',
             success: function(response)
             {
-                console.log(response);
+                orfwPopup.fadeOut();
             },
             complete: function()
             {
@@ -121,10 +131,8 @@ jQuery(document).ready(function()
         });
     });
 
-    if ( orfwFrequencyCount <= ( orfw_data.template_view_frequency == '' ? 2 : parseInt( orfw_data.template_view_frequency ) ) )
-    {
+    if ( orfwFrequencyCount < orfwFrequency )
         orfwPopup.removeClass('hide');
-    }
 
     jQuery(document).on('click', '#orfw-popup-skip', function (e)
     {   
@@ -133,9 +141,10 @@ jQuery(document).ready(function()
         var orfwPopupContainer = jQuery('#orfw-popup');
         orfwPopupContainer.fadeOut();
 
-        var orfwAgainPeriod = parseInt(orfw_data.template_again_period);
-        setCookie( 'orfw-template-again-period', 'yes', (orfwAgainPeriod * 60 * 60) );
+        if ( '' == orfw_data.template_again_period )
+            setCookie( 'orfw-template-again-period', 'yes', (parseInt(orfw_data.template_again_period) * 60 * 60) );
 
-        setCookie( 'orfw-template-view-frequency', (orfwFrequencyCount + 1), ( 30 * 24 * 60 * 60 ) );
+        if ( orfwFrequency > 0 )
+            setCookie( 'orfw-template-view-frequency', (orfwFrequencyCount + 1), ( 30 * 24 * 60 * 60 ) );
     });
 });

@@ -3,9 +3,11 @@
         <div class="orfw-popup-header">
             
             <div class="orfw-popup-order-info">
-                <h3><?php echo esc_html( 'Your Last Order', 'order-reviews-for-woocommerce' ); ?></h3>
+                <h3><?php $customText = get_option( 'orfw_text_last_order_heading', '' ); echo (empty($customText)) ? esc_html( 'Your Last Order', 'order-reviews-for-woocommerce' ) : esc_html( $customText ); ?></h3>
                 <h1 data-order-id="<?php echo esc_html( $this->orderID ); ?>" id="order-id">#<?php echo esc_html( $this->orderID ); ?></h1>
+                <?php if ( get_option( 'orfw_template_show_time', 'yes' ) == 'yes' ) : ?>
                 <p><?php echo esc_html( date('d-m-Y h:i A', strtotime($this->order->get_date_completed()) ) ); ?></p>
+                <?php endif; ?>
             </div>
             
             <div class="orfw-popup-order-products">
@@ -82,8 +84,8 @@
             
             <h4 class="disclaimer"><?php $customText = get_option( 'orfw_text_footer', '' ); echo (empty($customText)) ? esc_html( 'Please provide your honest feedback!', 'order-reviews-for-woocommerce' ) : esc_html( $customText ); ?></h4>
             
-            <?php if ( get_option( 'orfw_force_order', 'no' ) != 'yes' ) { ?>
-            <a id="orfw-popup-skip" href="#"><?php echo esc_html( 'Skip', 'order-reviews-for-woocommerce' ); ?></a>
+            <?php if ( get_option( 'orfw_force_review', 'no' ) != 'yes' ) { ?>
+            <a id="orfw-popup-skip" href=""><?php echo esc_html( 'Skip', 'order-reviews-for-woocommerce' ); ?></a>
             <?php } ?>
         </div>
 

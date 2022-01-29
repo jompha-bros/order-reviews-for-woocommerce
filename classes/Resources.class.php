@@ -72,7 +72,7 @@ class Resources
         
         foreach( $fields as $field )
         {
-            if( !$field['show_in_js'] )
+            if( ! $field['show_in_js'] )
                 continue;
             
             $data[ $field['id'] ] = get_option( $prefix . $field['id'], (isset($field['value'])) ? $field['value'] : '' );
@@ -144,13 +144,9 @@ class Resources
     public function styles()
     {
         $styles = array(
-            'animate-css' => array(
+            'owl-carousel' => array(
                 'src'     => ORFW_RESOURCES . '/css/owl.carousel.min.css',
                 'version' => filemtime( ORFW_PATH . '/resources/css/owl.carousel.min.css' )
-            ),
-            'owl-carousel' => array(
-                'src'     => ORFW_RESOURCES . '/css/animate.css',
-                'version' => filemtime( ORFW_PATH . '/resources/css/animate.css' )
             ),
             'jompha-admin-core' => array(
                 'src'     => ORFW_RESOURCES . '/css/admin-core.css',
