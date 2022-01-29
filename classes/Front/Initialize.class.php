@@ -18,7 +18,7 @@ class Initialize
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
         add_action( 'wp_head',            array( $this, 'inlineStyles' ) );
     }
-   
+    
     public function enqueue()
     {
         $this->styles();

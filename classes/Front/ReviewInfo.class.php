@@ -1,7 +1,7 @@
 <?php
 namespace ORFW\Front;
 
-class ReviewUI
+class ReviewInfo
 {
     public static $instance;
     private $enabled;
@@ -64,7 +64,11 @@ class ReviewUI
         $reviewID = intval($comment->comment_ID);
         $orderID  = get_comment_meta( $reviewID, 'orfw_order_id', true );
         $products = get_post_meta( $orderID, 'orfw_products', true );
-        $key      = array_search( intval($comment->comment_post_ID), $products );
+
+        if ( !$products )
+            return;
+
+        $key = array_search( intval($comment->comment_post_ID), $products );
 
         if ( $key )
             unset( $products[ $key ] );
@@ -80,23 +84,30 @@ class ReviewUI
         {
             $i++;
 
-            if ($i > 3)
-                break;
-            
             $product = \wc_get_product($productID);
+
+            if ( !$product )
+                continue;
+
             $px[$i]  = array(
                 'id'   => $product->get_id(),
                 'name' => $product->get_name(),
                 'url'  => $product->get_permalink(),
             );
 
-            shuffle($px);
+            if ($i > 3)
+                break;
         }
+
+        shuffle($px);
     ?>
     <div class="orfw-review-info">
     <?php
         switch ($t)
         {
+            case 0:
+                break;
+            
             case 1:
                 echo sprintf(
                     esc_html__('This user also bought %s.', 'order-reviews-for-woocommerce'),

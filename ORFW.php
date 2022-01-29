@@ -118,7 +118,7 @@ final class ORFW
 
         include_once ORFW_FRONT_CLASSES . '/Initialize.class.php';
         include_once ORFW_FRONT_CLASSES . '/Popup.class.php';
-        include_once ORFW_FRONT_CLASSES . '/ReviewUI.class.php';
+        include_once ORFW_FRONT_CLASSES . '/ReviewInfo.class.php';
         include_once ORFW_FRONT_CLASSES . '/Order.class.php';
 
         include_once ORFW_CLASSES       . '/Resources.class.php';
@@ -142,7 +142,7 @@ final class ORFW
         {
             \ORFW\Front\Initialize::getInstance();
             \ORFW\Front\Popup::getInstance();
-            \ORFW\Front\ReviewUI::getInstance();
+            \ORFW\Front\ReviewInfo::getInstance();
             \ORFW\Front\Order::getInstance();
         }
 
@@ -189,7 +189,7 @@ final class ORFW
             'supports'            => array( 'title', 'editor', 'author' ),
             'show_in_rest'        => true,
             'public'              => true,
-            'show_ui'             => false,
+            'show_ui'             => true,
             'show_in_menu'        => true,
             'show_in_nav_menus'   => true,
             'show_in_admin_bar'   => true,
@@ -198,20 +198,9 @@ final class ORFW
             'has_archive'         => true,
             'exclude_from_search' => false,
             'publicly_queryable'  => true,
-            'capability_type'     => 'manage_orfw',
+            'capability_type'     => 'post',
             'map_meta_cap'        => true
         ) );
-
-        // Create post object
-        // $my_post = array(
-        //     'post_title'    => 'test',
-        //     'post_content'  => 'test',
-        //     'post_status'   => 'publish',
-        //     'post_type'     => ORFW_POST_TYPE
-        // );
-        
-        // //Insert the post into the database
-        // wp_insert_post( $my_post );
     }
 
     /**
