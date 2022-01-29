@@ -79,7 +79,7 @@
 
             <button id="orfw-template-submit-button">
                 <span><?php echo esc_html( 'Submit', 'order-reviews-for-woocommerce' ); ?></span>
-                <span id="orfw-popup-submit-save-icon"></span>
+                <span id="orfw-popup-submit-save-icon" class="dashicons"></span>
             </button>
             
             <h4 class="disclaimer"><?php $customText = get_option( 'orfw_text_footer', '' ); echo (empty($customText)) ? esc_html( 'Please provide your honest feedback!', 'order-reviews-for-woocommerce' ) : esc_html( $customText ); ?></h4>
