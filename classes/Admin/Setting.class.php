@@ -47,8 +47,8 @@ class Setting
 	{
 		add_submenu_page(
 			'woocommerce',
-			esc_html__( 'ORFW Starter Plugin Settings', 'order-reviews-for-woocommerce' ),
-			esc_html__( 'ORFW PLUGIN', 'order-reviews-for-woocommerce' ),
+			esc_html__( 'ORFW', 'order-reviews-for-woocommerce' ),
+			esc_html__( 'ORFW', 'order-reviews-for-woocommerce' ),
 			'manage_woocommerce',
 			self::$pageSlug,
 			array( $this, 'renderPage' ),
@@ -66,8 +66,8 @@ class Setting
 				'section'     => 'general',
 				'label'       => esc_html__( 'Wait Period', 'order-reviews-for-woocommerce' ),
 				'placeholder' => esc_html__( '12', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'How many hours after the order is completed the popup will first be shown to the user? (0 = instantly)', 'order-reviews-for-woocommerce' ),
 				'value' 	  => esc_html__( '3', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'How many hours after the order is completed the popup will first be shown to the user?', 'order-reviews-for-woocommerce' ),
 				'show_in_js'  => true,
 			),
 
@@ -77,8 +77,8 @@ class Setting
 				'section'     => 'general',
 				'label'       => esc_html__( 'Again Period', 'order-reviews-for-woocommerce' ),
 				'placeholder' => esc_html__( '12', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'After the popup is skipped, ask for review again after X hours. (0 = instantly)', 'order-reviews-for-woocommerce' ),
 				'value' 	  => esc_html__( '6', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'After the popup is skipped, ask for review again after X hours.', 'order-reviews-for-woocommerce' ),
 				'show_in_js'  => true,
 			),
 
@@ -87,9 +87,9 @@ class Setting
 				'type'        => 'number',
 				'section'     => 'general',
 				'label'       => esc_html__( 'Frequency', 'order-reviews-for-woocommerce' ),
-				'placeholder' => esc_html__( '3', 'order-reviews-for-woocommerce' ),
-				'value' 	  => esc_html__( '2', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'How many times the template will show to customer?', 'order-reviews-for-woocommerce' ),
+				'placeholder' => esc_html__( '5', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'How many times the popup will show to customer if skipped? (0 = unlimited)', 'order-reviews-for-woocommerce' ),
+				'value' 	  => esc_html__( '3', 'order-reviews-for-woocommerce' ),
 				'show_in_js'  => true,
 			),
 
@@ -208,6 +208,25 @@ class Setting
 			),
 
 			array(
+				'id'      	  => 'template_show_time',
+				'type'    	  => 'toggle',
+				'section' 	  => 'content',
+				'label'   	  => esc_html__( 'Show Order Time', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Display the order time in popup.', 'order-reviews-for-woocommerce' ),
+				'value'		  => 'yes',
+				'show_in_js'  => false,
+			),
+
+			array(
+				'id'          => 'text_last_order_heading',
+				'type'        => 'text',
+				'section'     => 'content',
+				'label'       => esc_html__( 'Your Last Order', 'order-reviews-for-woocommerce' ),
+				'value' 	  => esc_attr( 'Your Last Order' ),
+				'show_in_js'  => false,
+			),
+
+			array(
 				'id'          => 'text_rate_order_heading',
 				'type'        => 'text',
 				'section'     => 'content',
@@ -235,10 +254,10 @@ class Setting
 			),
 
 			array(
-				'id'      	  => 'force_order',
+				'id'      	  => 'force_review',
 				'type'    	  => 'toggle',
 				'section' 	  => 'general',
-				'label'   	  => esc_html__( 'Force Order', 'order-reviews-for-woocommerce' ),
+				'label'   	  => esc_html__( 'Force Review', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Force customer to give a review and hide the skip button', 'order-reviews-for-woocommerce' ),
 				'show_in_js'  => false,
 			),
@@ -408,11 +427,14 @@ class Setting
 				break;
 
 			case 'toggle':
-				$checked = ( 'yes' == $value ) ? 'checked' : '';
+				$checked = $value === false ? ( 'yes' == $field['value'] ? 'checked' : '' ) : ( 'yes' == $value ? 'checked' : '' );
 				echo sprintf( '<div class="jmph-toggle">
-					<input type="checkbox" id="%1$s" name="%1$s" value="yes" %2$s>
-					<label for="%1$s"></label>
-				</div>', esc_attr( $field['unique_id'] ), $checked );
+						<input type="checkbox" id="%1$s" name="%1$s" value="yes" %2$s>
+						<label for="%1$s"></label>
+					</div>',
+					esc_attr( $field['unique_id'] ),
+					$checked
+				);
 				break;
 
 			case 'checkbox':
@@ -483,12 +505,22 @@ class Setting
 				</div>', esc_attr( $field['unique_id'] ), esc_attr( $value ) );
 				break;
 
+			case 'number':
+				echo sprintf( '<input type="number" id="%1$s" name="%1$s" placeholder="%2$s" value="%3$s" min="%4$s" max="%5$s">',
+					esc_attr( $field['unique_id'] ),
+					isset( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '',
+					( !is_numeric($value) && empty($value) ) ? esc_attr( $field['value'] ) : esc_attr( $value ),
+					( isset($field['min']) ) ? esc_attr( $field['min'] ) : 0,
+					( isset($field['max']) ) ? esc_attr( $field['max'] ) : PHP_INT_MAX
+				);
+				break;
+			
 			default:
 				echo sprintf( '<input id="%1$s" name="%1$s" type="%2$s" placeholder="%3$s" value="%4$s">',
 					esc_attr( $field['unique_id'] ),
 					esc_attr( $field['type'] ),
 					isset( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '',
-					( $value == false ) ? esc_attr( $field['value'] ) : esc_attr( $value )
+					( !is_numeric($value) && empty($value) ) ? esc_attr( $field['value'] ) : esc_attr( $value )
 				);
 		}
 

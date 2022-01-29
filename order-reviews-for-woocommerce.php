@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: Order reviews for woocommerce
+ * Plugin Name: Order Reviews for WooCommerce
  * Plugin URI: https://jompha.com
- * Description: A review and feedback capture plugin for woocommerce, Powered by Jompha.
+ * Description: A review and feedback capture plugin for WooCommerce. Powered by Jompha.
  * Version: 1.0.0
  * Author: Jompha
  * Author URI: https://jompha.com/
