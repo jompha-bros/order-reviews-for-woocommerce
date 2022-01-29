@@ -115,6 +115,7 @@ final class ORFW
     {
         include_once ORFW_ADMIN_CLASSES . '/Initialize.class.php';
         include_once ORFW_ADMIN_CLASSES . '/Setting.class.php';
+        include_once ORFW_ADMIN_CLASSES . '/Lists.class.php';
 
         include_once ORFW_FRONT_CLASSES . '/Initialize.class.php';
         include_once ORFW_FRONT_CLASSES . '/Popup.class.php';
@@ -134,6 +135,7 @@ final class ORFW
         {
             \ORFW\Admin\Initialize::getInstance();
             \ORFW\Admin\Setting::getInstance();
+            \ORFW\Admin\Lists::getInstance();
         }
 
         if ( $this->is_request( 'front' ) )
@@ -163,57 +165,55 @@ final class ORFW
      */
     public function register_new_post_types()
     {
-        $labels = [
-            'name'               => _x('Order Reviews', 'Plural Name of Order Review', 'order-reviews-for-woocommerce'),
-            'singular_name'      => _x('Order Review', 'Singular Name of Order Review', 'order-reviews-for-woocommerce'),
-            'menu_name'          => __('Order Reviews', 'orfw'),
-            'name_admin_bar'     => __('Order Review', 'order-reviews-for-woocommerce'),
-            'parent_item_colon'  => __('Parent Order Review:', 'order-reviews-for-woocommerce'),
-            'all_items'          => __('All Reviews', 'order-reviews-for-woocommerce'),
-            'add_new_item'       => __('Add New review', 'order-reviews-for-woocommerce'),
-            'add_new'            => __('Add New review', 'order-reviews-for-woocommerce'),
-            'new_item'           => __('New review', 'order-reviews-for-woocommerce'),
-            'edit_item'          => __('Edit review', 'order-reviews-for-woocommerce'),
-            'update_item'        => __('Update review', 'order-reviews-for-woocommerce'),
-            'view_item'          => __('View review', 'order-reviews-for-woocommerce'),
-            'search_items'       => __('Search review', 'order-reviews-for-woocommerce'),
-            'not_found'          => __('No Reviews found', 'order-reviews-for-woocommerce'),
-            'not_found_in_trash' => __('Not Reviews found in Trash', 'order-reviews-for-woocommerce'),
-        ];
-
-        $args = [
-            'label'               => __('Order Review', 'order-reviews-for-woocommerce'),
-            'description'         => __('Order Reviews', 'order-reviews-for-woocommerce'),
+        // Set UI labels for Custom Post Type
+        $labels = array(
+            'name'                => _x( 'Reviews', 'Post Type General Name', 'twentytwenty' ),
+            'singular_name'       => _x( 'Reviews', 'Post Type Singular Name', 'twentytwenty' ),
+            'menu_name'           => __( 'Reviews', 'twentytwenty' ),
+            'parent_item_colon'   => __( 'Parent Reviews', 'twentytwenty' ),
+            'all_items'           => __( 'All Reviews', 'twentytwenty' ),
+            'view_item'           => __( 'View Reviews', 'twentytwenty' ),
+            'add_new_item'        => __( 'Add New Reviews', 'twentytwenty' ),
+            'add_new'             => __( 'Add New', 'twentytwenty' ),
+            'edit_item'           => __( 'Edit Reviews', 'twentytwenty' ),
+            'update_item'         => __( 'Update Reviews', 'twentytwenty' ),
+            'search_items'        => __( 'Search Reviews', 'twentytwenty' ),
+            'not_found'           => __( 'Not Found', 'twentytwenty' ),
+            'not_found_in_trash'  => __( 'Not found in Trash', 'twentytwenty' ),
+        );
+     
+        // Set other options for Custom Post Type
+        
+        $args = array(
+            'label'               => __( 'Reviews', 'twentytwenty' ),
+            'description'         => __( 'Reviews', 'twentytwenty' ),
             'labels'              => $labels,
-            'supports'            => ['title', 'editor', 'author'],
-            'show_in_rest'        => true,
             'hierarchical'        => false,
             'public'              => true,
-            'show_ui'             => false, // Restricted Option
+            'show_ui'             => true,
             'show_in_menu'        => true,
-            'menu_position'       => 20,
-            'menu_icon'           => ORFW_RESOURCES . 'images/icon.png',
-            'show_in_admin_bar'   => true,
             'show_in_nav_menus'   => true,
+            'show_in_admin_bar'   => true,
+            'menu_position'       => 5,
             'can_export'          => true,
-            'has_archive'         => false,
+            'has_archive'         => true,
             'exclude_from_search' => false,
             'publicly_queryable'  => true,
-            'capability_type'     => ORFW_POST_TYPE,
-            'map_meta_cap'        => true
-        ];
+            'capability_type'     => 'post',
+            'show_in_rest' => true,
+        );
 
-        register_post_type(ORFW_POST_TYPE, $args);
+        register_post_type( ORFW_POST_TYPE, $args);
 
         // Create post object
         // $my_post = array(
         //     'post_title'    => 'test',
         //     'post_content'  => 'test',
         //     'post_status'   => 'publish',
-        //     'post_type' => ORFW_POST_TYPE
+        //     'post_type'     => ORFW_POST_TYPE
         // );
         
-        // Insert the post into the database
+        // //Insert the post into the database
         // wp_insert_post( $my_post );
     }
 

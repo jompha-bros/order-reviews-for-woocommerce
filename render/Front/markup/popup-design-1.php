@@ -1,4 +1,4 @@
-<div id="orfw-popup" class="orfw-use-custom-colors hide">
+<div id="orfw-popup" class="orfw-use-<?php echo ( $this->colorScheme == true ) ? 'custom' : 'default'; ?>-colors hide">
     <div class="orfw-popup-inner">
         <div class="orfw-popup-header">
             
