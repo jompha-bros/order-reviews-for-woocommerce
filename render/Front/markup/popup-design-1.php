@@ -6,7 +6,7 @@
                 <h3><?php $customText = get_option( 'orfw_text_last_order_heading', '' ); echo (empty($customText)) ? esc_html( 'Your Last Order', 'order-reviews-for-woocommerce' ) : esc_html( $customText ); ?></h3>
                 <h1 data-order-id="<?php echo esc_html( $this->orderID ); ?>" id="order-id">#<?php echo esc_html( $this->orderID ); ?></h1>
                 <?php if ( get_option( 'orfw_template_show_time', 'yes' ) == 'yes' ) : ?>
-                <p><?php echo esc_html( date('d-m-Y h:i A', strtotime($this->order->get_date_completed()) ) ); ?></p>
+                <p>5 days ago</p>
                 <?php endif; ?>
             </div>
             
@@ -79,7 +79,7 @@
 
             <button id="orfw-template-submit-button">
                 <span><?php echo esc_html( 'Submit', 'order-reviews-for-woocommerce' ); ?></span>
-                <span id="orfw-popup-submit-save-icon"></span>
+                <span id="orfw-popup-submit-save-icon" class="dashicons"></span>
             </button>
             
             <h4 class="disclaimer"><?php $customText = get_option( 'orfw_text_footer', '' ); echo (empty($customText)) ? esc_html( 'Please provide your honest feedback!', 'order-reviews-for-woocommerce' ) : esc_html( $customText ); ?></h4>
