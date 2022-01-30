@@ -215,7 +215,7 @@ final class ORFW
                 'menu_name'          => esc_html__( 'Order Reviews', 'order-reviews-for-woocommerce' ),
                 'name_admin_bar'     => esc_html__( 'Order Review', 'order-reviews-for-woocommerce' ),
                 'parent_item_colon'  => esc_html__( 'Parent Order Review:', 'order-reviews-for-woocommerce' ),
-                'all_items'          => esc_html__( 'All Reviews', 'order-reviews-for-woocommerce' ),
+                'all_items'          => esc_html__( 'Reviews', 'order-reviews-for-woocommerce' ),
                 'add_new_item'       => esc_html__( 'Add New review', 'order-reviews-for-woocommerce' ),
                 'add_new'            => esc_html__( 'Add New review', 'order-reviews-for-woocommerce' ),
                 'new_item'           => esc_html__( 'New review', 'order-reviews-for-woocommerce' ),
@@ -239,7 +239,8 @@ final class ORFW
             'exclude_from_search' => false,
             'publicly_queryable'  => true,
             'capability_type'     => 'post',
-            'map_meta_cap'        => true
+            'map_meta_cap'        => true,
+            'show_in_menu' => 'orfw-settings'
         ) );
     }
 
