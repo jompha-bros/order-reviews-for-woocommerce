@@ -7,20 +7,11 @@
 final class ORFW
 {
     public static $instance;
-
-    /**
-     * Plugin version
-     *
-     * @var string
-     */
     public $version = '1.0.0';
-
-    /**
-     * Holds various class instances
-     *
-     * @var array
-     */
-    private $container = array();
+    public $isAnumati;
+    public $anumatiObj;
+    public $anumatiMessage;
+    public $anumatiShowMessage = false;
 
     /**
      * Singleton Pattern
@@ -48,12 +39,61 @@ final class ORFW
         register_activation_hook( __FILE__,   array( $this, 'activate' ) );
         register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 
-        add_action( 'plugins_loaded',   array( $this, 'bootSystem' ) );
-        add_action( 'plugins_loaded',   array( $this, 'run' ) );
-        add_action( 'activated_plugin', array( $this, 'activationRedirect' ) );
+        $anumatiKey   = get_option( 'order-reviews-for-woocommerce_lic_Key',   '' );
+        $anumatiEmail = get_option( 'order-reviews-for-woocommerce_lic_email', '' );
 
-        add_filter( 'plugin_action_links_' . plugin_basename(__DIR__) . '/order-reviews-for-woocommerce.php', array( $this, 'settingLink' ) );
+        \ORFW\Anumati::addOnDelete(function(){
+            delete_option( 'order-reviews-for-woocommerce_lic_Key' );
+        });
+
+        if ( \ORFW\Anumati::CheckWPPlugin( $anumatiKey, $anumatiEmail, $this->anumatiMessage, $this->anumatiObj, ORFW_FILE ) )
+        {
+            $this->isAnumati = true;
+
+            add_action( 'admin_post_' . 'order-reviews-for-woocommerce_el_deactivate_license', array( $this, 'deactivateLicense' ) );
+
+            add_action( 'plugins_loaded', array( $this, 'bootSystem' ) );
+            add_action( 'plugins_loaded', array( $this, 'run' ) );
+
+            add_action( 'admin_menu', array( $this, 'mainMenu' ) );
+            add_action( 'admin_menu', array( $this, 'activeAdminMenu' ), 99999 );
+        }
+        else
+        {
+            $this->isAnumati = false;
+
+            if ( !empty($anumatiKey) && !empty($this->anumatiMessage) )
+               $this->anumatiShowMessage = true;
+            
+            update_option( 'order-reviews-for-woocommerce_lic_Key', '') || add_option( 'order-reviews-for-woocommerce_lic_Key', '' );
+            add_action( 'admin_post_' . 'order-reviews-for-woocommerce_el_activate_license', array( $this, 'activateLicense' ) );
+
+            add_action( 'admin_menu', array( $this, 'inactiveMenu' ));
+        }
+
+        add_action( 'activated_plugin',      array( $this, 'activationRedirect' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'anumatiScripts' ) );
+
         add_filter( 'plugin_row_meta', array( $this, 'helpLinks' ), 10, 2 );
+        add_filter( 'plugin_action_links_' . plugin_basename(__DIR__) . '/order-reviews-for-woocommerce.php', array( $this, 'settingLink' ) );
+    }
+
+    public function mainMenu()
+    {
+        add_menu_page(
+			esc_html( 'Order Reviews for WooCommerce', 'order-reviews-for-woocommerce' ), 
+			esc_html( 'ORFW', 'order-reviews-for-woocommerce' ), 
+			'manage_woocommerce', 
+			'orfw-settings', 
+			$this->isAnumati ? array( \ORFW\Admin\Settings::getInstance(), 'renderPage' ) : array( $this, 'LicenseForm' ), 
+			'dashicons-feedback', 
+			56
+		);
+    }
+
+    public static function renderPage()
+    {
+
     }
 
     /**
@@ -113,7 +153,7 @@ final class ORFW
     public function includes()
     {
         include_once ORFW_ADMIN_CLASSES . '/Initialize.class.php';
-        include_once ORFW_ADMIN_CLASSES . '/Setting.class.php';
+        include_once ORFW_ADMIN_CLASSES . '/Settings.class.php';
         include_once ORFW_ADMIN_CLASSES . '/Lists.class.php';
 
         include_once ORFW_FRONT_CLASSES . '/Initialize.class.php';
@@ -134,7 +174,7 @@ final class ORFW
         if ( $this->is_request( 'admin' ) )
         {
             \ORFW\Admin\Initialize::getInstance();
-            \ORFW\Admin\Setting::getInstance();
+            \ORFW\Admin\Settings::getInstance();
             \ORFW\Admin\Lists::getInstance();
         }
 
@@ -311,5 +351,200 @@ final class ORFW
         $links[] = $supportLink;
     
         return $links;
+    }
+
+    /**
+     * Enqueue scripts for license
+     */
+    public function anumatiScripts()
+    {
+        wp_enqueue_style( 'orfw-anumati', plugins_url( '/resources/css/anumati.css', ORFW_FILE ) , false, filemtime( ORFW_PATH . '/resources/css/anumati.css' ) );
+    }
+
+    /**
+     * License menu after activation
+     */
+    function activeAdminMenu()
+    {
+		add_submenu_page( 
+            'orfw-settings',
+            esc_html__( 'License', 'order-reviews-for-woocommerce' ),
+            esc_html__( 'License', 'order-reviews-for-woocommerce' ),
+            'activate_plugins',
+            'order-reviews-for-woocommerce',
+            array( $this, 'Activated' )
+        );
+    }
+
+    /**
+     * License menu before activation
+     */
+    function inactiveMenu()
+    {
+        add_menu_page(
+			esc_html( 'Order Reviews for WooCommerce', 'order-reviews-for-woocommerce' ), 
+			esc_html( 'ORFW', 'order-reviews-for-woocommerce' ), 
+			'manage_woocommerce', 
+			'orfw-settings', 
+			$this->isAnumati ? array( \ORFW\Admin\Settings::getInstance(), 'renderPage' ) : array( $this, 'LicenseForm' ), 
+			'dashicons-feedback', 
+			56
+		);
+
+        add_submenu_page( 
+            'orfw-settings',
+            esc_html__( 'License', 'order-reviews-for-woocommerce' ),
+            esc_html__( 'License', 'order-reviews-for-woocommerce' ),
+            'activate_plugins',
+            'orfw-settings',
+            array( $this, 'LicenseForm' ),
+            0
+        );
+    }
+
+    function activateLicense()
+    {
+        check_admin_referer( 'el-license' );
+
+        $licenseKey   = !empty($_POST['el_license_key']) ? $_POST['el_license_key'] : '';
+        $licenseEmail = !empty($_POST['el_license_email']) ? $_POST['el_license_email'] : '';
+
+        update_option( 'order-reviews-for-woocommerce_lic_Key', $licenseKey ) || add_option( 'order-reviews-for-woocommerce_lic_Key', $licenseKey );
+        update_option( 'order-reviews-for-woocommerce_lic_email', $licenseEmail ) || add_option( 'order-reviews-for-woocommerce_lic_email', $licenseEmail );
+
+        update_option( '_site_transient_update_plugins', '' );
+        wp_safe_redirect( admin_url( 'admin.php?page=' . 'order-reviews-for-woocommerce' ) );
+    }
+
+    function deactivateLicense()
+    {
+        check_admin_referer( 'el-license' );
+        $message = '';
+
+        if (\ORFW\Anumati::RemoveLicenseKey( ORFW_FILE, $message ))
+        {
+            update_option( 'order-reviews-for-woocommerce_lic_Key', '' ) || add_option( 'order-reviews-for-woocommerce_lic_Key', '' );
+            update_option( '_site_transient_update_plugins', '' );
+        }
+
+        wp_safe_redirect( admin_url( 'admin.php?page=' . 'order-reviews-for-woocommerce' ) );
+    }
+
+    function Activated()
+    {
+    ?>
+        <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+            <input type="hidden" name="action" value="<?php echo esc_attr( $this->slug ); ?>_el_deactivate_license"/>
+            <div class="el-license-container">
+                <h3 class="el-license-title"><i class="dashicons-before dashicons-star-filled"></i> <?php echo esc_html__( 'ORFW License Info', 'order-reviews-for-woocommerce' );?> </h3>
+                <hr>
+                <ul class="el-license-info">
+                    <li>
+                        <div>
+                            <span class="el-license-info-title"><?php echo esc_html__( 'Status', 'order-reviews-for-woocommerce' );?></span>
+
+                            <?php if ( $this->anumatiObj->is_valid ) : ?>
+                                <span class="el-license-valid"><?php echo esc_html__( 'Valid', 'order-reviews-for-woocommerce' );?></span>
+                            <?php else : ?>
+                                <span class="el-license-valid"><?php echo esc_html__( 'Invalid', 'order-reviews-for-woocommerce' );?></span>
+                            <?php endif; ?>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div>
+                            <span class="el-license-info-title"><?php echo esc_html__( 'License Type', 'order-reviews-for-woocommerce' );?></span>
+                            <?php echo esc_html( $this->anumatiObj->license_title ); ?>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div>
+                            <span class="el-license-info-title"><?php echo esc_html__( 'License Expired on', 'order-reviews-for-woocommerce' );?></span>
+                            <?php echo esc_html( $this->anumatiObj->expire_date );
+
+                            if ( !empty($this->anumatiObj->expire_renew_link) )
+                            {
+                                ?>
+                                <a target="_blank" class="el-blue-btn" href="<?php echo esc_url( $this->anumatiObj->expire_renew_link ); ?>"><?php echo esc_html__('Renew', 'order-reviews-for-woocommerce'); ?></a>
+                                <?php
+                            }
+                            ?>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div>
+                            <span class="el-license-info-title"><?php echo esc_html__( 'Support Expired on', 'order-reviews-for-woocommerce' );?></span>
+                            <?php
+                                echo esc_html( $this->anumatiObj->support_end );
+                                if (!empty($this->anumatiObj->support_renew_link))
+                                {
+                                    ?>
+                                    <a target="_blank" class="el-blue-btn" href="<?php echo esc_url( $this->anumatiObj->support_renew_link ); ?>"><?php echo esc_html__('Renew', 'order-reviews-for-woocommerce'); ?></a>
+                                    <?php
+                                }
+                            ?>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="el-license-info-title"><?php echo esc_html__( 'Your License Key', 'order-reviews-for-woocommerce' );?></span>
+                            <span class="el-license-key"><?php echo esc_html( substr( $this->anumatiObj->license_key, 0, 9 ) . 'XXXXXXXX-XXXXXXXX' . substr($this->anumatiObj->license_key, -9) ); ?></span>
+                        </div>
+                    </li>
+                </ul>
+                <div class="el-license-active-btn">
+                    <?php wp_nonce_field( 'el-license' ); ?>
+                    <?php submit_button( 'Deactivate' ); ?>
+                </div>
+            </div>
+        </form>
+    <?php
+    }
+
+    function LicenseForm()
+    {
+    ?>
+    <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+        <input type="hidden" name="action" value="<?php echo esc_attr( 'order-reviews-for-woocommerce' ); ?>_el_activate_license">
+        <div class="el-license-container">
+            <h3 class="el-license-title"><i class="dashicons-before dashicons-star-filled"></i> <?php echo esc_html__( 'ORFW Licensing', 'order-reviews-for-woocommerce' ); ?></h3>
+            <hr>
+            <?php
+            if ( !empty($this->anumatiShowMessage) && !empty($this->anumatiMessage) )
+            {
+                ?>
+                <div class="notice notice-error is-dismissible">
+                    <p><?php echo esc_html( $this->anumatiMessage ); ?></p>
+                </div>
+                <?php
+            }
+            ?>
+            <p><?php echo esc_html__( 'Enter your license key here, to activate the product, and get full feature updates and premium support.', 'order-reviews-for-woocommerce' ); ?></p>
+            <ol>
+                <li><?php echo esc_html__( 'Write your license key details', 'order-reviews-for-woocommerce' ); ?></li>
+                <li><?php echo esc_html__( 'How buyer will get this license key?', 'order-reviews-for-woocommerce' ); ?></li>
+                <li><?php echo esc_html__( 'Describe other info about licensing if required', 'order-reviews-for-woocommerce' ); ?></li>
+            </ol>
+            <div class="el-license-field">
+                <label for="el_license_key"><?php echo esc_html__( 'License code', 'order-reviews-for-woocommerce' ); ?></label>
+                <input type="text" class="regular-text code" name="el_license_key" size="50" placeholder="<?php echo esc_attr__( 'xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx', 'order-reviews-for-woocommerce' ) ?>" required="required">
+            </div>
+            <div class="el-license-field">
+                <label for="el_license_key"><?php echo esc_html__( 'Email Address', 'order-reviews-for-woocommerce' ); ?></label>
+                <?php
+                    $purchaseEmail = get_option( 'order-reviews-for-woocommerce_lic_email', get_bloginfo( 'admin_email' ));
+                ?>
+                <input type="text" class="regular-text code" name="el_license_email" size="50" value="<?php echo esc_attr( $purchaseEmail ); ?>"  required="required">
+                <div><small><?php echo esc_html__( 'We will send update news of this product on this e-mail address, do not worry, we hate spam too', 'order-reviews-for-woocommerce' ); ?></small></div>
+            </div>
+            <div class="el-license-active-btn">
+                <?php wp_nonce_field( 'el-license' ); ?>
+                <?php submit_button( esc_html__('Activate', 'order-reviews-for-woocommerce' ) ); ?>
+            </div>
+        </div>
+    </form>
+    <?php
     }
 }

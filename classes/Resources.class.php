@@ -61,8 +61,8 @@ class Resources
 
     private function localize()
     {
-        $fields = \ORFW\Admin\Setting::fields();
-        $prefix = \ORFW\Admin\Setting::$optPrefix;
+        $fields = \ORFW\Admin\Settings::fields();
+        $prefix = \ORFW\Admin\Settings::$optPrefix;
         $data = array( 
             'ajaxurl'             => admin_url( 'admin-ajax.php' ),
             'text_write_feedback' => esc_html__( 'Please write a feedback.', 'order-reviews-for-woocommerce' ),
