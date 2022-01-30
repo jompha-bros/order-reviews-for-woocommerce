@@ -23,17 +23,17 @@ class Settings
 			'general' => array(
 				'name' 		  => esc_html__( 'General', 'order-reviews-for-woocommerce' ),
 				'title' 	  => esc_html__( 'General Settings', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'General settings description', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'This is where you change the default behavior of the popup and configure general settings.', 'order-reviews-for-woocommerce' ),
 			),
 			'styles'  => array(
 				'name' 		  => esc_html__( 'Styles', 'order-reviews-for-woocommerce' ),
 				'title' 	  => esc_html__( 'Style Settings', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'Style settings description', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'This is where you control the visual stuffs like colors, font, etc.', 'order-reviews-for-woocommerce' ),
 			),
 			'content'  => array(
 				'name' 		  => esc_html__( 'Content', 'order-reviews-for-woocommerce' ),
 				'title' 	  => esc_html__( 'Content Settings', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'Change the default texts.', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'This is where you control the default content like texts, etc.', 'order-reviews-for-woocommerce' ),
 			),
 		);
 		$this->tab  = (isset($_GET['tab'])) ? $_GET['tab'] : 'general';
@@ -243,7 +243,7 @@ class Settings
 				'id'      	  => 'sri_card_bg',
 				'type'    	  => 'color',
 				'section' 	  => 'styles',
-				'label'   	  => esc_html__( 'Review Box', 'order-reviews-for-woocommerce' ),
+				'label'   	  => esc_html__( 'Review Info Box', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Background color of the card', 'order-reviews-for-woocommerce' ),
 				'show_in_js'  => false,
 			),
@@ -252,8 +252,8 @@ class Settings
 				'id'      	  => 'sri_font_color',
 				'type'    	  => 'color',
 				'section' 	  => 'styles',
-				'label'   	  => esc_html__( 'Review Color', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'Review color of the text ', 'order-reviews-for-woocommerce' ),
+				'label'   	  => esc_html__( 'Review Info Color', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Review info color of the text ', 'order-reviews-for-woocommerce' ),
 				'show_in_js'  => false,
 			),
 
@@ -261,7 +261,7 @@ class Settings
 				'id'      	  => 'sri_link_color',
 				'type'    	  => 'color',
 				'section' 	  => 'styles',
-				'label'   	  => esc_html__( 'Review Link Color', 'order-reviews-for-woocommerce' ),
+				'label'   	  => esc_html__( 'Review Info Link Color', 'order-reviews-for-woocommerce' ),
 				'description' => esc_html__( 'Link color (products) of the text', 'order-reviews-for-woocommerce' ),
 				'show_in_js'  => false,
 			),
@@ -347,8 +347,7 @@ class Settings
 	?>
         <div class="wrap jmph-settings-container">
             <div class="jmph-sets">
-				<h1><?php echo esc_html__( 'ORFW Starter Plugin', 'order-reviews-for-woocommerce' ); ?></h1>
-				<p><?php echo esc_html__( 'Subtitle here', 'order-reviews-for-woocommerce' ); ?></p>
+				<h1><?php echo esc_html__( 'Order Reviews Settings', 'order-reviews-for-woocommerce' ); ?></h1>
 
 				<?php settings_errors(); ?>
 

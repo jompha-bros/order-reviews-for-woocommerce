@@ -33,9 +33,10 @@ Admin notice
 	flex: 70%;
 }
 
-.jmph-settings-container .jmph-sets>h1 {
-	font-size: 18px;
-	text-transform: uppercase;
+.jmph-settings-container .jmph-sets > h1 {
+	font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 10px;
 }
 
 .jmph-settings-container .jmph-endorse {

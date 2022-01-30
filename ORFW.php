@@ -47,12 +47,11 @@ final class ORFW
 
         if ( \ORFW\Anumati::CheckWPPlugin( $anumatiKey, $anumatiEmail, $this->anumatiMessage, $this->anumatiObj, ORFW_FILE ) )
         {
-            add_action( 'admin_post_' . 'order-reviews-for-woocommerce_el_deactivate_license', array( $this, 'deactivateLicense' ) );
-
             add_action( 'plugins_loaded', array( $this, 'bootSystem' ) );
             add_action( 'plugins_loaded', array( $this, 'run' ) );
 
             add_action( 'admin_menu', array( $this, 'activeMenu' ), 99999 );
+            add_action( 'admin_post_order-reviews-for-woocommerce_el_deactivate_license', array( $this, 'deactivateLicense' ) );
         }
         else
         {
@@ -345,7 +344,7 @@ final class ORFW
             esc_html__( 'License', 'order-reviews-for-woocommerce' ),
             esc_html__( 'License', 'order-reviews-for-woocommerce' ),
             'activate_plugins',
-            'order-reviews-for-woocommerce',
+            'orfw-license',
             array( $this, 'Activated' )
         );
     }
@@ -398,7 +397,7 @@ final class ORFW
     {
     ?>
         <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-            <input type="hidden" name="action" value="<?php echo esc_attr( $this->slug ); ?>_el_deactivate_license"/>
+            <input type="hidden" name="action" value="order-reviews-for-woocommerce_el_deactivate_license">
             <div class="el-license-container">
                 <h3 class="el-license-title"><i class="dashicons-before dashicons-star-filled"></i> <?php echo esc_html__( 'ORFW License Info', 'order-reviews-for-woocommerce' );?> </h3>
                 <hr>
