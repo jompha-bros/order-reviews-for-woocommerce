@@ -122,8 +122,8 @@ class Popup
 
     public function colorVariables()
     {   
-        // if ( 'yes' !== $this->enabled ) 
-        //     return;
+        if ( 'yes' !== get_option( 'orfw_template_use_custom_colors', 'no' ) ) 
+            return;
     ?>
     <style>
     :root {
@@ -136,11 +136,6 @@ class Popup
         --orfw-template-submit-text-color: <?php echo wp_kses( get_option( 'orfw_template_submit_text_color', '#ffffff' ), array() ); ?>;
         --orfw-template-small-text-color: <?php echo wp_kses( get_option( 'orfw_template_small_text_color', '#888888' ), array() ); ?>;
         --orfw-template-skip-text-color: <?php echo wp_kses( get_option( 'orfw_template_skip_text_color', '#f4b248' ), array() ); ?>;
-        /* --orfw-sri-background-color: <?php echo wp_kses( get_option( 'orfw_sri_background_color', '#bcbad0' ), array() ); ?>;
-        --orfw-sri-text-color: <?php echo wp_kses( get_option( 'orfw_sri_text_color', '#bcbad0' ), array() ); ?>;
-        --orfw-sri-link-color: <?php echo wp_kses( get_option( 'orfw_sri_link_color', '#bcbad0' ), array() ); ?>;
-        --orfw-sri-font-size: <?php echo wp_kses( get_option( 'orfw_sri_font_size', '#bcbad0' ), array() ); ?>;
-        --orfw-sri-font-style: <?php echo wp_kses( get_option( 'orfw_sri_font_style', '#bcbad0' ), array() ); ?>; */
     }
     </style>
     <?php

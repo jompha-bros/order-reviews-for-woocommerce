@@ -55,15 +55,6 @@ class Settings
 				array($this, 'renderPage'),
 				0
 			),
-			// array(
-			// 	self::$pageSlug, 
-			// 	'Order Reviews', 
-			// 	'Order Reviews', 
-			// 	'manage_woocommerce', 
-			// 	'orfw-reviews', 
-			// 	array($this, 'renderReviews'), 
-			// 	1
-			// ),
 			array(
 				'woocommerce',
 				esc_html__( 'Order Reviews', 'order-reviews-for-woocommerce' ),
@@ -81,7 +72,7 @@ class Settings
 
 		foreach( $menuArguments as $argument )
 		{	
-			add_submenu_page(...$argument);
+			add_submenu_page( ...$argument );
 		}
 	}
 
@@ -139,13 +130,22 @@ class Settings
 				'description' => esc_html__( 'If checked, users must have to write a feedback if the rating is equal to or less than 3.', 'order-reviews-for-woocommerce' ),
 				'show_in_js'  => true,
 			),
+
+			array(
+				'id'      	  => 'force_review',
+				'type'    	  => 'toggle',
+				'section' 	  => 'general',
+				'label'   	  => esc_html__( 'Force Review', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Force customer to give a review and hide the skip button', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
+			),
 			
 			array(
-				'id'          => 'template_color_scheme',
+				'id'          => 'template_use_custom_colors',
 				'type'        => 'toggle',
 				'section'     => 'styles',
-				'label'       => esc_html__( 'Color Scheme', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'Turn on if you want to use default color scheme', 'order-reviews-for-woocommerce' ),
+				'label'       => esc_html__( 'Use Custom Colors', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Turn on if you want to use custom colors', 'order-reviews-for-woocommerce' ),
 				'show_in_js'  => false,
 			),
 
@@ -240,6 +240,61 @@ class Settings
 			),
 
 			array(
+				'id'      	  => 'sri_card_bg',
+				'type'    	  => 'color',
+				'section' 	  => 'styles',
+				'label'   	  => esc_html__( 'Review Box', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Background color of the card', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
+			),
+
+			array(
+				'id'      	  => 'sri_font_color',
+				'type'    	  => 'color',
+				'section' 	  => 'styles',
+				'label'   	  => esc_html__( 'Review Color', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Review color of the text ', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
+			),
+
+			array(
+				'id'      	  => 'sri_link_color',
+				'type'    	  => 'color',
+				'section' 	  => 'styles',
+				'label'   	  => esc_html__( 'Review Link Color', 'order-reviews-for-woocommerce' ),
+				'description' => esc_html__( 'Link color (products) of the text', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
+			),
+
+			array(
+				'id'      => 'sri_font_size',
+				'type'    => 'select',
+				'section' => 'styles',
+				'label'   => esc_html__( 'Review Info Font Size', 'order-reviews-for-woocommerce' ),
+				'options' => array(
+					'large'  => esc_html__( 'Large',  'order-reviews-for-woocommerce' ),
+					'medium' => esc_html__( 'Medium', 'order-reviews-for-woocommerce' ),
+					'small'  => esc_html__( 'Small',  'order-reviews-for-woocommerce' ),
+				),
+				'description' => esc_html__( 'Choose font size.', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
+			),
+
+			array(
+				'id'      	  => 'sri_font_style',
+				'type'    	  => 'select',
+				'section' 	  => 'styles',
+				'label'   	  => esc_html__( 'Review Info Font Style', 'order-reviews-for-woocommerce' ),
+				'options'     => array(
+					'normal'  => esc_html__( 'Normal',  'order-reviews-for-woocommerce' ),
+					'italic'  => esc_html__( 'Italic', 'order-reviews-for-woocommerce' ),
+					'oblique' => esc_html__( 'Oblique', 'order-reviews-for-woocommerce' ),
+				),
+				'description' => esc_html__( 'Choose font style.', 'order-reviews-for-woocommerce' ),
+				'show_in_js'  => false,
+			),
+
+			array(
 				'id'      	  => 'template_show_time',
 				'type'    	  => 'toggle',
 				'section' 	  => 'content',
@@ -284,68 +339,6 @@ class Settings
 				'value' 	  => esc_attr( 'Please provide your honest feedback!' ),
 				'show_in_js'  => false,
 			),
-
-			array(
-				'id'      	  => 'force_review',
-				'type'    	  => 'toggle',
-				'section' 	  => 'general',
-				'label'   	  => esc_html__( 'Force Review', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'Force customer to give a review and hide the skip button', 'order-reviews-for-woocommerce' ),
-				'show_in_js'  => false,
-			),
-
-			array(
-				'id'      	  => 'sri_card_bg',
-				'type'    	  => 'color',
-				'section' 	  => 'styles',
-				'label'   	  => esc_html__( 'Review Box', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'Background color of the card', 'order-reviews-for-woocommerce' ),
-				'show_in_js'  => false,
-			),
-
-			array(
-				'id'      	  => 'sri_font_color',
-				'type'    	  => 'color',
-				'section' 	  => 'styles',
-				'label'   	  => esc_html__( 'Review Color', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'Review color of the text ', 'order-reviews-for-woocommerce' ),
-				'show_in_js'  => false,
-			),
-
-			array(
-				'id'      	  => 'sri_link_color',
-				'type'    	  => 'color',
-				'section' 	  => 'styles',
-				'label'   	  => esc_html__( 'Review Link Color', 'order-reviews-for-woocommerce' ),
-				'description' => esc_html__( 'Link color (products) of the text', 'order-reviews-for-woocommerce' ),
-				'show_in_js'  => false,
-			),
-
-			array(
-				'id'      => 'sri_font_size',
-				'type'    => 'select',
-				'section' => 'styles',
-				'label'   => esc_html__( 'Review Font Size', 'order-reviews-for-woocommerce' ),
-				'options' => array(
-					'large'  => esc_html__( 'Large',  'order-reviews-for-woocommerce' ),
-					'medium' => esc_html__( 'Medium', 'order-reviews-for-woocommerce' ),
-					'small'  => esc_html__( 'Small',  'order-reviews-for-woocommerce' ),
-				),
-				'show_in_js'  => false,
-			),
-
-			array(
-				'id'      => 'sri_font_style',
-				'type'    => 'select',
-				'section' => 'styles',
-				'label'   => esc_html__( 'Review Font Style', 'order-reviews-for-woocommerce' ),
-				'options' => array(
-					'normal'  => esc_html__( 'Normal',  'order-reviews-for-woocommerce' ),
-					'italic' => esc_html__( 'Italic', 'order-reviews-for-woocommerce' )
-				),
-				'show_in_js'  => false,
-			),
-
 		);
 	}
 
@@ -375,33 +368,6 @@ class Settings
 					?>
 				</form>
 			</div>
-			<?php /* <div class="jmph-endorse">
-				<h2>Recommended Plugins</h2>
-				<a href="https://wordpress.org/plugins/ultimate-coupon-for-woocommerce" target="_blank">
-					<img src="<?php echo JSP_RESOURCES; ?>/images/jsp-banner.png" alt="">
-				</a>
-			</div> */ ?>
-        </div>
-	<?php
-	}
-
-	public function renderReviews()
-	{
-	?>
-        <div class="wrap jmph-settings-container">
-            <div class="jmph-sets">
-				<h1><?php echo esc_html__( 'Reviews', 'order-reviews-for-woocommerce' ); ?></h1>
-				<p><?php echo esc_html__( 'Subtitle here', 'order-reviews-for-woocommerce' ); ?></p>
-
-
-				
-			</div>
-			<?php /* <div class="jmph-endorse">
-				<h2>Recommended Plugins</h2>
-				<a href="https://wordpress.org/plugins/ultimate-coupon-for-woocommerce" target="_blank">
-					<img src="<?php echo JSP_RESOURCES; ?>/images/jsp-banner.png" alt="">
-				</a>
-			</div> */ ?>
         </div>
 	<?php
 	}

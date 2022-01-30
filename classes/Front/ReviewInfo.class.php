@@ -5,8 +5,6 @@ class ReviewInfo
 {
     public static $instance;
     private $enabled;
-    private $fontSize;
-    private $fontStyle;
 
     public static function getInstance()
     {
@@ -18,48 +16,43 @@ class ReviewInfo
 
     private function __construct()
     {
-        add_action( 'woocommerce_review_after_comment_text', array( $this, 'afterReviewText' ) );
-        add_action( 'wp_head', array( $this, 'productReviewDisplayCss' ) );
-
-        $this->fontSize  = get_option( 'orfw_sri_font_size', 'medium' );
-        $this->fontStyle = get_option( 'orfw_sri_font_style', 'normal' );
+        add_action( 'wp_head',                               array( $this, 'colorVariables' ), 0 );
+        add_action( 'woocommerce_review_after_comment_text', array( $this, 'view' ) );
 
         $this->enabled = true;
     }
 
-    public function productReviewDisplayCss()
+    public function colorVariables()
     {
-        if ( ! $this->enabled )
+        if ( 'yes' !== get_option( 'orfw_template_use_custom_colors', 'no' ) ) 
             return;
 
-        switch( $this->fontSize )
+        switch( get_option( 'orfw_sri_font_size', 'medium' ) )
         {
-            case 'large': '2rem';
-            case 'small': '1rem';
-            default: '1.25rem';
-        }
+            case 'large':
+                $fontSize = '2rem';
 
-        switch( $this->fontStyle )
-        {
-            case 'italic': 'italic';
-            default: 'normal';
+            case 'small':
+                $fontSize = '1rem';
+
+            default:
+                $fontSize = '1.25rem';
         }
 
         ?>
-            <style>
-                :root{
-                    --orfw-review-font-style: <?php echo esc_html( $this->fontStyle ); ?>;
-                    --orfw-review-font-size: <?php echo esc_html( $this->fontSize ); ?>;
-                    --orfw-review-font-color: <?php echo wp_kses( get_option( 'orfw_sri_font_color', '#28303d' ), array() ); ?>;
-                    --orfw-review-font-link-color: <?php echo wp_kses( get_option( 'orfw_sri_link_color', '#28303d' ), array() ); ?>;
-                    --orfw-review-background: <?php echo wp_kses( get_option( 'orfw_sri_card_bg', 'transparent' ), array() ); ?>;
-                }
-            </style>
-
+        <style>
+            :root {
+                --orfw-review-font-size: <?php echo esc_html( $fontSize ); ?>;
+                --orfw-review-font-style: <?php echo esc_html( get_option( 'orfw_sri_font_style', 'normal' ) ); ?>;
+                --orfw-review-font-color: <?php echo wp_kses( get_option( 'orfw_sri_font_color', '#28303d' ), array() ); ?>;
+                --orfw-review-font-link-color: <?php echo wp_kses( get_option( 'orfw_sri_link_color', '#28303d' ), array() ); ?>;
+                --orfw-review-background: <?php echo wp_kses( get_option( 'orfw_sri_card_bg', 'transparent' ), array() ); ?>;
+            }
+        </style>
         <?php
     }
 
-    public function afterReviewText( $comment )
+    public function view( $comment )
     {
         $reviewID = intval($comment->comment_ID);
         $orderID  = get_comment_meta( $reviewID, 'orfw_order_id', true );

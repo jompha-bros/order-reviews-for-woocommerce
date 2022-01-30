@@ -8,7 +8,6 @@ final class ORFW
 {
     public static $instance;
     public $version = '1.0.0';
-    public $isAnumati;
     public $anumatiObj;
     public $anumatiMessage;
     public $anumatiShowMessage = false;
@@ -48,20 +47,15 @@ final class ORFW
 
         if ( \ORFW\Anumati::CheckWPPlugin( $anumatiKey, $anumatiEmail, $this->anumatiMessage, $this->anumatiObj, ORFW_FILE ) )
         {
-            $this->isAnumati = true;
-
             add_action( 'admin_post_' . 'order-reviews-for-woocommerce_el_deactivate_license', array( $this, 'deactivateLicense' ) );
 
             add_action( 'plugins_loaded', array( $this, 'bootSystem' ) );
             add_action( 'plugins_loaded', array( $this, 'run' ) );
 
-            add_action( 'admin_menu', array( $this, 'mainMenu' ) );
-            add_action( 'admin_menu', array( $this, 'activeAdminMenu' ), 99999 );
+            add_action( 'admin_menu', array( $this, 'activeMenu' ), 99999 );
         }
         else
         {
-            $this->isAnumati = false;
-
             if ( !empty($anumatiKey) && !empty($this->anumatiMessage) )
                $this->anumatiShowMessage = true;
             
@@ -76,24 +70,6 @@ final class ORFW
 
         add_filter( 'plugin_row_meta', array( $this, 'helpLinks' ), 10, 2 );
         add_filter( 'plugin_action_links_' . plugin_basename(__DIR__) . '/order-reviews-for-woocommerce.php', array( $this, 'settingLink' ) );
-    }
-
-    public function mainMenu()
-    {
-        add_menu_page(
-			esc_html( 'Order Reviews for WooCommerce', 'order-reviews-for-woocommerce' ), 
-			esc_html( 'ORFW', 'order-reviews-for-woocommerce' ), 
-			'manage_woocommerce', 
-			'orfw-settings', 
-			$this->isAnumati ? array( \ORFW\Admin\Settings::getInstance(), 'renderPage' ) : array( $this, 'LicenseForm' ), 
-			'dashicons-feedback', 
-			56
-		);
-    }
-
-    public static function renderPage()
-    {
-
     }
 
     /**
@@ -332,7 +308,6 @@ final class ORFW
     public function settingLink( $links ) 
     {
 	    $links[] = sprintf( '<a href="%s">%s</a>', esc_url( admin_url( '/admin.php?page=orfw-settings' ) ), esc_html__( 'Settings','order-reviews-for-woocommerce' ) );
-
 	    return $links;
 	}
 
@@ -342,15 +317,12 @@ final class ORFW
      */
     public function helpLinks( $links, $plugin )
     {
-        if ( plugin_basename(__DIR__) . '/order-reviews-for-woocommerce.php' != $plugin )
+        if ( plugin_basename( __DIR__ ) . '/order-reviews-for-woocommerce.php' != $plugin )
             return $links;
         
-        $docsLink    = sprintf( "<a href='%s'>%s</a>", esc_url( '//docs.jompha.com/order-reviews-for-woocommerce' ), esc_html__( 'Docs','order-reviews-for-woocommerce' ) );
-        $supportLink = sprintf( "<a href='%s'>%s</a>", esc_url( '//forum.jompha.com' ), esc_html__( 'Community support','order-reviews-for-woocommerce' ) );
-        
-        $links[] = $docsLink;
-        $links[] = $supportLink;
-    
+        $links[] = sprintf( '<a href="%s">%s</a>', esc_url( '//docs.jompha.com/order-reviews-for-woocommerce' ), esc_html__( 'Docs','order-reviews-for-woocommerce' ) );
+        $links[] = sprintf( '<a href="%s">%s</a>', esc_url( '//forum.jompha.com' ), esc_html__( 'Community support','order-reviews-for-woocommerce' ) );
+
         return $links;
     }
 
@@ -365,8 +337,18 @@ final class ORFW
     /**
      * License menu after activation
      */
-    function activeAdminMenu()
+    function activeMenu()
     {
+        add_menu_page(
+			esc_html( 'Order Reviews for WooCommerce', 'order-reviews-for-woocommerce' ), 
+			esc_html( 'ORFW', 'order-reviews-for-woocommerce' ), 
+			'manage_woocommerce', 
+			'orfw-settings', 
+			array( \ORFW\Admin\Settings::getInstance(), 'renderPage' ), 
+			'dashicons-feedback', 
+			56
+		);
+
 		add_submenu_page( 
             'orfw-settings',
             esc_html__( 'License', 'order-reviews-for-woocommerce' ),
@@ -387,20 +369,10 @@ final class ORFW
 			esc_html( 'ORFW', 'order-reviews-for-woocommerce' ), 
 			'manage_woocommerce', 
 			'orfw-settings', 
-			$this->isAnumati ? array( \ORFW\Admin\Settings::getInstance(), 'renderPage' ) : array( $this, 'LicenseForm' ), 
+			array( $this, 'LicenseForm' ), 
 			'dashicons-feedback', 
 			56
 		);
-
-        add_submenu_page( 
-            'orfw-settings',
-            esc_html__( 'License', 'order-reviews-for-woocommerce' ),
-            esc_html__( 'License', 'order-reviews-for-woocommerce' ),
-            'activate_plugins',
-            'orfw-settings',
-            array( $this, 'LicenseForm' ),
-            0
-        );
     }
 
     function activateLicense()
@@ -414,7 +386,7 @@ final class ORFW
         update_option( 'order-reviews-for-woocommerce_lic_email', $licenseEmail ) || add_option( 'order-reviews-for-woocommerce_lic_email', $licenseEmail );
 
         update_option( '_site_transient_update_plugins', '' );
-        wp_safe_redirect( admin_url( 'admin.php?page=' . 'order-reviews-for-woocommerce' ) );
+        wp_safe_redirect( admin_url( 'admin.php?page=orfw-settings' ) );
     }
 
     function deactivateLicense()
@@ -428,7 +400,7 @@ final class ORFW
             update_option( '_site_transient_update_plugins', '' );
         }
 
-        wp_safe_redirect( admin_url( 'admin.php?page=' . 'order-reviews-for-woocommerce' ) );
+        wp_safe_redirect( admin_url( 'admin.php?page=orfw-settings' ) );
     }
 
     function Activated()
