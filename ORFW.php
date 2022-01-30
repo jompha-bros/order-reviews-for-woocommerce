@@ -122,7 +122,6 @@ final class ORFW
         if ( !class_exists('woocommerce') )
         {
             add_action( 'admin_notices',         array( $this, 'requiredWoocommerce' ) );
-            add_action( 'admin_enqueue_scripts', array( $this, 'noticeScripts' ) );
             return;
         }
     }
@@ -292,14 +291,6 @@ final class ORFW
             case 'front' :
                 return ( ! is_admin() || defined( 'DOING_AJAX' ) ) && ! defined( 'DOING_CRON' );
         }
-    }
-
-    /**
-     * Enqueue scripts for notice
-     */
-    public function noticeScripts()
-    {   
-        wp_enqueue_style( 'orfw-admin-notice', ORFW_RESOURCES . '/css/admin-notice.css', false, filemtime( ORFW_PATH . '/resources/css/admin-notice.css' ) );
     }
 
     function requiredWoocommerce()

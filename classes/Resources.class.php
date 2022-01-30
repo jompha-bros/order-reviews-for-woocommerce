@@ -149,8 +149,8 @@ class Resources
                 'version' => filemtime( ORFW_PATH . '/resources/css/owl.carousel.min.css' )
             ),
             'jompha-admin-core' => array(
-                'src'     => ORFW_RESOURCES . '/css/admin-core.css',
-                'version' => filemtime( ORFW_PATH . '/resources/css/admin-core.css' ),
+                'src'     => ORFW_RESOURCES . '/css/jompha-admin-core.css',
+                'version' => filemtime( ORFW_PATH . '/resources/css/jompha-admin-core.css' ),
             ),
             'jompha-icons' => array(
                 'src'     => ORFW_RESOURCES . '/css/icons.css',
@@ -159,10 +159,6 @@ class Resources
             'orfw' => array(
                 'src'     => ORFW_RESOURCES . '/css/orfw.css',
                 'version' => filemtime( ORFW_PATH . '/resources/css/orfw.css' ),
-            ),
-            'orfw-admin' => array(
-                'src'     => ORFW_RESOURCES . '/css/admin.css',
-                'version' => filemtime( ORFW_PATH . '/resources/css/admin.css' ),
             ),
             'orfw-front' => array(
                 'src'     => ORFW_RESOURCES . '/css/front.css',

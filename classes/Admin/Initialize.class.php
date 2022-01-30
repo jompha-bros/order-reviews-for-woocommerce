@@ -28,12 +28,11 @@ class Initialize
     private function styles( $screen )
     {
         wp_enqueue_style( 'orfw' );
+        wp_enqueue_style( 'jompha-admin-core' );
 
         if ( preg_match('/orfw-([A-Za-z0-9_-]+)$/i', $screen) )
         {
-            wp_enqueue_style( 'jompha-admin-core' );
             wp_enqueue_style( 'jompha-icons' );
-            wp_enqueue_style( 'orfw-admin' );
         }
     }
 

@@ -101,7 +101,6 @@
 #orfw-popup .orfw-popup-footer #orfw-template-submit-button span.dashicons-yes-alt {
     line-height: 25px;
 }
-
 #orfw-popup h4.disclaimer {
 	font-size: 14px;
 	font-weight: normal;
@@ -124,7 +123,6 @@
 #orfw-popup.orfw-use-custom-colors a#orfw-popup-skip {
 	color: var(--orfw-template-skip-text-color);
 }
-
 #orfw-popup .orfw-popup-rating textarea#orfw-popup-comment {
 	display: none;
 	width: 70%;
