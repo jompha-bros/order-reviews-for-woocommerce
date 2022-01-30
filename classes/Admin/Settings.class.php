@@ -1,7 +1,7 @@
 <?php
 namespace ORFW\Admin;
 
-class Setting
+class Settings
 {
     public static $instance;
 	public static $pageSlug  = 'orfw-settings';
@@ -45,16 +45,6 @@ class Setting
 
 	public function menu() 
 	{	
-		add_menu_page(
-			esc_html('Order Reviews for WooCommerce', 'order-reviews-for-woocommerce'), 
-			esc_html('ORFW', 'order-reviews-for-woocommerce'), 
-			'manage_woocommerce', 
-			self::$pageSlug, 
-			array( $this, 'renderPage' ), 
-			'dashicons-feedback', 
-			56
-		);
-
 		$menuArguments = array(
 			array(
 				self::$pageSlug, 
@@ -359,7 +349,7 @@ class Setting
 		);
 	}
 
-	public function renderPage()
+	public static function renderPage()
 	{
 	?>
         <div class="wrap jmph-settings-container">
