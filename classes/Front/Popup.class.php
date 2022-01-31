@@ -112,7 +112,7 @@ class Popup
 
     private function isWaitPeriod()
     {
-        return ( strtotime( '+' . get_option( 'orfw_template_wait_period', 3 ) . ' hours', strtotime( $this->order->date_completed ) ) > current_time( 'timestamp' ) ) ? true : false;
+        return ( strtotime( '+' . get_option( 'orfw_template_wait_period', 3 ) . ' hours', strtotime( $this->order->get_date_completed() ) ) > current_time( 'timestamp' ) ) ? true : false;
     }
 
     private function isAgainPeriod()
