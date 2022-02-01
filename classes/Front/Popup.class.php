@@ -207,9 +207,7 @@ class Popup
             
             $reviewIDs[] = $reviewID;
         }
-
-        do_action( 'orfw_new_review', $orfwReviewID, $orderID, $rating, $feedback );
-        
+                
         $this->successJson();
     }
 
