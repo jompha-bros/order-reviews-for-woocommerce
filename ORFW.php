@@ -116,7 +116,6 @@ final class ORFW
         add_action( 'init', array( $this, 'init_classes' ) );
         add_action( 'init', array( $this, 'localization_setup' ) );
         add_action( 'init', array( $this, 'register_new_post_types' ) );
-
     }
 
     /**

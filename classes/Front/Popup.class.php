@@ -143,6 +143,11 @@ class Popup
 
     public function onSubmit()
     {
+        $customer  = wp_get_current_user();
+
+        if ( ! $customer->exists() )
+            $this->errorJson();
+
         if ( ! isset( $_POST['order_id'], $_POST['product_ids'], $_POST['feedback'], $_POST['rating'] ) )
             $this->errorJson();
         
@@ -156,36 +161,7 @@ class Popup
 
         $feedback  = sanitize_text_field( $_POST['feedback'] );
         $rating    = intval( $_POST['rating'] );
-        $customer  = wp_get_current_user();
         $reviewIDs = array();
-
-        foreach ( $productIDs as $productID )
-        {
-            if ( comments_open( $productID ) )
-            {
-                $reviewID = wp_insert_comment( array(
-                    'comment_post_ID'      => $productID,
-                    'comment_type'         => 'review',
-                    'comment_content'      => sanitize_text_field( $_POST['feedback'] ),
-                    'comment_parent'       => 0,
-                    'comment_date'         => date('Y-m-d H:i:s'),
-                    'user_id'              => $customer->ID,
-                    'comment_author'       => $customer->user_login,
-                    'comment_author_email' => $customer->user_email,
-                    'comment_author_url'   => $customer->user_url,
-                    'comment_meta'         => array(
-                        'rating'           => intval( $_POST['rating'] ),
-                        'orfw_order_id'    => $orderID,
-                    ),
-                    'comment_approved'     => 1,
-                ) );
-
-                if ( ! is_wp_error( $reviewID ) ) 
-                    $reviewIDs[] = $reviewID;
-            }
-        }
-
-        update_post_meta( $orderID, 'orfw_reviewed', true );
 
         $orfwReviewID = wp_insert_post( array(
             'post_title'   => "#{$orderID} {$customer->user_login}",
@@ -194,12 +170,43 @@ class Popup
             'post_type'    => 'orfw_review'
         ) );
 
-        if ( $orfwReviewID )
+        if ( ! $orfwReviewID )
+            $this->errorJson();
+        
+        update_post_meta( $orderID,      'orfw_reviewed', true );
+        update_post_meta( $orfwReviewID, 'orfw_order_id', $orderID );
+        update_post_meta( $orfwReviewID, 'orfw_rating',   $rating );
+
+        foreach ( $productIDs as $productID )
         {
-            update_post_meta( $orfwReviewID, 'orfw_order_id', $orderID );
-            update_post_meta( $orfwReviewID, 'orfw_rating', intval( $_POST['rating'] ) );
+            if ( !comments_open( $productID ) )
+                continue;
+
+            $reviewID = wp_insert_comment( array(
+                'comment_post_ID'      => $productID,
+                'comment_type'         => 'review',
+                'comment_content'      => sanitize_text_field( $_POST['feedback'] ),
+                'comment_parent'       => 0,
+                'comment_date'         => date('Y-m-d H:i:s'),
+                'user_id'              => $customer->ID,
+                'comment_author'       => $customer->user_login,
+                'comment_author_email' => $customer->user_email,
+                'comment_author_url'   => $customer->user_url,
+                'comment_meta'         => array(
+                    'rating'           => $rating,
+                    'orfw_order_id'    => $orderID,
+                ),
+                'comment_approved'     => 1,
+            ) );
+
+            if ( is_wp_error( $reviewID ) )
+                continue;
+            
+            $reviewIDs[] = $reviewID;
         }
 
+        do_action( 'orfw_new_review', $orfwReviewID, $orderID, $rating, $feedback );
+        
         $this->successJson();
     }
 
