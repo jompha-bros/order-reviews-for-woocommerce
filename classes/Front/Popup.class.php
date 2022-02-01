@@ -33,6 +33,9 @@ class Popup
 
     public function hasOrdered()
     {
+        if ( !wp_get_current_user()->exists() )
+            return false;
+        
         $lastOrder = get_posts( array(
             'numberposts' => 1,
             'meta_key'    => '_customer_user',
