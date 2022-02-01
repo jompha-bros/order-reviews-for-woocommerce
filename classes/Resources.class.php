@@ -148,6 +148,10 @@ class Resources
                 'src'     => ORFW_RESOURCES . '/css/owl.carousel.min.css',
                 'version' => filemtime( ORFW_PATH . '/resources/css/owl.carousel.min.css' )
             ),
+            'orfw-font-roboto' => array(
+                'src'     => '//fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,300&display=swaps',
+                'version' => ORFW_VERSION
+            ),
             'jompha-admin-core' => array(
                 'src'     => ORFW_RESOURCES . '/css/jompha-admin-core.css',
                 'version' => filemtime( ORFW_PATH . '/resources/css/jompha-admin-core.css' ),

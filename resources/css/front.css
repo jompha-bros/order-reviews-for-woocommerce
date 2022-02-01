@@ -1,4 +1,7 @@
 /* Popup Style */
+#orfw-popup *{
+	font-family: 'Roboto', sans-serif;
+}
 #orfw-popup {
 	position: fixed;
 	top: 0;
@@ -49,6 +52,7 @@
 #orfw-popup .orfw-popup-order-info h1 {
     font-size: 30px;
     font-weight: normal;
+    margin: 5px 0 0px;
 }
 #orfw-popup.orfw-use-default-colors .orfw-popup-order-info h1 {
 	color: #ffffff;
@@ -58,7 +62,7 @@
 }
 #orfw-popup .orfw-popup-order-info p {
     font-size: 14px;
-    margin: 0px;
+    margin: 0 0 20px;
 }
 #orfw-popup .orfw-popup-order-products {
     max-width: 360px;
@@ -74,14 +78,17 @@
 	font-weight: normal;
 }
 #orfw-popup .orfw-popup-footer #orfw-template-submit-button {
-    padding: 4px 45px 10px;
+    padding: 10px 45px;
     border-radius: 2px;
     display: block;
     margin: 10px auto 0;
     font-weight: normal;
+    font-size: 16px;
     text-decoration: none;
+    cursor: pointer;
     border: 0px;
-	outline: 0;
+    line-height: 20px;
+    outline: 0;
 }
 #orfw-popup .orfw-popup-footer #orfw-template-submit-button:disabled {
 	cursor: default;

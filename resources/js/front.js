@@ -131,7 +131,7 @@
                 jQuery('#orfw-popup-submit-save-icon').addClass('dashicons-yes-alt');
                 
                 setTimeout(() => {
-                    orfwPopup.fadeOut();
+                    //orfwPopup.fadeOut();
                 }, 3000);
             },
             complete: function()
