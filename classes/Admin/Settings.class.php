@@ -6,8 +6,8 @@ class Settings
     public static $instance;
 	public static $pageSlug  = 'orfw-settings';
 	public static $optPrefix = 'orfw_';
-	public $tabs;
-	public $tab;
+	public static $tabs;
+	public static $tab;
 
     public static function getInstance()
     {
@@ -19,7 +19,7 @@ class Settings
 
     private function __construct()
     {
-		$this->tabs = array(
+		self::$tabs = array(
 			'general' => array(
 				'name' 		  => esc_html__( 'General', 'order-reviews-for-woocommerce' ),
 				'title' 	  => esc_html__( 'General Settings', 'order-reviews-for-woocommerce' ),
@@ -36,7 +36,7 @@ class Settings
 				'description' => esc_html__( 'This is where you control the default content like texts, etc.', 'order-reviews-for-woocommerce' ),
 			),
 		);
-		$this->tab  = (isset($_GET['tab'])) ? $_GET['tab'] : 'general';
+		self::$tab  = (isset($_GET['tab'])) ? $_GET['tab'] : 'general';
 
 		add_action( 'admin_menu', array( $this, 'menu' ) );
 		add_action( 'admin_init', array( $this, 'addSections' ) );
@@ -52,7 +52,7 @@ class Settings
 				'Settings', 
 				'manage_woocommerce', 
 				self::$pageSlug, 
-				array($this, 'renderPage'),
+				array( $this, 'renderPage' ),
 				0
 			),
 			array(
@@ -352,8 +352,8 @@ class Settings
 				<?php settings_errors(); ?>
 
 				<nav class="nav-tab-wrapper">
-					<?php foreach ( $this->tabs as $tabID => $tab ) { ?>
-					<a href="?page=<?php echo self::$pageSlug; ?>&tab=<?php echo $tabID; ?>" class="nav-tab <?php if ($tabID == $this->tab) echo 'nav-tab-active'; ?>"><?php echo $tab['name']; ?></a>
+					<?php foreach ( self::$tabs as $tabID => $tab ) { ?>
+					<a href="?page=<?php echo self::$pageSlug; ?>&tab=<?php echo $tabID; ?>" class="nav-tab <?php if ($tabID == self::$tab) echo 'nav-tab-active'; ?>"><?php echo $tab['name']; ?></a>
 					<?php } ?>
 				</nav>
 
@@ -361,7 +361,7 @@ class Settings
 					<?php 
 					wp_nonce_field('update-options');
 					
-					settings_fields( self::$optPrefix . $this->tab );
+					settings_fields( self::$optPrefix . self::$tab );
 					do_settings_sections( self::$pageSlug );
 					submit_button();
 					?>
@@ -373,10 +373,10 @@ class Settings
 
 	public function addSections()
 	{
-		if (! isset($this->tabs[ $this->tab ]))
+		if (! isset(self::$tabs[ self::$tab ]))
 			return;
 		
-		add_settings_section( self::$optPrefix . $this->tab, $this->tabs[ $this->tab ]['title'], function() { echo $this->tabs[ $this->tab ]['description']; }, self::$pageSlug );
+		add_settings_section( self::$optPrefix . self::$tab, self::$tabs[ self::$tab ]['title'], function() { echo self::$tabs[ self::$tab ]['description']; }, self::$pageSlug );
 	}
 
 	public function addFields()
