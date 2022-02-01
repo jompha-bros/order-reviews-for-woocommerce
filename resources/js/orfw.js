@@ -1,5 +1,5 @@
 'use strict';
-function setCookie(cname, cvalue, seconds) 
+function orfwSetCookie(cname, cvalue, seconds) 
 {
     var domainName = window.location.hostname;
     const d = new Date();
@@ -8,7 +8,7 @@ function setCookie(cname, cvalue, seconds)
     document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/;SameSite=lax;domain=' + domainName;
 }
 
-function getCookie(cname)
+function orfwGetCookie(cname)
 {
     const value = '; ' + document.cookie;
     const parts = value.split('; ' + cname + '=');

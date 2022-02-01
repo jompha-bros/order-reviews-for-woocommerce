@@ -32,7 +32,7 @@
         feedback = jQuery('#orfw-popup #orfw-popup-comment'),
         submitButton = jQuery('#orfw-template-submit-button'),
         orfwFrequency = orfw_data.template_view_frequency == '' ? 3 : parseInt( orfw_data.template_view_frequency ),
-        orfwFrequencyCount = getCookie('orfw-template-view-frequency') == null ? 0 : parseInt( getCookie('orfw-template-view-frequency') );
+        orfwFrequencyCount = orfwGetCookie('orfw-template-view-frequency') == null ? 0 : parseInt( orfwGetCookie('orfw-template-view-frequency') );
 
     ratingStars.on('click', function() 
     {
@@ -152,9 +152,9 @@
         orfwPopupContainer.fadeOut();
 
         if ( '' == orfw_data.template_again_period )
-            setCookie( 'orfw-template-again-period', 'yes', (parseInt(orfw_data.template_again_period) * 60 * 60) );
+            orfwSetCookie( 'orfw-template-again-period', 'yes', (parseInt(orfw_data.template_again_period) * 60 * 60) );
 
         if ( orfwFrequency > 0 )
-            setCookie( 'orfw-template-view-frequency', (orfwFrequencyCount + 1), ( 30 * 24 * 60 * 60 ) );
+            orfwSetCookie( 'orfw-template-view-frequency', (orfwFrequencyCount + 1), ( 30 * 24 * 60 * 60 ) );
     });
 });
