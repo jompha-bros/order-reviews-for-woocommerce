@@ -18,6 +18,9 @@
                     foreach ( $order->get_items() as $item )
                     {
                         $product = $item->get_product();
+
+                        if ( ! is_object($product) )
+                            continue;
                     ?>
 
                     <div class="orfw-product item" data-product-id="<?php echo esc_attr( $product->get_id() ); ?>">

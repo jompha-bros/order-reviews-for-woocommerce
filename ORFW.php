@@ -34,6 +34,7 @@ final class ORFW
     public function __construct()
     {
         $this->defineConstants();
+        $this->includes();
 
         register_activation_hook( __FILE__,   array( $this, 'activate' ) );
         register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
@@ -50,7 +51,7 @@ final class ORFW
             add_action( 'plugins_loaded', array( $this, 'bootSystem' ) );
             add_action( 'plugins_loaded', array( $this, 'run' ) );
 
-            add_action( 'admin_menu', array( $this, 'activeMenu' ), 99999 );
+            add_action( 'admin_menu', array( $this, 'activeMenu' ) );
             add_action( 'admin_post_order-reviews-for-woocommerce_el_deactivate_license', array( $this, 'deactivateLicense' ) );
         }
         else
@@ -110,8 +111,6 @@ final class ORFW
     {
         if ( !class_exists('woocommerce') )
             return;
-            
-        $this->includes();
         
         add_action( 'init', array( $this, 'init_classes' ) );
         add_action( 'init', array( $this, 'localization_setup' ) );
